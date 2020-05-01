@@ -1,13 +1,13 @@
-package com.example.bysafe.ui.notifications
+package com.example.bysafe.ui.calibrate
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class NotificationsViewModel : ViewModel() {
+class CalibrateViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+        value = "We need interfaces to calibrate bluetooth settings"
     }
     val text: LiveData<String> = _text
 }

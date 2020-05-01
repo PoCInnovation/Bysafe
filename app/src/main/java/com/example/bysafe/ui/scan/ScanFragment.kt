@@ -1,4 +1,4 @@
-package com.example.bysafe.ui.home
+package com.example.bysafe.ui.scan
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.bysafe.R
 
-class HomeFragment : Fragment() {
+class ScanFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var scanViewModel: ScanViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+        scanViewModel =
+                ViewModelProviders.of(this).get(ScanViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_scan, container, false)
+        val textView: TextView = root.findViewById(R.id.text_scan)
+        scanViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
