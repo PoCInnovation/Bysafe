@@ -116,46 +116,46 @@ public class SyncWorker extends Worker {
 	}
 
 	private static void doSyncInternal(Context context) throws IOException, StatusCodeException, ServerTimeOffsetException {
-//		AppConfigManager appConfigManager = AppConfigManager.getInstance(context);
-//		appConfigManager.updateFromDiscoverySynchronous();
-//		ApplicationInfo appConfig = appConfigManager.getAppConfig();
-//
-//		Database database = new Database(context);
-//		database.generateContactsFromHandshakes(context);
-//
-//		long lastLoadedBatchReleaseTime = appConfigManager.getLastLoadedBatchReleaseTime();
-//		long nextBatchReleaseTime;
-//		if (lastLoadedBatchReleaseTime <= 0 || lastLoadedBatchReleaseTime % BATCH_LENGTH != 0) {
-//			long now = System.currentTimeMillis();
-//			nextBatchReleaseTime = now - (now % BATCH_LENGTH);
-//		} else {
-//			nextBatchReleaseTime = lastLoadedBatchReleaseTime + BATCH_LENGTH;
-//		}
-//
-//		BackendBucketRepository backendBucketRepository =
-//				new BackendBucketRepository(context, appConfig.getBucketBaseUrl(), bucketSignaturePublicKey);
-//
-//		for (long batchReleaseTime = nextBatchReleaseTime;
-//			 batchReleaseTime < System.currentTimeMillis();
-//			 batchReleaseTime += BATCH_LENGTH) {
-//
-//			Exposed.ProtoExposedList result = backendBucketRepository.getExposees(batchReleaseTime);
-//			long batchReleaseServerTime = result.getBatchReleaseTime();
-//			for (Exposed.ProtoExposeeOrBuilder exposee : result.getExposedOrBuilderList()) {
-//				database.addKnownCase(
-//						context,
-//						exposee.getKey().toByteArray(),
-//						exposee.getKeyDate(),
-//						batchReleaseServerTime
-//				);
-//			}
-//
-//			appConfigManager.setLastLoadedBatchReleaseTime(batchReleaseTime);
-//		}
-//
-//		database.removeOldData();
-//
-//		appConfigManager.setLastSyncDate(System.currentTimeMillis());
+		AppConfigManager appConfigManager = AppConfigManager.getInstance(context);
+		appConfigManager.updateFromDiscoverySynchronous();
+		ApplicationInfo appConfig = appConfigManager.getAppConfig();
+
+		Database database = new Database(context);
+		database.generateContactsFromHandshakes(context);
+
+		long lastLoadedBatchReleaseTime = appConfigManager.getLastLoadedBatchReleaseTime();
+		long nextBatchReleaseTime;
+		if (lastLoadedBatchReleaseTime <= 0 || lastLoadedBatchReleaseTime % BATCH_LENGTH != 0) {
+			long now = System.currentTimeMillis();
+			nextBatchReleaseTime = now - (now % BATCH_LENGTH);
+		} else {
+			nextBatchReleaseTime = lastLoadedBatchReleaseTime + BATCH_LENGTH;
+		}
+
+		BackendBucketRepository backendBucketRepository =
+				new BackendBucketRepository(context, appConfig.getBucketBaseUrl(), bucketSignaturePublicKey);
+
+		for (long batchReleaseTime = nextBatchReleaseTime;
+			 batchReleaseTime < System.currentTimeMillis();
+			 batchReleaseTime += BATCH_LENGTH) {
+
+			Exposed.ProtoExposedList result = backendBucketRepository.getExposees(batchReleaseTime);
+			long batchReleaseServerTime = result.getBatchReleaseTime();
+			for (Exposed.ProtoExposeeOrBuilder exposee : result.getExposedOrBuilderList()) {
+				database.addKnownCase(
+						context,
+						exposee.getKey().toByteArray(),
+						exposee.getKeyDate(),
+						batchReleaseServerTime
+				);
+			}
+
+			appConfigManager.setLastLoadedBatchReleaseTime(batchReleaseTime);
+		}
+
+		database.removeOldData();
+
+		appConfigManager.setLastSyncDate(System.currentTimeMillis());
 	}
 
 }

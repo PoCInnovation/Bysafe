@@ -26,6 +26,7 @@ import java.util.TimeZone;
 
 import org.dpppt.android.calibration.R;
 import org.dpppt.android.calibration.controls.ExposedDialogFragment;
+import org.dpppt.android.calibration.util.RequirementsUtil;
 import org.dpppt.android.sdk.BuildConfig;
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.DP3TCalibrationHelper;
