@@ -89,6 +89,36 @@
 			android:selectAllOnFocus="true"
 			tools:text="0" />
 
+		<TextView
+			style="@style/Sample.Text.Title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/parameter_rssi_detected_level" />
+
+		<TextView
+			style="@style/Sample.Text.Light"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/spacing_large"
+			android:text="@string/parameter_info_unit_dbm" />
+
+		<androidx.appcompat.widget.AppCompatSeekBar
+			android:id="@+id/parameter_seekbar_rssi_detected_level"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/spacing_small" />
+
+		<EditText
+			android:id="@+id/parameter_input_rssi_detected_level"
+			style="@style/Sample.Text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:imeOptions="actionDone"
+			android:inputType="textNoSuggestions|numberSigned"
+			android:selectAllOnFocus="true"
+			tools:text="0" />
+
 <!--		<TextView-->
 <!--			style="@style/Sample.Text.Title"-->
 <!--			android:layout_width="wrap_content"-->

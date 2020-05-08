@@ -36,6 +36,7 @@ public class AppConfigManager {
 
 	public static final long DEFAULT_SCAN_INTERVAL = 1 * 60 * 1000L;
 	public static final long DEFAULT_SCAN_DURATION = 20 * 1000L;
+	public static final long DEFAULT_RSSI_DETECTED_LEVEL = -85;
 	private static final BluetoothScanMode DEFAULT_BLUETOOTH_SCAN_MODE = BluetoothScanMode.SCAN_MODE_LOW_POWER;
 	private static final BluetoothTxPowerLevel DEFAULT_BLUETOOTH_POWER_LEVEL = BluetoothTxPowerLevel.ADVERTISE_TX_POWER_ULTRA_LOW;
 	private static final BluetoothAdvertiseMode DEFAULT_BLUETOOTH_ADVERTISE_MODE = BluetoothAdvertiseMode.ADVERTISE_MODE_BALANCED;
@@ -55,6 +56,7 @@ public class AppConfigManager {
 	private static final String PREF_CALIBRATION_TEST_DEVICE_NAME = "calibrationTestDeviceName";
 	private static final String PREF_SCAN_INTERVAL = "scanInterval";
 	private static final String PREF_SCAN_DURATION = "scanDuration";
+	private static final String PREF_RSSI_DETECTED_LEVEL = "rssiDetectedLevel";
 	private static final String PREF_BLUETOOTH_SCAN_MODE = "scanMode";
 	private static final String PREF_ADVERTISEMENT_POWER_LEVEL = "advertisementPowerLevel";
 	private static final String PREF_ADVERTISEMENT_MODE = "advertisementMode";
@@ -197,6 +199,14 @@ public class AppConfigManager {
 
 	public long getScanDuration() {
 		return sharedPrefs.getLong(PREF_SCAN_DURATION, DEFAULT_SCAN_DURATION);
+	}
+
+	public void setRSSIDetectedLevel(long rssiDetectedLevel) {
+		sharedPrefs.edit().putLong(PREF_RSSI_DETECTED_LEVEL, rssiDetectedLevel).apply();
+	}
+
+	public long getRSSIDetectedLevel() {
+		return sharedPrefs.getLong(PREF_RSSI_DETECTED_LEVEL, DEFAULT_RSSI_DETECTED_LEVEL);
 	}
 
 	public void setScanInterval(long scanInterval) {

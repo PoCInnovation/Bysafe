@@ -32,10 +32,13 @@ public class ParametersFragment extends Fragment {
 	private static final int MIN_INTERVAL_SCANNING_SECONDS = 30;
 	private static final int MAX_INTERVAL_SCANNING_SECONDS = 900;
 	private static final int MIN_DURATION_SCANNING_SECONDS = 10;
-/*	private Spinner spinnerScanMode;
-	private Spinner spinnerUseScanResponse;
-	private Spinner spinnerAdvertisingMode;
-	private Spinner spinnerPowerLevel;*/
+	private static final int MIN_RSSI_DETECTED_LEVEL = -127;
+	private static final int MAX_RSSI_DETECTED_LEVEL = 126;
+	private static final int DEFAULT_RSSI_DETECTED_LEVEL = -85;
+// 	private Spinner spinnerScanMode;
+//	private Spinner spinnerUseScanResponse;
+//	private Spinner spinnerAdvertisingMode;
+//	private Spinner spinnerPowerLevel;
 	private SeekBar seekBarScanInterval;
 	private SeekBar seekBarScanDuration;
 	private SeekBar seekBarRSSIDetectedLevel;
@@ -62,6 +65,8 @@ public class ParametersFragment extends Fragment {
 		inputScanInterval = view.findViewById(R.id.parameter_input_scan_interval);
 		seekBarScanDuration = view.findViewById(R.id.parameter_seekbar_scan_duration);
 		inputScanDuration = view.findViewById(R.id.parameter_input_scan_duration);
+		seekBarRSSIDetectedLevel = view.findViewById(R.id.parameter_seekbar_rssi_detected_level);
+		inputRSSIDetectedLevel = view.findViewById(R.id.parameter_input_rssi_detected_level);
 
 //		spinnerScanMode = view.findViewById(R.id.parameter_spinner_scan_mode);
 //		ArrayAdapter<BluetoothScanMode> scanModeAdapter =
@@ -76,6 +81,43 @@ public class ParametersFragment extends Fragment {
 //			@Override
 //			public void onNothingSelected(AdapterView<?> parent) { }
 //		});
+
+		seekBarRSSIDetectedLevel.setMax(-MIN_RSSI_DETECTED_LEVEL + MAX_RSSI_DETECTED_LEVEL);
+		seekBarRSSIDetectedLevel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				inputRSSIDetectedLevel.setText(String.valueOf(progress + MIN_RSSI_DETECTED_LEVEL));
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				setRssiDetectedLevel(seekBar.getProgress() + MIN_RSSI_DETECTED_LEVEL);
+			}
+		});
+		inputRSSIDetectedLevel.setOnEditorActionListener((v, actionId, event) -> {
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				String input = inputRSSIDetectedLevel.getText().toString();
+				if (input.length() == 0) {
+					return true;
+				}
+				try {
+					int inputRSSILevel = Integer.parseInt(input);
+					inputRSSILevel = Math.min(MAX_RSSI_DETECTED_LEVEL, Math.max(MIN_RSSI_DETECTED_LEVEL, inputRSSILevel));
+					inputRSSIDetectedLevel.setText(String.valueOf(inputRSSILevel));
+					seekBarRSSIDetectedLevel.setProgress(inputRSSILevel - MIN_RSSI_DETECTED_LEVEL);
+					hideKeyboard(v);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+				return true;
+			}
+			return false;
+		});
+		inputRSSIDetectedLevel.setText(String.valueOf(DEFAULT_RSSI_DETECTED_LEVEL));
+		seekBarRSSIDetectedLevel.setProgress(DEFAULT_RSSI_DETECTED_LEVEL - MIN_RSSI_DETECTED_LEVEL);
 
 		seekBarScanInterval.setMax(MAX_INTERVAL_SCANNING_SECONDS - MIN_INTERVAL_SCANNING_SECONDS);
 		seekBarScanInterval.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -214,21 +256,23 @@ public class ParametersFragment extends Fragment {
 
 		AppConfigManager appConfigManager = AppConfigManager.getInstance(getContext());
 
-		BluetoothScanMode scanMode = appConfigManager.getBluetoothScanMode();
+//		BluetoothScanMode scanMode = appConfigManager.getBluetoothScanMode();
 //		spinnerScanMode.setSelection(scanMode.ordinal());
 
 		int interval = (int) (appConfigManager.getScanInterval() / 1000);
 		seekBarScanInterval.setProgress(interval - MIN_INTERVAL_SCANNING_SECONDS);
 		int duration = (int) (appConfigManager.getScanDuration() / 1000);
 		seekBarScanDuration.setProgress(duration - MIN_DURATION_SCANNING_SECONDS);
+		int RSSILevel = (int) (appConfigManager.getRSSIDetectedLevel());
+		seekBarRSSIDetectedLevel.setProgress(RSSILevel - MIN_RSSI_DETECTED_LEVEL);
 
-		boolean useScanResponse = appConfigManager.isScanResponseEnabled();
+//		boolean useScanResponse = appConfigManager.isScanResponseEnabled();
 //		spinnerUseScanResponse.setSelection(useScanResponse ? 1 : 0);
 
-		BluetoothAdvertiseMode selectedMode = appConfigManager.getBluetoothAdvertiseMode();
+//		BluetoothAdvertiseMode selectedMode = appConfigManager.getBluetoothAdvertiseMode();
 //		spinnerAdvertisingMode.setSelection(selectedMode.ordinal());
 
-		BluetoothTxPowerLevel selectedLevel = appConfigManager.getBluetoothTxPowerLevel();
+//		BluetoothTxPowerLevel selectedLevel = appConfigManager.getBluetoothTxPowerLevel();
 //		spinnerPowerLevel.setSelection(selectedLevel.ordinal());
 	}
 
@@ -246,6 +290,11 @@ public class ParametersFragment extends Fragment {
 
 	private void setScanDuration(int duration) {
 		AppConfigManager.getInstance(getContext()).setScanDuration(duration * 1000);
+	}
+
+	private void setRssiDetectedLevel(int rssiDetectedLevel)
+	{
+		AppConfigManager.getInstance(getContext()).setRSSIDetectedLevel(rssiDetectedLevel);
 	}
 
 	private void setAdvertPowerLevel(BluetoothTxPowerLevel powerLevel) {
