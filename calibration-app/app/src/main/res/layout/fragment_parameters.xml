@@ -4,175 +4,136 @@
   ~ Copyright (c) 2020. All rights reserved.
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="@dimen/spacing_large"
-		android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_large"
+        android:orientation="vertical">
 
-<!--		<TextView-->
-<!--			style="@style/Sample.Text.Title"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content"-->
-<!--			android:layout_marginTop="@dimen/spacing_large"-->
-<!--			android:layout_marginBottom="@dimen/spacing_medium"-->
-<!--			android:text="@string/parameter_scan_mode" />-->
+        <TextView
+            style="@style/Sample.Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/parameter_scan_interval_title" />
 
-<!--		<Spinner-->
-<!--			android:id="@+id/parameter_spinner_scan_mode"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content" />-->
+        <TextView
+            style="@style/Sample.Text.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:text="@string/parameter_info_unit_seconds" />
 
-		<TextView
-			style="@style/Sample.Text.Title"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/parameter_scan_interval_title" />
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/parameter_seekbar_scan_interval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_small" />
 
-		<TextView
-			style="@style/Sample.Text.Light"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_large"
-			android:text="@string/parameter_info_unit_seconds" />
+        <EditText
+            android:id="@+id/parameter_input_scan_interval"
+            style="@style/Sample.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions|numberSigned"
+            android:selectAllOnFocus="true"
+            tools:text="0" />
 
-		<androidx.appcompat.widget.AppCompatSeekBar
-			android:id="@+id/parameter_seekbar_scan_interval"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_small" />
+        <TextView
+            style="@style/Sample.Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/parameter_scan_duration_title" />
 
-		<EditText
-			android:id="@+id/parameter_input_scan_interval"
-			style="@style/Sample.Text"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:imeOptions="actionDone"
-			android:inputType="textNoSuggestions|numberSigned"
-			android:selectAllOnFocus="true"
-			tools:text="0" />
+        <TextView
+            style="@style/Sample.Text.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:text="@string/parameter_info_unit_seconds" />
 
-		<TextView
-			style="@style/Sample.Text.Title"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="@dimen/spacing_large"
-			android:text="@string/parameter_scan_duration_title" />
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/parameter_seekbar_scan_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_small" />
 
-		<TextView
-			style="@style/Sample.Text.Light"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_large"
-			android:text="@string/parameter_info_unit_seconds" />
+        <EditText
+            android:id="@+id/parameter_input_scan_duration"
+            style="@style/Sample.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions|numberSigned"
+            android:selectAllOnFocus="true"
+            tools:text="0" />
 
-		<androidx.appcompat.widget.AppCompatSeekBar
-			android:id="@+id/parameter_seekbar_scan_duration"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_small" />
+        <TextView
+            style="@style/Sample.Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/parameter_rssi_detected_level" />
 
-		<EditText
-			android:id="@+id/parameter_input_scan_duration"
-			style="@style/Sample.Text"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:imeOptions="actionDone"
-			android:inputType="textNoSuggestions|numberSigned"
-			android:selectAllOnFocus="true"
-			tools:text="0" />
+        <TextView
+            style="@style/Sample.Text.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:text="@string/parameter_info_unit_dbm" />
 
-		<TextView
-			style="@style/Sample.Text.Title"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/parameter_rssi_detected_level" />
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/parameter_seekbar_rssi_detected_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_small" />
 
-		<TextView
-			style="@style/Sample.Text.Light"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_large"
-			android:text="@string/parameter_info_unit_dbm" />
+        <EditText
+            android:id="@+id/parameter_input_rssi_detected_level"
+            style="@style/Sample.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions|numberSigned"
+            android:selectAllOnFocus="true"
+            tools:text="0" />
 
-		<androidx.appcompat.widget.AppCompatSeekBar
-			android:id="@+id/parameter_seekbar_rssi_detected_level"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_small" />
+        <TextView
+            android:id="@+id/version_info"
+            style="@style/Sample.Text.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large" />
 
-		<EditText
-			android:id="@+id/parameter_input_rssi_detected_level"
-			style="@style/Sample.Text"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:imeOptions="actionDone"
-			android:inputType="textNoSuggestions|numberSigned"
-			android:selectAllOnFocus="true"
-			tools:text="0" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+			android:orientation="vertical">
 
-<!--		<TextView-->
-<!--			style="@style/Sample.Text.Title"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content"-->
-<!--			android:layout_marginTop="@dimen/spacing_large"-->
-<!--			android:layout_marginBottom="@dimen/spacing_medium"-->
-<!--			android:text="@string/parameter_use_scan_response" />-->
+            <Button
+                android:id="@+id/home_button_start_stop_tracking"
+                style="@style/Sample.Button.Tracking"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/button_tracking_start" />
 
-<!--		<Spinner-->
-<!--			android:id="@+id/parameter_spinner_use_scan_response"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content" />-->
+            <Button
+                android:id="@+id/home_button_clear_data"
+                style="@style/Sample.Button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/button_clear_data" />
 
-<!--		<TextView-->
-<!--			style="@style/Sample.Text.Title"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content"-->
-<!--			android:layout_marginTop="@dimen/spacing_large"-->
-<!--			android:layout_marginBottom="@dimen/spacing_medium"-->
-<!--			android:text="@string/parameter_advertisement_mode" />-->
+        </LinearLayout>
 
-<!--		<Spinner-->
-<!--			android:id="@+id/parameter_spinner_advertising_mode"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content" />-->
-
-<!--		<TextView-->
-<!--			style="@style/Sample.Text.Title"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content"-->
-<!--			android:layout_marginTop="@dimen/spacing_large"-->
-<!--			android:layout_marginBottom="@dimen/spacing_medium"-->
-<!--			android:text="@string/parameter_advertisement_power_level" />-->
-
-<!--		<Spinner-->
-<!--			android:id="@+id/parameter_spinner_power_level"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content" />-->
-
-<!--		<TextView-->
-<!--			style="@style/Sample.Text.Title"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content"-->
-<!--			android:layout_marginTop="@dimen/spacing_large"-->
-<!--			android:layout_marginBottom="@dimen/spacing_medium"-->
-<!--			android:text="@string/version_info" />-->
-
-		<TextView
-			android:id="@+id/version_info"
-			style="@style/Sample.Text.Light"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_large" />
-
-	</LinearLayout>
+    </LinearLayout>
 
 </ScrollView>
