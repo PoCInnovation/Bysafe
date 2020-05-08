@@ -130,6 +130,8 @@ public class Database {
 		values.put(Handshakes.PHY_PRIMARY, handshake.getPrimaryPhy());
 		values.put(Handshakes.PHY_SECONDARY, handshake.getSecondaryPhy());
 		values.put(Handshakes.TIMESTAMP_NANOS, handshake.getTimestampNanos());
+		values.put(Handshakes.MODEL, handshake.getModel());
+
 		databaseThread.post(() -> {
 			db.insert(Handshakes.TABLE_NAME, null, values);
 			BroadcastHelper.sendUpdateBroadcast(context);
@@ -174,8 +176,11 @@ public class Database {
 			String primaryPhy = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.PHY_PRIMARY));
 			String secondaryPhy = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.PHY_SECONDARY));
 			long timestampNanos = cursor.getLong(cursor.getColumnIndexOrThrow(Handshakes.TIMESTAMP_NANOS));
+//			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
+//					timestampNanos);
+			String model = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.MODEL));
 			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
-					timestampNanos);
+					timestampNanos, model);
 			handshakes.add(handShake);
 		}
 		cursor.close();

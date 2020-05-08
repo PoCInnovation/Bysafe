@@ -21,6 +21,7 @@ interface Handshakes {
 	String PHY_PRIMARY = "phy_primary";
 	String PHY_SECONDARY = "phy_secondary";
 	String TIMESTAMP_NANOS = "timestamp_nanos";
+	String MODEL = "model";
 
 	String[] PROJECTION = {
 			ID,
@@ -30,7 +31,8 @@ interface Handshakes {
 			RSSI,
 			PHY_PRIMARY,
 			PHY_SECONDARY,
-			TIMESTAMP_NANOS
+			TIMESTAMP_NANOS,
+			MODEL,
 	};
 
 	static String create() {
@@ -42,7 +44,8 @@ interface Handshakes {
 				RSSI + " INTEGER," +
 				PHY_PRIMARY + " TEXT," +
 				PHY_SECONDARY + " TEXT," +
-				TIMESTAMP_NANOS + " INTEGER" +
+				TIMESTAMP_NANOS + " INTEGER," +
+				MODEL + " TEXT" +
 				")";
 	}
 

@@ -164,9 +164,12 @@ public class BleClient {
 	}
 
 	private Handshake createHandshake(EphId ephId, ScanResult scanResult, int power) {
+//		return new Handshake(-1, System.currentTimeMillis(), ephId, power, scanResult.getRssi(),
+//				BleCompat.getPrimaryPhy(scanResult), BleCompat.getSecondaryPhy(scanResult),
+//				scanResult.getTimestampNanos());
 		return new Handshake(-1, System.currentTimeMillis(), ephId, power, scanResult.getRssi(),
 				BleCompat.getPrimaryPhy(scanResult), BleCompat.getSecondaryPhy(scanResult),
-				scanResult.getTimestampNanos());
+				scanResult.getTimestampNanos(), scanResult.getDevice().getName() == null ? "" : scanResult.getDevice().getName());
 	}
 
 	public synchronized void stopScan() {

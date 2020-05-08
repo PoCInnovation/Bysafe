@@ -9,6 +9,7 @@
  */
 package org.dpppt.android.calibration.handshakes;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,16 +50,17 @@ public class HandshakesFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		rawHandshakeSwitch = view.findViewById(R.id.raw_handshake_switch);
+		//rawHandshakeSwitch = view.findViewById(R.id.raw_handshake_switch);
 		handshakeList = view.findViewById(R.id.handshake_list);
 
-		loadHandshakes(rawHandshakeSwitch.isChecked());
+		loadHandshakes(true);
+//		loadHandshakes(rawHandshakeSwitch.isChecked());
 
-		rawHandshakeSwitch.setOnCheckedChangeListener((compoundButton, raw) -> loadHandshakes(raw));
-
-		view.findViewById(R.id.refresh).setOnClickListener((v) -> {
-			loadHandshakes(rawHandshakeSwitch.isChecked());
-		});
+//		rawHandshakeSwitch.setOnCheckedChangeListener((compoundButton, raw) -> loadHandshakes(raw));
+//
+//		view.findViewById(R.id.refresh).setOnClickListener((v) -> {
+//			loadHandshakes(rawHandshakeSwitch.isChecked());
+//		});
 	}
 
 	private void loadHandshakes(boolean raw) {
@@ -69,6 +71,8 @@ public class HandshakesFragment extends Fragment {
 			if (raw) {
 				Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
 				for (Handshake handShake : response) {
+					if (handShake.getRssi() < AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel())
+						continue;
 					stringBuilder.append(sdf.format(new Date(handShake.getTimestamp())));
 					stringBuilder.append(" ");
 					stringBuilder
@@ -78,6 +82,8 @@ public class HandshakesFragment extends Fragment {
 					stringBuilder.append(handShake.getTxPowerLevel());
 					stringBuilder.append(" RSSI:");
 					stringBuilder.append(handShake.getRssi());
+					stringBuilder.append(" Model:");
+					stringBuilder.append(handShake.getModel());
 					stringBuilder.append("\n");
 				}
 			} else {
