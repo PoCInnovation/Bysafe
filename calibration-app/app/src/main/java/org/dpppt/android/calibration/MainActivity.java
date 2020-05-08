@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.main_fragment_container, ControlsFragment.newInstance())
+					.add(R.id.main_fragment_container, ParametersFragment.newInstance())
 					.commit();
 		}
 	}
@@ -42,11 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
 		navigationView.setOnNavigationItemSelectedListener(item -> {
 			switch (item.getItemId()) {
-				case R.id.action_controls:
-					getSupportFragmentManager().beginTransaction()
-							.replace(R.id.main_fragment_container, ControlsFragment.newInstance())
-							.commit();
-					break;
 				case R.id.action_parameters:
 					getSupportFragmentManager().beginTransaction()
 							.replace(R.id.main_fragment_container, ParametersFragment.newInstance())
@@ -55,11 +50,6 @@ public class MainActivity extends AppCompatActivity {
 				case R.id.action_handshakes:
 					getSupportFragmentManager().beginTransaction()
 							.replace(R.id.main_fragment_container, HandshakesFragment.newInstance())
-							.commit();
-					break;
-				case R.id.action_logs:
-					getSupportFragmentManager().beginTransaction()
-							.replace(R.id.main_fragment_container, LogsFragment.newInstance())
 							.commit();
 					break;
 			}
