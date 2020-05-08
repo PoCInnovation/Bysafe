@@ -1,11 +1,7 @@
 /*
- * Copyright (c) 2020 Ubique Innovation AG <https://www.ubique.ch>
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * SPDX-License-Identifier: MPL-2.0
+ * Created by Ubique Innovation AG
+ * https://www.ubique.ch
+ * Copyright (c) 2020. All rights reserved.
  */
 package org.dpppt.android.calibration.parameters;
 
@@ -36,14 +32,16 @@ public class ParametersFragment extends Fragment {
 	private static final int MIN_INTERVAL_SCANNING_SECONDS = 30;
 	private static final int MAX_INTERVAL_SCANNING_SECONDS = 900;
 	private static final int MIN_DURATION_SCANNING_SECONDS = 10;
-	private Spinner spinnerScanMode;
+/*	private Spinner spinnerScanMode;
 	private Spinner spinnerUseScanResponse;
 	private Spinner spinnerAdvertisingMode;
-	private Spinner spinnerPowerLevel;
+	private Spinner spinnerPowerLevel;*/
 	private SeekBar seekBarScanInterval;
 	private SeekBar seekBarScanDuration;
+	private SeekBar seekBarRSSIDetectedLevel;
 	private EditText inputScanInterval;
 	private EditText inputScanDuration;
+	private EditText inputRSSIDetectedLevel;
 
 	public static ParametersFragment newInstance() {
 		return new ParametersFragment();
@@ -65,19 +63,19 @@ public class ParametersFragment extends Fragment {
 		seekBarScanDuration = view.findViewById(R.id.parameter_seekbar_scan_duration);
 		inputScanDuration = view.findViewById(R.id.parameter_input_scan_duration);
 
-		spinnerScanMode = view.findViewById(R.id.parameter_spinner_scan_mode);
-		ArrayAdapter<BluetoothScanMode> scanModeAdapter =
-				new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, BluetoothScanMode.values());
-		spinnerScanMode.setAdapter(scanModeAdapter);
-		spinnerScanMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				setScanMode(BluetoothScanMode.values()[position]);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) { }
-		});
+//		spinnerScanMode = view.findViewById(R.id.parameter_spinner_scan_mode);
+//		ArrayAdapter<BluetoothScanMode> scanModeAdapter =
+//				new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, BluetoothScanMode.values());
+//		spinnerScanMode.setAdapter(scanModeAdapter);
+//		spinnerScanMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//			@Override
+//			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//				setScanMode(BluetoothScanMode.values()[position]);
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> parent) { }
+//		});
 
 		seekBarScanInterval.setMax(MAX_INTERVAL_SCANNING_SECONDS - MIN_INTERVAL_SCANNING_SECONDS);
 		seekBarScanInterval.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -152,54 +150,54 @@ public class ParametersFragment extends Fragment {
 			return false;
 		});
 
-		spinnerUseScanResponse = view.findViewById(R.id.parameter_spinner_use_scan_response);
-		ArrayAdapter<Boolean> useScanResponseAdapter =
-				new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new Boolean[] { false, true });
-		spinnerUseScanResponse.setAdapter(useScanResponseAdapter);
-		spinnerUseScanResponse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				setUseScanResponse(position == 1);
-			}
+//		spinnerUseScanResponse = view.findViewById(R.id.parameter_spinner_use_scan_response);
+//		ArrayAdapter<Boolean> useScanResponseAdapter =
+//				new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new Boolean[] { false, true });
+//		spinnerUseScanResponse.setAdapter(useScanResponseAdapter);
+//		spinnerUseScanResponse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//			@Override
+//			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//				setUseScanResponse(position == 1);
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> parent) { }
+//		});
 
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) { }
-		});
+//		spinnerAdvertisingMode = view.findViewById(R.id.parameter_spinner_advertising_mode);
+//		ArrayAdapter<BluetoothAdvertiseMode> advertisingModeAdapter =
+//				new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, BluetoothAdvertiseMode.values());
+//		spinnerAdvertisingMode.setAdapter(advertisingModeAdapter);
+//		spinnerAdvertisingMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//			@Override
+//			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//				setAdvertisingMode(BluetoothAdvertiseMode.values()[position]);
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> parent) { }
+//		});
 
-		spinnerAdvertisingMode = view.findViewById(R.id.parameter_spinner_advertising_mode);
-		ArrayAdapter<BluetoothAdvertiseMode> advertisingModeAdapter =
-				new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, BluetoothAdvertiseMode.values());
-		spinnerAdvertisingMode.setAdapter(advertisingModeAdapter);
-		spinnerAdvertisingMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				setAdvertisingMode(BluetoothAdvertiseMode.values()[position]);
-			}
+//		spinnerPowerLevel = view.findViewById(R.id.parameter_spinner_power_level);
+//		ArrayAdapter<BluetoothTxPowerLevel> powerLevelAdapter =
+//				new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, BluetoothTxPowerLevel.values());
+//		spinnerPowerLevel.setAdapter(powerLevelAdapter);
+//		spinnerPowerLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//			@Override
+//			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//				setAdvertPowerLevel(BluetoothTxPowerLevel.values()[position]);
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> parent) { }
+//		});
 
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) { }
-		});
-
-		spinnerPowerLevel = view.findViewById(R.id.parameter_spinner_power_level);
-		ArrayAdapter<BluetoothTxPowerLevel> powerLevelAdapter =
-				new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, BluetoothTxPowerLevel.values());
-		spinnerPowerLevel.setAdapter(powerLevelAdapter);
-		spinnerPowerLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				setAdvertPowerLevel(BluetoothTxPowerLevel.values()[position]);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) { }
-		});
-
-		TextView version_info = view.findViewById(R.id.version_info);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		sdf.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-		version_info.setText(
-				BuildConfig.VERSION_NAME + " / " + sdf.format(BuildConfig.BUILD_TIME) + " / " + BuildConfig.FLAVOR + " / " +
-						BuildConfig.BUILD_TYPE);
+//		TextView version_info = view.findViewById(R.id.version_info);
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		sdf.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+//		version_info.setText(
+//				BuildConfig.VERSION_NAME + " / " + sdf.format(BuildConfig.BUILD_TIME) + " / " + BuildConfig.FLAVOR + " / " +
+//						BuildConfig.BUILD_TYPE);
 	}
 
 	private void adjustNewDurationMaximum(int durationProgressMaximum) {
@@ -217,7 +215,7 @@ public class ParametersFragment extends Fragment {
 		AppConfigManager appConfigManager = AppConfigManager.getInstance(getContext());
 
 		BluetoothScanMode scanMode = appConfigManager.getBluetoothScanMode();
-		spinnerScanMode.setSelection(scanMode.ordinal());
+//		spinnerScanMode.setSelection(scanMode.ordinal());
 
 		int interval = (int) (appConfigManager.getScanInterval() / 1000);
 		seekBarScanInterval.setProgress(interval - MIN_INTERVAL_SCANNING_SECONDS);
@@ -225,13 +223,13 @@ public class ParametersFragment extends Fragment {
 		seekBarScanDuration.setProgress(duration - MIN_DURATION_SCANNING_SECONDS);
 
 		boolean useScanResponse = appConfigManager.isScanResponseEnabled();
-		spinnerUseScanResponse.setSelection(useScanResponse ? 1 : 0);
+//		spinnerUseScanResponse.setSelection(useScanResponse ? 1 : 0);
 
 		BluetoothAdvertiseMode selectedMode = appConfigManager.getBluetoothAdvertiseMode();
-		spinnerAdvertisingMode.setSelection(selectedMode.ordinal());
+//		spinnerAdvertisingMode.setSelection(selectedMode.ordinal());
 
 		BluetoothTxPowerLevel selectedLevel = appConfigManager.getBluetoothTxPowerLevel();
-		spinnerPowerLevel.setSelection(selectedLevel.ordinal());
+//		spinnerPowerLevel.setSelection(selectedLevel.ordinal());
 	}
 
 	private void setScanMode(BluetoothScanMode mode) {
