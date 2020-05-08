@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">BySafe</string>
-    <string name="title_scan">Scan</string>
-    <string name="title_calibrate">Calibrate</string>
-    <string name="location_permission_not_granted" />
-    <string name="location_permission_disabled" />
-    <string name="ok" />
-    <string name="cancel" />
-</resources>
