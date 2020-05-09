@@ -122,6 +122,8 @@ public class Database {
 	}
 
 	public ContentValues addHandshake(Context context, Handshake handshake) {
+		if (handshake.getRssi() < ((int)AppConfigManager.getInstance(context).getRSSIDetectedLevel()))
+			return null;
 		SQLiteDatabase db = databaseOpenHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(Handshakes.EPHID, handshake.getEphId().getData());
@@ -133,7 +135,6 @@ public class Database {
 		values.put(Handshakes.TIMESTAMP_NANOS, handshake.getTimestampNanos());
 		values.put(Handshakes.MODEL, handshake.getModel());
 
-		Logger.i("DB", "adding handshakes in database");
 		databaseThread.post(() -> {
 			db.insert(Handshakes.TABLE_NAME, null, values);
 			BroadcastHelper.sendUpdateBroadcast(context);

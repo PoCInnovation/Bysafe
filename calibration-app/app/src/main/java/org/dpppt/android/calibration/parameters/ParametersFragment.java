@@ -5,9 +5,24 @@
  */
 package org.dpppt.android.calibration.parameters;
 
+import android.Manifest;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,24 +35,67 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import java.util.TimeZone;
 
+import org.dpppt.android.calibration.MainApplication;
 import org.dpppt.android.calibration.R;
+import org.dpppt.android.calibration.controls.ControlsFragment;
 import org.dpppt.android.calibration.controls.ExposedDialogFragment;
+import org.dpppt.android.calibration.util.DialogUtil;
 import org.dpppt.android.calibration.util.RequirementsUtil;
 import org.dpppt.android.sdk.BuildConfig;
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.DP3TCalibrationHelper;
 import org.dpppt.android.sdk.InfectionStatus;
 import org.dpppt.android.sdk.TracingStatus;
+import org.dpppt.android.sdk.backend.ResponseCallback;
+import org.dpppt.android.sdk.backend.models.ExposeeAuthMethodJson;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.BluetoothAdvertiseMode;
 import org.dpppt.android.sdk.internal.BluetoothScanMode;
 import org.dpppt.android.sdk.internal.BluetoothTxPowerLevel;
+import org.dpppt.android.sdk.internal.database.Database;
 
 public class ParametersFragment extends Fragment {
+
+    ///CONTROL
+
+    private static final String TAG = ParametersFragment.class.getCanonicalName();
+    private static final int REQUEST_CODE_PERMISSION_LOCATION = 1;
+    private static final int REQUEST_CODE_SAVE_DB = 2;
+    private static final int REQUEST_CODE_REPORT_EXPOSED = 3;
+
+    private static final DateFormat DATE_FORMAT_SYNC = SimpleDateFormat.getDateTimeInstance();
+
+    private static final String REGEX_VALIDITY_AUTH_CODE = "\\w+";
+    private static final int EXPOSED_MIN_DATE_DIFF = -21;
+
+    private BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                checkPermissionRequirements();
+                updateSdkStatus();
+            }
+        }
+    };
+
+    private BroadcastReceiver sdkReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateSdkStatus();
+        }
+    };
+
+    //END_CONTROL
 
     private static final int MIN_INTERVAL_SCANNING_SECONDS = 30;
     private static final int MAX_INTERVAL_SCANNING_SECONDS = 900;
@@ -186,6 +244,11 @@ public class ParametersFragment extends Fragment {
             }
             return false;
         });
+
+        //control
+        setupUi(view);
+
+        //end_control
     }
 
     private void adjustNewDurationMaximum(int durationProgressMaximum) {
@@ -206,6 +269,21 @@ public class ParametersFragment extends Fragment {
         seekBarScanDuration.setProgress(duration - MIN_DURATION_SCANNING_SECONDS);
         int RSSILevel = (int) (appConfigManager.getRSSIDetectedLevel());
         seekBarRSSIDetectedLevel.setProgress(RSSILevel - MIN_RSSI_DETECTED_LEVEL);
+
+        //Control
+        getContext().registerReceiver(bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+        getContext().registerReceiver(sdkReceiver, DP3T.getUpdateIntentFilter());
+        checkPermissionRequirements();
+        updateSdkStatus();
+
+        //end Control
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getContext().unregisterReceiver(bluetoothReceiver);
+        getContext().unregisterReceiver(sdkReceiver);
     }
 
     private int getScanInterval() {
@@ -228,5 +306,101 @@ public class ParametersFragment extends Fragment {
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    // Control
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    }
+
+    private void setupUi(View view) {
+        Button locationButton = view.findViewById(R.id.home_button_location);
+        locationButton.setOnClickListener(
+                v -> requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                        REQUEST_CODE_PERMISSION_LOCATION));
+
+        Button batteryButton = view.findViewById(R.id.home_button_battery_optimization);
+        batteryButton.setOnClickListener(
+                v -> startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                        Uri.parse("package:" + getContext().getPackageName()))));
+
+        Button bluetoothButton = view.findViewById(R.id.home_button_bluetooth);
+        bluetoothButton.setOnClickListener(v -> {
+            if (BluetoothAdapter.getDefaultAdapter() != null) {
+                BluetoothAdapter.getDefaultAdapter().enable();
+            } else {
+                Toast.makeText(getContext(), "No BluetoothAdapter found!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button buttonClearData = view.findViewById(R.id.home_button_clear_data);
+        buttonClearData.setOnClickListener(v -> {
+            DialogUtil.showConfirmDialog(v.getContext(), R.string.dialog_clear_data_title,
+                    (dialog, which) -> {
+                        DP3T.clearData(v.getContext(), () ->
+                                new Handler(getContext().getMainLooper()).post(this::updateSdkStatus));
+                        MainApplication.initDP3T(v.getContext());
+                    });
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSION_LOCATION) {
+            checkPermissionRequirements();
+            updateSdkStatus();
+        }
+    }
+
+    private void checkPermissionRequirements() {
+        View view = getView();
+        Context context = getContext();
+        if (view == null || context == null) return;
+
+        boolean locationGranted = RequirementsUtil.isLocationPermissionGranted(context);
+        Button locationButton = view.findViewById(R.id.home_button_location);
+        locationButton.setEnabled(!locationGranted);
+        locationButton.setText(locationGranted ? R.string.req_location_permission_granted
+                : R.string.req_location_permission_ungranted);
+
+        boolean batteryOptDeactivated = RequirementsUtil.isBatteryOptimizationDeactivated(context);
+        Button batteryButton = view.findViewById(R.id.home_button_battery_optimization);
+        batteryButton.setEnabled(!batteryOptDeactivated);
+        batteryButton.setText(batteryOptDeactivated ? R.string.req_battery_deactivated
+                : R.string.req_battery_deactivated);
+
+        boolean bluetoothActivated = RequirementsUtil.isBluetoothEnabled();
+        Button bluetoothButton = view.findViewById(R.id.home_button_bluetooth);
+        bluetoothButton.setEnabled(!bluetoothActivated);
+        bluetoothButton.setText(bluetoothActivated ? R.string.req_bluetooth_active
+                : R.string.req_bluetooth_inactive);
+    }
+
+    private void updateSdkStatus() {
+        View view = getView();
+        Context context = getContext();
+        if (context == null || view == null) return;
+
+        TracingStatus status = DP3T.getStatus(context);
+
+        Button buttonStartStopTracking = view.findViewById(R.id.home_button_start_stop_tracking);
+        boolean isRunning = status.isAdvertising() || status.isReceiving();
+        buttonStartStopTracking.setSelected(isRunning);
+        buttonStartStopTracking.setText(getString(isRunning ? R.string.button_tracking_stop
+                : R.string.button_tracking_start));
+        buttonStartStopTracking.setOnClickListener(v -> {
+            if (isRunning) {
+                DP3T.stop(v.getContext());
+            } else {
+                DP3T.start(v.getContext());
+            }
+            updateSdkStatus();
+        });
+
+        Button buttonClearData = view.findViewById(R.id.home_button_clear_data);
+        buttonClearData.setEnabled(!isRunning);
+    }
+
+    // end control
 
 }
