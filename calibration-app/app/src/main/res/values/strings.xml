@@ -18,7 +18,7 @@
 	<string name="req_location_permission_ungranted">Autoriser la géolocalisation</string>
 	<string name="req_location_permission_granted">Géolocalisation autorisée</string>
 	<string name="req_bluetooth_inactive">Activer le Bluetooth</string>
-	<string name="req_bluetooth_active">Bluetooth ectivé</string>
+	<string name="req_bluetooth_active">Bluetooth activé</string>
 	<string name="req_battery_active">Désactiver l\'optimisation de la batterie</string>
 	<string name="req_battery_deactivated">Optimisation de la batterie activée</string>
 	<string name="button_sync">force backend sync</string>

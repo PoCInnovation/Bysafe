@@ -9,7 +9,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-		android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_large"
         android:orientation="vertical">
@@ -24,7 +24,7 @@
             style="@style/Sample.Text.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:text="@string/parameter_info_unit_seconds" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
@@ -48,14 +48,14 @@
             style="@style/Sample.Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_small"
             android:text="@string/parameter_scan_duration_title" />
 
         <TextView
             style="@style/Sample.Text.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:text="@string/parameter_info_unit_seconds" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
@@ -85,7 +85,7 @@
             style="@style/Sample.Text.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:text="@string/parameter_info_unit_dbm" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
@@ -105,19 +105,12 @@
             android:selectAllOnFocus="true"
             tools:text="0" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/version_info"-->
-<!--            style="@style/Sample.Text.Light"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="@dimen/spacing_large" />-->
-
-        <Button
-            android:id="@+id/home_button_start_stop_tracking"
-            style="@style/Sample.Button.Tracking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_tracking_start" />
+        <!--        <TextView-->
+        <!--            android:id="@+id/version_info"-->
+        <!--            style="@style/Sample.Text.Light"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginBottom="@dimen/spacing_large" />-->
 
         <Button
             android:id="@+id/home_button_location"
@@ -140,15 +133,30 @@
             style="@style/Sample.Button.Requirements"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_small"
             tools:text="@string/req_bluetooth_inactive" />
 
-        <Button
-            android:id="@+id/home_button_clear_data"
-            style="@style/Sample.Button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_clear_data" />
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/home_button_start_stop_tracking"
+                style="@style/Sample.Button.Tracking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_tracking_start" />
+
+            <Button
+                android:id="@+id/home_button_clear_data"
+                style="@style/Sample.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_clear_data" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

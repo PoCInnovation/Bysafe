@@ -65,8 +65,8 @@ public class AppConfigManager {
 	private static final String PREF_NUMBER_OF_WINDOWS_FOR_EXPOSURE = "number_of_windows_for_exposure";
 
 	private String appId;
-	private boolean useDiscovery;
-	private boolean isDevDiscoveryMode;
+	private boolean useDiscovery = false;
+	private boolean isDevDiscoveryMode = false;
 	private SharedPreferences sharedPrefs;
 	private DiscoveryRepository discoveryRepository;
 
