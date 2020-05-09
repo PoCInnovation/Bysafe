@@ -76,10 +76,10 @@ public class HandshakesFragment extends Fragment {
 					if (handShake.getRssi() < ((int)AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel()))
 						continue;
 					stringBuilder.append(sdf.format(new Date(handShake.getTimestamp())));
-					stringBuilder.append(" ");
-					stringBuilder
-							.append(new String(handShake.getEphId().getData()).substring(0, 10));
-					stringBuilder.append("...");
+//					stringBuilder.append(" ");
+//					stringBuilder
+//							.append(new String(handShake.getEphId().getData()).substring(0, 10));
+//					stringBuilder.append("...");
 					stringBuilder.append(" TxPowerLevel: ");
 					stringBuilder.append(handShake.getTxPowerLevel());
 					stringBuilder.append(" RSSI:");
