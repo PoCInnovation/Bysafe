@@ -19,7 +19,7 @@
 	<string name="req_location_permission_granted">Géolocalisation autorisée</string>
 	<string name="req_bluetooth_inactive">Activer le Bluetooth</string>
 	<string name="req_bluetooth_active">Bluetooth ectivé</string>
-	<string name="req_battery_active">Désactiver l'optimisation de la batterie</string>
+	<string name="req_battery_active">Désactiver l\'optimisation de la batterie</string>
 	<string name="req_battery_deactivated">Optimisation de la batterie activée</string>
 	<string name="button_sync">force backend sync</string>
 	<string name="button_export_db">export database</string>
@@ -46,8 +46,8 @@
 	<string name="dialog_title_success">Succès</string>
 	<string name="dialog_title_error">Erreur</string>
 	<string name="dialog_exposed_title">Signaler une exposition</string>
-	<string name="dialog_exposed_input_message">Selectionnez la date d'infection et entrez votre code d'authentification:</string>
-	<string name="dialog_exposed_code_hint">Code d'authentification</string>
+	<string name="dialog_exposed_input_message">Selectionnez la date d\'infection et entrez votre code d\'authentification:</string>
+	<string name="dialog_exposed_code_hint">Code d\'authentification</string>
 	<string name="dialog_input_code_error">code invalide.</string>
 	<string name="dialog_input_date_error">date invalide.</string>
 	<string name="dialog_message_request_success">Requête envoyée avec succès</string>
