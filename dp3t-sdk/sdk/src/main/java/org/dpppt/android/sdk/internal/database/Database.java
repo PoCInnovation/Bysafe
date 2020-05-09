@@ -174,6 +174,7 @@ public class Database {
 			Logger.d("DB", "Ya au moins ça ici");
 			long timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(Handshakes.TIMESTAMP));
 			EphId ephId = new EphId(cursor.getBlob(cursor.getColumnIndexOrThrow(Handshakes.EPHID)));
+			Logger.i("EPHID IS", String.valueOf(ephId));
 			int txPowerLevel = cursor.getInt(cursor.getColumnIndexOrThrow(Handshakes.TX_POWER_LEVEL));
 			int rssi = cursor.getInt(cursor.getColumnIndexOrThrow(Handshakes.RSSI));
 			String primaryPhy = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.PHY_PRIMARY));
@@ -181,14 +182,10 @@ public class Database {
 			long timestampNanos = cursor.getLong(cursor.getColumnIndexOrThrow(Handshakes.TIMESTAMP_NANOS));
 //			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
 //					timestampNanos);
-			Logger.i("DB", "Bon sa arrive juste avant le get model from cursor");
 			String model = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.MODEL));
-			Logger.i("DB", "ça fonctionne");
 			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
 					timestampNanos, model);
-			Logger.i("DB", "On creer un handshake");
 			handshakes.add(handShake);
-			Logger.i("DB", "Il est add a la list qui est return");
 		}
 		cursor.close();
 		return handshakes;
