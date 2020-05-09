@@ -133,6 +133,7 @@ public class Database {
 		values.put(Handshakes.TIMESTAMP_NANOS, handshake.getTimestampNanos());
 		values.put(Handshakes.MODEL, handshake.getModel());
 
+		Logger.d("DB", "adding handshakes in database");
 		databaseThread.post(() -> {
 			db.insert(Handshakes.TABLE_NAME, null, values);
 			BroadcastHelper.sendUpdateBroadcast(context);
