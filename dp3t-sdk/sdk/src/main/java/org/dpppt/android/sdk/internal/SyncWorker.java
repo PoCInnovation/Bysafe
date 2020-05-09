@@ -109,9 +109,9 @@ public class SyncWorker extends Worker {
 			} else {
 				syncError = ErrorState.SYNC_ERROR_NETWORK;
 			}
-			SyncErrorState.getInstance().setSyncError(syncError);
+			//SyncErrorState.getInstance().setSyncError(syncError);
 			BroadcastHelper.sendErrorUpdateBroadcast(context);
-			throw e;
+			//throw e;
 		}
 	}
 
