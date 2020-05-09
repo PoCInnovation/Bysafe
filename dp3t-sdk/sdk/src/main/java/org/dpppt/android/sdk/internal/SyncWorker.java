@@ -76,12 +76,12 @@ public class SyncWorker extends Worker {
 		TracingService.scheduleNextClientRestart(context, scanInterval);
 		TracingService.scheduleNextServerRestart(context);
 
-		try {
-			doSync(context);
-		} catch (IOException | StatusCodeException | ServerTimeOffsetException | SignatureException | SQLiteException e) {
-			Logger.d(TAG, "SyncWorker finished with exception " + e.getMessage());
-			return Result.retry();
-		}
+//		try {
+//			doSync(context);
+//		} catch (IOException | StatusCodeException | ServerTimeOffsetException | SignatureException | SQLiteException e) {
+//			Logger.d(TAG, "SyncWorker finished with exception " + e.getMessage());
+//			return Result.retry();
+//		}
 		Logger.d(TAG, "SyncWorker finished with success");
 		return Result.success();
 	}
