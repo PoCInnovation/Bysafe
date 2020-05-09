@@ -133,7 +133,7 @@ public class Database {
 		values.put(Handshakes.TIMESTAMP_NANOS, handshake.getTimestampNanos());
 		values.put(Handshakes.MODEL, handshake.getModel());
 
-		Logger.d("DB", "adding handshakes in database");
+		Logger.i("DB", "adding handshakes in database");
 		databaseThread.post(() -> {
 			db.insert(Handshakes.TABLE_NAME, null, values);
 			BroadcastHelper.sendUpdateBroadcast(context);
@@ -181,14 +181,14 @@ public class Database {
 			long timestampNanos = cursor.getLong(cursor.getColumnIndexOrThrow(Handshakes.TIMESTAMP_NANOS));
 //			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
 //					timestampNanos);
-			Logger.d("DB", "Bon sa arrive juste avant le get model from cursor");
+			Logger.i("DB", "Bon sa arrive juste avant le get model from cursor");
 			String model = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.MODEL));
-			Logger.d("DB", "ça fonctionne");
+			Logger.i("DB", "ça fonctionne");
 			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
 					timestampNanos, model);
-			Logger.d("DB", "On creer un handshake");
+			Logger.i("DB", "On creer un handshake");
 			handshakes.add(handShake);
-			Logger.d("DB", "Il est add a la list qui est return");
+			Logger.i("DB", "Il est add a la list qui est return");
 		}
 		cursor.close();
 		return handshakes;

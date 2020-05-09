@@ -148,6 +148,7 @@ public class BleClient {
 				// if Android, optimize (meaning: send/read payload directly in the advertisement
 				Logger.i(TAG, "handshake with " + deviceAddr + " (servicedata payload)");
 				handshakesForDevice.add(createHandshake(new EphId(payload), scanResult, power));
+				Logger.i(TAG,  "here it created a handshake in scan result map which is used to complete db");
 			} else {
 				if (handshakesForDevice.isEmpty()) {
 					gattConnectionThread.addTask(new GattConnectionTask(context, bluetoothDevice, scanResult,
@@ -157,6 +158,7 @@ public class BleClient {
 							}));
 				}
 				handshakesForDevice.add(createHandshake(null, scanResult, power));
+				Logger.i(TAG,  "here it created a handshake in scan result map which is used to complete db");
 			}
 		} catch (Exception e) {
 			Logger.e(TAG, e);

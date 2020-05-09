@@ -73,10 +73,10 @@ public class HandshakesFragment extends Fragment {
 			if (raw) {
 				Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
 				for (Handshake handShake : response) {
-					Logger.d("LoadHandshake", "here it is, there is something in the database");
+					Logger.i("LoadHandshake", "here it is, there is something in the database");
 					if (handShake.getRssi() < ((int)AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel()))
 						continue;
-					Logger.d("LoadHandshake", "And it should print '-'");
+					Logger.i("LoadHandshake", "And it should print '-'");
 					stringBuilder.append(sdf.format(new Date(handShake.getTimestamp())));
 					stringBuilder.append(" ");
 					stringBuilder
