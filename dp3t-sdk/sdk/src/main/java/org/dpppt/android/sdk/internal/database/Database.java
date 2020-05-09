@@ -31,6 +31,7 @@ import org.dpppt.android.sdk.internal.crypto.EphId;
 import org.dpppt.android.sdk.internal.database.models.Contact;
 import org.dpppt.android.sdk.internal.database.models.ExposureDay;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
+import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.DayDate;
 
 import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
@@ -169,6 +170,7 @@ public class Database {
 		List<Handshake> handshakes = new ArrayList<>();
 		while (cursor.moveToNext()) {
 			int id = cursor.getInt(cursor.getColumnIndexOrThrow(Handshakes.ID));
+			Logger.d("DB", "Ya au moins ça ici");
 			long timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(Handshakes.TIMESTAMP));
 			EphId ephId = new EphId(cursor.getBlob(cursor.getColumnIndexOrThrow(Handshakes.EPHID)));
 			int txPowerLevel = cursor.getInt(cursor.getColumnIndexOrThrow(Handshakes.TX_POWER_LEVEL));
@@ -178,10 +180,14 @@ public class Database {
 			long timestampNanos = cursor.getLong(cursor.getColumnIndexOrThrow(Handshakes.TIMESTAMP_NANOS));
 //			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
 //					timestampNanos);
+			Logger.d("DB", "Bon sa arrive juste avant le get model from cursor");
 			String model = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.MODEL));
+			Logger.d("DB", "ça fonctionne");
 			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
 					timestampNanos, model);
+			Logger.d("DB", "On creer un handshake");
 			handshakes.add(handShake);
+			Logger.d("DB", "Il est add a la list qui est return");
 		}
 		cursor.close();
 		return handshakes;

@@ -59,12 +59,12 @@
 			android:padding="@dimen/spacing_large"
 			tools:text="This textview displays the status of the STAR SDK on one or multiple lines." />
 
-<!--		<Button-->
-<!--			android:id="@+id/home_button_start_stop_tracking"-->
-<!--			style="@style/Sample.Button.Tracking"-->
-<!--			android:layout_width="wrap_content"-->
-<!--			android:layout_height="wrap_content"-->
-<!--			android:text="@string/button_tracking_start" />-->
+		<Button
+			android:id="@+id/home_button_start_stop_tracking"
+			style="@style/Sample.Button.Tracking"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/button_tracking_start" />
 
 		<LinearLayout
 			android:layout_width="match_parent"
