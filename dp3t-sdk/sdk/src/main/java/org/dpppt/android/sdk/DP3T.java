@@ -132,11 +132,11 @@ public class DP3T {
 
 	public static void sync(Context context) {
 		checkInit();
-		try {
-			SyncWorker.doSync(context);
-		} catch (IOException | StatusCodeException | ServerTimeOffsetException | SQLiteException | SignatureException ignored) {
-			// has been handled upstream
-		}
+//		try {
+//			SyncWorker.doSync(context);
+//		} catch (IOException | StatusCodeException | ServerTimeOffsetException | SQLiteException | SignatureException ignored) {
+//			// has been handled upstream
+//		}
 	}
 
 	public static TracingStatus getStatus(Context context) {
