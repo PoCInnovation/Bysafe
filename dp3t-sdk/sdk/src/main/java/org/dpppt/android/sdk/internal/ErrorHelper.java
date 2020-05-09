@@ -61,14 +61,14 @@ public class ErrorHelper {
 			errors.add(ErrorState.LOCATION_SERVICE_DISABLED);
 		}
 
-		if (!AppConfigManager.getInstance(context).getLastSyncNetworkSuccess()) {
-			ErrorState syncError = SyncErrorState.getInstance().getSyncError();
-			if (syncError == null) {
-				Logger.w(TAG, "lost sync error state");
-				syncError = ErrorState.SYNC_ERROR_NETWORK;
-			}
-			errors.add(syncError);
-		}
+//		if (!AppConfigManager.getInstance(context).getLastSyncNetworkSuccess()) {
+//			ErrorState syncError = SyncErrorState.getInstance().getSyncError();
+//			if (syncError == null) {
+//				Logger.w(TAG, "lost sync error state");
+//				syncError = ErrorState.SYNC_ERROR_NETWORK;
+//			}
+//			errors.add(syncError);
+//		}
 
 		if (!errors.contains(ErrorState.BLE_DISABLED)) {
 			BluetoothServiceStatus bluetoothServiceStatus = BluetoothServiceStatus.getInstance(context);
