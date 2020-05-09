@@ -52,17 +52,17 @@ public class HandshakesFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		rawHandshakeSwitch = view.findViewById(R.id.raw_handshake_switch);
+//		rawHandshakeSwitch = view.findViewById(R.id.raw_handshake_switch);
 		handshakeList = view.findViewById(R.id.handshake_list);
 
 		loadHandshakes(true);
-		loadHandshakes(rawHandshakeSwitch.isChecked());
-
-		rawHandshakeSwitch.setOnCheckedChangeListener((compoundButton, raw) -> loadHandshakes(raw));
-
-		view.findViewById(R.id.refresh).setOnClickListener((v) -> {
-			loadHandshakes(rawHandshakeSwitch.isChecked());
-		});
+//		loadHandshakes(rawHandshakeSwitch.isChecked());
+//
+//		rawHandshakeSwitch.setOnCheckedChangeListener((compoundButton, raw) -> loadHandshakes(raw));
+//
+//		view.findViewById(R.id.refresh).setOnClickListener((v) -> {
+//			loadHandshakes(rawHandshakeSwitch.isChecked());
+//		});
 	}
 
 	private void loadHandshakes(boolean raw) {
@@ -73,10 +73,8 @@ public class HandshakesFragment extends Fragment {
 			if (raw) {
 				Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
 				for (Handshake handShake : response) {
-					Logger.i("LoadHandshake", "here it is, there is something in the database");
 					if (handShake.getRssi() < ((int)AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel()))
 						continue;
-					Logger.i("LoadHandshake", "And it should print '-'");
 					stringBuilder.append(sdf.format(new Date(handShake.getTimestamp())));
 					stringBuilder.append(" ");
 					stringBuilder

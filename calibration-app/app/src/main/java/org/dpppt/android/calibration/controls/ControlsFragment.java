@@ -173,20 +173,20 @@ public class ControlsFragment extends Fragment {
 			}
 		});
 
-		Button refreshButton = view.findViewById(R.id.home_button_sync);
-		refreshButton.setOnClickListener(v -> resyncSdk());
-
-		Button buttonStartAdvertising = view.findViewById(R.id.home_button_start_advertising);
-		buttonStartAdvertising.setOnClickListener(v -> {
-			DP3TCalibrationHelper.start(v.getContext(), true, false);
-			updateSdkStatus();
-		});
-
-		Button buttonStartReceiving = view.findViewById(R.id.home_button_start_receiving);
-		buttonStartReceiving.setOnClickListener(v -> {
-			DP3TCalibrationHelper.start(v.getContext(), false, true);
-			updateSdkStatus();
-		});
+//		Button refreshButton = view.findViewById(R.id.home_button_sync);
+//		refreshButton.setOnClickListener(v -> resyncSdk());
+//
+//		Button buttonStartAdvertising = view.findViewById(R.id.home_button_start_advertising);
+//		buttonStartAdvertising.setOnClickListener(v -> {
+//			DP3TCalibrationHelper.start(v.getContext(), true, false);
+//			updateSdkStatus();
+//		});
+//
+//		Button buttonStartReceiving = view.findViewById(R.id.home_button_start_receiving);
+//		buttonStartReceiving.setOnClickListener(v -> {
+//			DP3TCalibrationHelper.start(v.getContext(), false, true);
+//			updateSdkStatus();
+//		});
 
 		Button buttonClearData = view.findViewById(R.id.home_button_clear_data);
 		buttonClearData.setOnClickListener(v -> {
@@ -198,66 +198,66 @@ public class ControlsFragment extends Fragment {
 					});
 		});
 
-		Button buttonSaveDb = view.findViewById(R.id.home_button_export_db);
-		buttonSaveDb.setOnClickListener(v -> {
-			Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-			intent.setType("application/sqlite");
-			intent.putExtra(Intent.EXTRA_TITLE, "dp3t_sample_db.sqlite");
-			startActivityForResult(intent, REQUEST_CODE_SAVE_DB);
-			setExportDbLoadingViewVisible(true);
-		});
+//		Button buttonSaveDb = view.findViewById(R.id.home_button_export_db);
+//		buttonSaveDb.setOnClickListener(v -> {
+//			Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+//			intent.setType("application/sqlite");
+//			intent.putExtra(Intent.EXTRA_TITLE, "dp3t_sample_db.sqlite");
+//			startActivityForResult(intent, REQUEST_CODE_SAVE_DB);
+//			setExportDbLoadingViewVisible(true);
+//		});
+//
+//		Button uploadDB = view.findViewById(R.id.home_button_upload_db);
+//		uploadDB.setOnClickListener(v -> {
+//			setUploadDbLoadingViewVisible(true);
+//			new FileUploadRepository()
+//					.uploadDatabase(getContext(), AppConfigManager.getInstance(getContext()).getCalibrationTestDeviceName(),
+//							new Callback<Void>() {
+//								@Override
+//								public void onResponse(Call<Void> call, Response<Void> response) {
+//									setUploadDbLoadingViewVisible(false);
+//								}
+//
+//								@Override
+//								public void onFailure(Call<Void> call, Throwable t) {
+//									t.printStackTrace();
+//									Toast.makeText(getContext(), "Upload failed!", Toast.LENGTH_LONG).show();
+//									setUploadDbLoadingViewVisible(false);
+//								}
+//							});
+//		});
 
-		Button uploadDB = view.findViewById(R.id.home_button_upload_db);
-		uploadDB.setOnClickListener(v -> {
-			setUploadDbLoadingViewVisible(true);
-			new FileUploadRepository()
-					.uploadDatabase(getContext(), AppConfigManager.getInstance(getContext()).getCalibrationTestDeviceName(),
-							new Callback<Void>() {
-								@Override
-								public void onResponse(Call<Void> call, Response<Void> response) {
-									setUploadDbLoadingViewVisible(false);
-								}
-
-								@Override
-								public void onFailure(Call<Void> call, Throwable t) {
-									t.printStackTrace();
-									Toast.makeText(getContext(), "Upload failed!", Toast.LENGTH_LONG).show();
-									setUploadDbLoadingViewVisible(false);
-								}
-							});
-		});
-
-		EditText deanonymizationDeviceId = view.findViewById(R.id.deanonymization_device_id);
-		Switch deanonymizationSwitch = view.findViewById(R.id.deanonymization_switch);
-		if (DP3TCalibrationHelper.getCalibrationTestDeviceName(getContext()) != null) {
-			deanonymizationSwitch.setChecked(true);
-			deanonymizationDeviceId.setText(DP3TCalibrationHelper.getCalibrationTestDeviceName(getContext()));
-		}
-		deanonymizationSwitch.setOnCheckedChangeListener((compoundButton, enabled) -> {
-			if (enabled) {
-				setDeviceId(deanonymizationDeviceId.getText().toString());
-			} else {
-				DP3TCalibrationHelper.disableCalibrationTestDeviceName(getContext());
-			}
-		});
-		deanonymizationDeviceId.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-			}
-
-			@Override
-			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable editable) {
-				if (deanonymizationSwitch.isChecked()) {
-					setDeviceId(editable.toString());
-				}
-			}
-		});
+//		EditText deanonymizationDeviceId = view.findViewById(R.id.deanonymization_device_id);
+//		Switch deanonymizationSwitch = view.findViewById(R.id.deanonymization_switch);
+//		if (DP3TCalibrationHelper.getCalibrationTestDeviceName(getContext()) != null) {
+//			deanonymizationSwitch.setChecked(true);
+//			deanonymizationDeviceId.setText(DP3TCalibrationHelper.getCalibrationTestDeviceName(getContext()));
+//		}
+//		deanonymizationSwitch.setOnCheckedChangeListener((compoundButton, enabled) -> {
+//			if (enabled) {
+//				setDeviceId(deanonymizationDeviceId.getText().toString());
+//			} else {
+//				DP3TCalibrationHelper.disableCalibrationTestDeviceName(getContext());
+//			}
+//		});
+//		deanonymizationDeviceId.addTextChangedListener(new TextWatcher() {
+//			@Override
+//			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//			}
+//
+//			@Override
+//			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable editable) {
+//				if (deanonymizationSwitch.isChecked()) {
+//					setDeviceId(editable.toString());
+//				}
+//			}
+//		});
 	}
 
 	private void setDeviceId(String deviceId) {
@@ -318,8 +318,8 @@ public class ControlsFragment extends Fragment {
 
 		TracingStatus status = DP3T.getStatus(context);
 
-		TextView statusText = view.findViewById(R.id.home_status_text);
-		statusText.setText(formatStatusString(status));
+//		TextView statusText = view.findViewById(R.id.home_status_text);
+//		statusText.setText(formatStatusString(status));
 
 		Button buttonStartStopTracking = view.findViewById(R.id.home_button_start_stop_tracking);
 		boolean isRunning = status.isAdvertising() || status.isReceiving();
@@ -335,40 +335,40 @@ public class ControlsFragment extends Fragment {
 			updateSdkStatus();
 		});
 
-		Button buttonStartAdvertising = view.findViewById(R.id.home_button_start_advertising);
-		buttonStartAdvertising.setEnabled(!isRunning);
-		Button buttonStartReceiving = view.findViewById(R.id.home_button_start_receiving);
-		buttonStartReceiving.setEnabled(!isRunning);
+//		Button buttonStartAdvertising = view.findViewById(R.id.home_button_start_advertising);
+//		buttonStartAdvertising.setEnabled(!isRunning);
+//		Button buttonStartReceiving = view.findViewById(R.id.home_button_start_receiving);
+//		buttonStartReceiving.setEnabled(!isRunning);
 
 		Button buttonClearData = view.findViewById(R.id.home_button_clear_data);
 		buttonClearData.setEnabled(!isRunning);
-		Button buttonSaveDb = view.findViewById(R.id.home_button_export_db);
-		buttonSaveDb.setEnabled(!isRunning);
-		Button buttonUploadDb = view.findViewById(R.id.home_button_upload_db);
-		buttonUploadDb.setEnabled(!isRunning);
+//		Button buttonSaveDb = view.findViewById(R.id.home_button_export_db);
+//		buttonSaveDb.setEnabled(!isRunning);
+//		Button buttonUploadDb = view.findViewById(R.id.home_button_upload_db);
+//		buttonUploadDb.setEnabled(!isRunning);
 
-		Button buttonReportInfected = view.findViewById(R.id.home_button_report_infected);
-		buttonReportInfected.setEnabled(status.getInfectionStatus() != InfectionStatus.INFECTED);
-		buttonReportInfected.setText(R.string.button_report_infected);
-		buttonReportInfected.setOnClickListener(
-				v -> {
-					Calendar minCal = Calendar.getInstance();
-					minCal.add(Calendar.DAY_OF_YEAR, EXPOSED_MIN_DATE_DIFF);
-					DialogFragment exposedDialog =
-							ExposedDialogFragment.newInstance(minCal.getTimeInMillis(), REGEX_VALIDITY_AUTH_CODE);
-					exposedDialog.setTargetFragment(this, REQUEST_CODE_REPORT_EXPOSED);
-					exposedDialog.show(getParentFragmentManager(), ExposedDialogFragment.class.getCanonicalName());
-				});
-
-		EditText deanonymizationDeviceId = view.findViewById(R.id.deanonymization_device_id);
-		Switch deanonymizationSwitch = view.findViewById(R.id.deanonymization_switch);
-		if (DP3TCalibrationHelper.getCalibrationTestDeviceName(getContext()) != null) {
-			deanonymizationSwitch.setChecked(true);
-			deanonymizationDeviceId.setText(DP3TCalibrationHelper.getCalibrationTestDeviceName(getContext()));
-		} else {
-			deanonymizationSwitch.setChecked(false);
-			deanonymizationDeviceId.setText("0000");
-		}
+//		Button buttonReportInfected = view.findViewById(R.id.home_button_report_infected);
+//		buttonReportInfected.setEnabled(status.getInfectionStatus() != InfectionStatus.INFECTED);
+//		buttonReportInfected.setText(R.string.button_report_infected);
+//		buttonReportInfected.setOnClickListener(
+//				v -> {
+//					Calendar minCal = Calendar.getInstance();
+//					minCal.add(Calendar.DAY_OF_YEAR, EXPOSED_MIN_DATE_DIFF);
+//					DialogFragment exposedDialog =
+//							ExposedDialogFragment.newInstance(minCal.getTimeInMillis(), REGEX_VALIDITY_AUTH_CODE);
+//					exposedDialog.setTargetFragment(this, REQUEST_CODE_REPORT_EXPOSED);
+//					exposedDialog.show(getParentFragmentManager(), ExposedDialogFragment.class.getCanonicalName());
+//				});
+//
+//		EditText deanonymizationDeviceId = view.findViewById(R.id.deanonymization_device_id);
+//		Switch deanonymizationSwitch = view.findViewById(R.id.deanonymization_switch);
+//		if (DP3TCalibrationHelper.getCalibrationTestDeviceName(getContext()) != null) {
+//			deanonymizationSwitch.setChecked(true);
+//			deanonymizationDeviceId.setText(DP3TCalibrationHelper.getCalibrationTestDeviceName(getContext()));
+//		} else {
+//			deanonymizationSwitch.setChecked(false);
+//			deanonymizationDeviceId.setText("0000");
+//		}
 	}
 
 	private SpannableString formatStatusString(TracingStatus status) {
@@ -429,24 +429,24 @@ public class ControlsFragment extends Fragment {
 	private void setExposeLoadingViewVisible(boolean visible) {
 		View view = getView();
 		if (view != null) {
-			view.findViewById(R.id.home_loading_view_exposed).setVisibility(visible ? View.VISIBLE : View.GONE);
-			view.findViewById(R.id.home_button_report_infected).setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
+//			view.findViewById(R.id.home_loading_view_exposed).setVisibility(visible ? View.VISIBLE : View.GONE);
+//			view.findViewById(R.id.home_button_report_infected).setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
 		}
 	}
 
 	private void setExportDbLoadingViewVisible(boolean visible) {
 		View view = getView();
 		if (view != null) {
-			view.findViewById(R.id.home_loading_view_export_db).setVisibility(visible ? View.VISIBLE : View.GONE);
-			view.findViewById(R.id.home_button_export_db).setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
+//			view.findViewById(R.id.home_loading_view_export_db).setVisibility(visible ? View.VISIBLE : View.GONE);
+//			view.findViewById(R.id.home_button_export_db).setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
 		}
 	}
 
 	private void setUploadDbLoadingViewVisible(boolean visible) {
 		View view = getView();
 		if (view != null) {
-			view.findViewById(R.id.home_loading_view_upload_db).setVisibility(visible ? View.VISIBLE : View.GONE);
-			view.findViewById(R.id.home_button_upload_db).setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
+//			view.findViewById(R.id.home_loading_view_upload_db).setVisibility(visible ? View.VISIBLE : View.GONE);
+//			view.findViewById(R.id.home_button_upload_db).setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
 		}
 	}
 
