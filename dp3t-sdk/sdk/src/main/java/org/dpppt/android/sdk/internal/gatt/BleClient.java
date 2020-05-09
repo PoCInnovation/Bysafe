@@ -194,6 +194,7 @@ public class BleClient {
 
 		Database database = new Database(context);
 		for (Map.Entry<String, List<Handshake>> entry : scanResultMap.entrySet()) {
+			Logger.d("DB", "Si je passe dans cette boucle ça marche !");
 			String device = entry.getKey();
 			List<Handshake> handshakes = scanResultMap.get(device);
 			if (connectedEphIdMap.containsKey(device)) {
