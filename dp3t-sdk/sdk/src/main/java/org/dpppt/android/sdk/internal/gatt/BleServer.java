@@ -97,15 +97,15 @@ public class BleServer {
 
 		AdvertiseData.Builder advBuilder = new AdvertiseData.Builder();
 		advBuilder.setIncludeTxPowerLevel(true);
-		advBuilder.setIncludeDeviceName(false);
-		//advBuilder.setIncludeDeviceName(true);
+		//advBuilder.setIncludeDeviceName(false);
+		advBuilder.setIncludeDeviceName(true);
 		advBuilder.addServiceUuid(new ParcelUuid(SERVICE_UUID));
 
 		if (appConfigManager.isScanResponseEnabled()) {
 			AdvertiseData.Builder scanResponse = new AdvertiseData.Builder();
 			scanResponse.setIncludeTxPowerLevel(false);
-			//scanResponse.setIncludeDeviceName(false);
-			scanResponse.setIncludeDeviceName(true);
+			scanResponse.setIncludeDeviceName(false);
+			//scanResponse.setIncludeDeviceName(true);
 			scanResponse.addServiceData(new ParcelUuid(SERVICE_UUID), getAdvertiseData());
 			mLeAdvertiser.startAdvertising(settings, advBuilder.build(), scanResponse.build(), advertiseCallback);
 			Logger.d(TAG, "started advertising (with scanResponse), advertiseMode " + settings.getMode() + " powerLevel " +
