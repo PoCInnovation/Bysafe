@@ -67,7 +67,6 @@ public class ParametersFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        updateSdkStatus();
         seekBarScanInterval = view.findViewById(R.id.parameter_seekbar_scan_interval);
         inputScanInterval = view.findViewById(R.id.parameter_input_scan_interval);
         seekBarScanDuration = view.findViewById(R.id.parameter_seekbar_scan_duration);
@@ -230,25 +229,4 @@ public class ParametersFragment extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private void updateSdkStatus() {
-        View view = getView();
-        Context context = getContext();
-        if (context == null || view == null) {
-            return;
-        }
-
-        TracingStatus status = DP3T.getStatus(context);
-        Button buttonStartStopTracking = view.findViewById(R.id.home_button_start_stop_tracking);
-        boolean isRunning = status.isAdvertising() || status.isReceiving();
-        buttonStartStopTracking.setSelected(isRunning);
-        buttonStartStopTracking.setText(getString(isRunning ? R.string.button_tracking_stop : R.string.button_tracking_start));
-        buttonStartStopTracking.setOnClickListener(v -> {
-            if (isRunning) {
-                DP3T.stop(v.getContext());
-            } else {
-                DP3T.start(v.getContext());
-            }
-            updateSdkStatus();
-        });
-    }
 }
