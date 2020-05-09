@@ -11,6 +11,7 @@ package org.dpppt.android.calibration.handshakes;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,8 +72,10 @@ public class HandshakesFragment extends Fragment {
 			if (raw) {
 				Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
 				for (Handshake handShake : response) {
-					if (handShake.getRssi() < AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel())
+					Log.d("LoadHandshake", "here it is, there is something in the database");
+					if (handShake.getRssi() < ((int)AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel()))
 						continue;
+					Log.d("LoadHandshake", "And it should print '-'");
 					stringBuilder.append(sdf.format(new Date(handShake.getTimestamp())));
 					stringBuilder.append(" ");
 					stringBuilder
