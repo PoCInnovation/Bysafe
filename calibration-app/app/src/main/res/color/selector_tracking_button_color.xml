@@ -11,5 +11,5 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:state_selected="true" android:color="@color/white"/>
-	<item android:color="#d97d54"/>
+	<item android:color="@color/blueLight"/>
 </selector>
