@@ -4,6 +4,7 @@
   ~ Copyright (c) 2020. All rights reserved.
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -31,7 +32,9 @@
             android:id="@+id/parameter_seekbar_scan_interval"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_small" />
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:progressTint="#d97d54"
+            android:thumbTint="#d97d54" />
 
         <EditText
             android:id="@+id/parameter_input_scan_interval"
@@ -62,7 +65,9 @@
             android:id="@+id/parameter_seekbar_scan_duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_small" />
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:progressTint="#d97d54"
+            android:thumbTint="#d97d54" />
 
         <EditText
             android:id="@+id/parameter_input_scan_duration"
@@ -92,7 +97,9 @@
             android:id="@+id/parameter_seekbar_rssi_detected_level"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_small" />
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:progressTint="#d97d54"
+            android:thumbTint="#d97d54" />
 
         <EditText
             android:id="@+id/parameter_input_rssi_detected_level"
@@ -118,6 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_medium"
+            android:backgroundTint="#d97d54"
             tools:text="@string/req_location_permission_ungranted" />
 
         <Button
@@ -126,6 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_medium"
+            android:backgroundTint="#d97d54"
             tools:text="@string/req_battery_active" />
 
         <Button
@@ -134,6 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_small"
+            android:backgroundTint="#d97d54"
             tools:text="@string/req_bluetooth_inactive" />
 
         <LinearLayout
@@ -147,6 +157,7 @@
                 style="@style/Sample.Button.Tracking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:strokeColor="#C8734D"
                 android:text="@string/button_tracking_start" />
 
             <Button
