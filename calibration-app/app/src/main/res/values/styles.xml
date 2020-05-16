@@ -66,4 +66,9 @@
 		<item name="itemTextColor">@color/selector_bottom_navigation_item_color</item>
 	</style>
 
+	<style name="Sample.NavBarView" parent="Widget.MaterialComponents.BottomNavigationView">
+		<item name="background">@color/blue</item>
+		<item name="itemIconTint">@color/selector_bottom_navigation_item_color</item>
+		<item name="itemTextColor">@color/selector_bottom_navigation_item_color</item>
+	</style>
 </resources>

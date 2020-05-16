@@ -53,8 +53,9 @@
 	<string name="dialog_message_request_success">Requête envoyée avec succès</string>
 	<string name="dialog_button_ok">OK</string>
 	<string name="tab_controls">Contrôles</string>
-	<string name="tab_parameters">Paramètres</string>
-	<string name="tab_handshakes">handshakes</string>
+	<string name="tab_protection">Protection</string>
+	<string name="tab_barrier_gesture">Gestes barrière</string>
+	<string name="tab_activities">Activités</string>
 	<string name="tab_logs">Registres</string>
 	<string name="raw_handshakes">raw handshakes</string>
 	<string name="merged_handshakes">merged handshakes</string>
