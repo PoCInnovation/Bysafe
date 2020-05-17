@@ -21,10 +21,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.dpppt.android.calibration.R;
+import org.dpppt.android.sdk.backend.models.ApplicationInfo;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
@@ -70,24 +73,41 @@ public class HandshakesFragment extends Fragment {
 		new Database(getContext()).getHandshakes(response -> {
 			StringBuilder stringBuilder = new StringBuilder();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM HH:mm:ss");
+			HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
 			if (raw) {
 				Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
+				long scanInterval = AppConfigManager.getInstance(getContext()).getScanInterval();
+				long scanDuration = AppConfigManager.getInstance(getContext()).getScanDuration();
 				for (Handshake handShake : response) {
-					if (handShake.getRssi() < ((int)AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel()))
-						continue;
-					stringBuilder.append(sdf.format(new Date(handShake.getTimestamp())));
+					if (handShake.getTimestamp() < System.currentTimeMillis() - scanInterval - scanDuration) {
+						byte[] head = new byte[4];
+						for (int i = 0; i < 4; i++) {
+							head[i] = handShake.getEphId().getData()[i];
+						}
+						String identifier = new String(head);
+						if (!groupedHandshakes.containsKey(identifier)) {
+							groupedHandshakes.put(identifier, new ArrayList<>());
+						}
+						groupedHandshakes.get(identifier).add(handShake);
+					}
+				}
+				stringBuilder.append(groupedHandshakes.entrySet().size());
+//				for (Handshake handShake : response) {
+//					if (handShake.getRssi() < ((int)AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel()))
+//						continue;
+//					stringBuilder.append(sdf.format(new Date(handShake.getTimestamp())));
 //					stringBuilder.append(" ");
 //					stringBuilder
 //							.append(new String(handShake.getEphId().getData()).substring(0, 10));
 //					stringBuilder.append("...");
-					stringBuilder.append(" TxPowerLevel: ");
-					stringBuilder.append(handShake.getTxPowerLevel());
-					stringBuilder.append(" RSSI:");
-					stringBuilder.append(handShake.getRssi());
-					stringBuilder.append(" Model:");
-					stringBuilder.append(handShake.getModel());
-					stringBuilder.append("\n");
-				}
+//					stringBuilder.append(" TxPowerLevel: ");
+//					stringBuilder.append(handShake.getTxPowerLevel());
+//					stringBuilder.append(" RSSI:");
+//					stringBuilder.append(handShake.getRssi());
+//					stringBuilder.append(" Model:");
+//					stringBuilder.append(handShake.getModel());
+//					stringBuilder.append("\n");
+//				}
 			} else {
 				for (HandshakeInterval interval : mergeHandshakes(response)) {
 					stringBuilder.append(sdf.format(new Date(interval.starttime)));

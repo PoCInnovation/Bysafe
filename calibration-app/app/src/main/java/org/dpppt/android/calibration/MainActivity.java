@@ -16,7 +16,9 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.dpppt.android.calibration.handshakes.HandshakesFragment;
 import org.dpppt.android.calibration.parameters.ParametersFragment;
+import org.dpppt.android.sdk.internal.database.models.Handshake;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.action_handshakes:
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment_container, ParametersFragment.newInstance())
+                            .replace(R.id.main_fragment_container, HandshakesFragment.newInstance())
                             .commit();
                     break;
                 case R.id.action_activities:
