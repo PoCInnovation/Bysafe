@@ -12,17 +12,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,36 +25,18 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.TimeZone;
 
 import org.dpppt.android.calibration.MainApplication;
 import org.dpppt.android.calibration.R;
-import org.dpppt.android.calibration.controls.ControlsFragment;
-import org.dpppt.android.calibration.controls.ExposedDialogFragment;
 import org.dpppt.android.calibration.util.DialogUtil;
 import org.dpppt.android.calibration.util.RequirementsUtil;
-import org.dpppt.android.sdk.BuildConfig;
 import org.dpppt.android.sdk.DP3T;
-import org.dpppt.android.sdk.DP3TCalibrationHelper;
-import org.dpppt.android.sdk.InfectionStatus;
 import org.dpppt.android.sdk.TracingStatus;
-import org.dpppt.android.sdk.backend.ResponseCallback;
-import org.dpppt.android.sdk.backend.models.ExposeeAuthMethodJson;
 import org.dpppt.android.sdk.internal.AppConfigManager;
-import org.dpppt.android.sdk.internal.BluetoothAdvertiseMode;
-import org.dpppt.android.sdk.internal.BluetoothScanMode;
-import org.dpppt.android.sdk.internal.BluetoothTxPowerLevel;
-import org.dpppt.android.sdk.internal.database.Database;
 
 public class ParametersFragment extends Fragment {
 
