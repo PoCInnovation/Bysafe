@@ -11,12 +11,16 @@ package org.dpppt.android.calibration.handshakes;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,6 +30,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.dpppt.android.calibration.MainActivity;
+import org.dpppt.android.calibration.MainApplication;
 import org.dpppt.android.calibration.R;
 import org.dpppt.android.sdk.backend.models.ApplicationInfo;
 import org.dpppt.android.sdk.internal.AppConfigManager;
@@ -35,160 +41,69 @@ import org.dpppt.android.sdk.internal.logger.Logger;
 
 public class HandshakesFragment extends Fragment {
 
-	private static final int MAX_NUMBER_OF_MISSING_HANDSHAKES = 3;
+    private static final int MAX_NUMBER_OF_MISSING_HANDSHAKES = 3;
 
-	Switch rawHandshakeSwitch;
-	TextView handshakeList;
+    private TextView handshakeList;
+    private Thread thread;
+    private boolean continueWork = true;
 
-	public static HandshakesFragment newInstance() {
-		return new HandshakesFragment();
-	}
+    public static HandshakesFragment newInstance() {
+        return new HandshakesFragment();
+    }
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-			@Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_handshakes, container, false);
-	}
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_handshakes, container, false);
+    }
 
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-//		rawHandshakeSwitch = view.findViewById(R.id.raw_handshake_switch);
-		handshakeList = view.findViewById(R.id.handshake_list);
+        handshakeList = view.findViewById(R.id.handshake_list);
 
-		loadHandshakes(true);
-//		loadHandshakes(rawHandshakeSwitch.isChecked());
-//
-//		rawHandshakeSwitch.setOnCheckedChangeListener((compoundButton, raw) -> loadHandshakes(raw));
-//
-//		view.findViewById(R.id.refresh).setOnClickListener((v) -> {
-//			loadHandshakes(rawHandshakeSwitch.isChecked());
-//		});
-	}
+        handshakeList = view.findViewById(R.id.handshake_list);
+        loadHandshakes();
+    }
 
-	private void loadHandshakes(boolean raw) {
-		handshakeList.setText("Loading...");
-		new Database(getContext()).getHandshakes(response -> {
-			StringBuilder stringBuilder = new StringBuilder();
-			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM HH:mm:ss");
-			HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
-			if (raw) {
-				Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
-				long scanInterval = AppConfigManager.getInstance(getContext()).getScanInterval();
-				long scanDuration = AppConfigManager.getInstance(getContext()).getScanDuration();
-				for (Handshake handShake : response) {
-					if (handShake.getTimestamp() < System.currentTimeMillis() - scanInterval - scanDuration) {
-						byte[] head = new byte[4];
-						for (int i = 0; i < 4; i++) {
-							head[i] = handShake.getEphId().getData()[i];
-						}
-						String identifier = new String(head);
-						if (!groupedHandshakes.containsKey(identifier)) {
-							groupedHandshakes.put(identifier, new ArrayList<>());
-						}
-						groupedHandshakes.get(identifier).add(handShake);
-					}
-				}
-				stringBuilder.append(groupedHandshakes.entrySet().size());
-//				for (Handshake handShake : response) {
-//					if (handShake.getRssi() < ((int)AppConfigManager.getInstance(getContext()).getRSSIDetectedLevel()))
-//						continue;
-//					stringBuilder.append(sdf.format(new Date(handShake.getTimestamp())));
-//					stringBuilder.append(" ");
-//					stringBuilder
-//							.append(new String(handShake.getEphId().getData()).substring(0, 10));
-//					stringBuilder.append("...");
-//					stringBuilder.append(" TxPowerLevel: ");
-//					stringBuilder.append(handShake.getTxPowerLevel());
-//					stringBuilder.append(" RSSI:");
-//					stringBuilder.append(handShake.getRssi());
-//					stringBuilder.append(" Model:");
-//					stringBuilder.append(handShake.getModel());
-//					stringBuilder.append("\n");
-//				}
-			} else {
-				for (HandshakeInterval interval : mergeHandshakes(response)) {
-					stringBuilder.append(sdf.format(new Date(interval.starttime)));
-					stringBuilder.append(" - ");
-					stringBuilder.append(sdf.format(new Date(interval.endtime)));
-					stringBuilder.append("\n");
-					stringBuilder.append(interval.identifier);
-					stringBuilder.append(" Handshakes: ");
-					stringBuilder.append(interval.count);
-					stringBuilder.append(" / ");
-					stringBuilder.append(interval.expectedCount);
-					stringBuilder.append("\n\n");
-				}
-			}
-			handshakeList.setText(stringBuilder.toString());
-		});
-	}
+    private void loadHandshakes() {
+        handshakeList.setText("Loading...");
 
-	private List<HandshakeInterval> mergeHandshakes(List<Handshake> handshakes) {
+        thread = new Thread() {
 
-		HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
-		for (Handshake handshake : handshakes) {
-			byte[] head = new byte[4];
-			for (int i = 0; i < 4; i++) {
-				head[i] = handshake.getEphId().getData()[i];
-			}
-			String identifier = new String(head);
-			if (!groupedHandshakes.containsKey(identifier)) {
-				groupedHandshakes.put(identifier, new ArrayList<>());
-			}
-			groupedHandshakes.get(identifier).add(handshake);
-		}
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted() && getActivity() != null && continueWork) {
 
-		long scanInterval = AppConfigManager.getInstance(getContext()).getScanInterval();
-		long scanDuration = AppConfigManager.getInstance(getContext()).getScanDuration();
-		List<HandshakeInterval> result = new ArrayList<>();
-		for (Map.Entry<String, List<Handshake>> entry : groupedHandshakes.entrySet()) {
-			Collections.sort(entry.getValue(), (h1, h2) -> Long.compare(h1.getTimestamp(), h2.getTimestamp()));
-			int start = 0;
-			int end = 1;
-			while (end < entry.getValue().size()) {
-				if (entry.getValue().get(end).getTimestamp() - entry.getValue().get(end - 1).getTimestamp() >
-						MAX_NUMBER_OF_MISSING_HANDSHAKES * scanInterval) {
-					HandshakeInterval interval = new HandshakeInterval();
-					interval.identifier = entry.getKey();
-					interval.starttime = entry.getValue().get(start).getTimestamp();
-					interval.endtime = entry.getValue().get(end - 1).getTimestamp();
-					interval.count = end - start;
-					interval.expectedCount =
-							1 + (int) Math
-									.ceil((interval.endtime - interval.starttime) * 1.0 / scanInterval) *
-									((int) scanDuration / 5120);
-					result.add(interval);
-					start = end;
-				}
-				end++;
-			}
+                        getActivity().runOnUiThread(() -> {
+                            StringBuilder stringBuilder = new StringBuilder();
+                            int counter = AppConfigManager.getInstance(getContext()).getContactNumber();
+                            stringBuilder.append(counter);
+                            Logger.d("HandShake", Integer.toString(counter));
+                            handshakeList.setText(stringBuilder.toString());
+                        });
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        thread.start();
+    }
 
-			HandshakeInterval interval = new HandshakeInterval();
-			interval.identifier = entry.getKey();
-			interval.starttime = entry.getValue().get(start).getTimestamp();
-			interval.endtime = entry.getValue().get(end - 1).getTimestamp();
-			interval.count = end - start;
-			interval.expectedCount =
-					1 + (int) Math.ceil((interval.endtime - interval.starttime) * 1.0 / scanInterval) *
-							((int) scanDuration / 5120);
-			result.add(interval);
-		}
+    @Override
+    public void onDestroyView () {
+        super.onDestroyView();
+        continueWork = true;
 
-		Collections.sort(result, (i1, i2) -> Long.compare(i2.endtime, i1.endtime));
-
-		return result;
-	}
-
-	private class HandshakeInterval {
-		String identifier;
-		long starttime;
-		long endtime;
-		int count;
-		int expectedCount;
-
-	}
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
