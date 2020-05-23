@@ -12,6 +12,7 @@ package org.dpppt.android.calibration.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -22,7 +23,7 @@ public class DialogUtil {
 
 	public static void showConfirmDialog(Context context, @StringRes int title,
 			DialogInterface.OnClickListener positiveClickListener) {
-		new AlertDialog.Builder(context)
+        AlertDialog d = new AlertDialog.Builder(context)
 				.setTitle(title)
 				.setMessage(R.string.dialog_confirm_message)
 				.setPositiveButton(R.string.dialog_confirm_positive_button, (dialog, which) -> {
@@ -31,6 +32,8 @@ public class DialogUtil {
 				})
 				.setNegativeButton(R.string.dialog_confirm_negative_button, (dialog, which) -> dialog.dismiss())
 				.show();
+        d.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+        d.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GRAY);
 	}
 
 	public static void showMessageDialog(Context context, String title, String msg) {
