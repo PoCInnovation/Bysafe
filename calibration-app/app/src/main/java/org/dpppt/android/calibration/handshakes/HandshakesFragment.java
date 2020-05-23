@@ -62,7 +62,6 @@ public class HandshakesFragment extends Fragment {
 
         handshakeList = view.findViewById(R.id.handshake_list);
 
-        handshakeList = view.findViewById(R.id.handshake_list);
         loadHandshakes();
     }
 
@@ -103,5 +102,4 @@ public class HandshakesFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 }

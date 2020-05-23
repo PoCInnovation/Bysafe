@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        Logger.d("MDR", "TEST12121221221212");
                         Thread.sleep(1000);
                         runOnUiThread(() -> {
                             new Database(MainApplication.getContext()).getHandshakes(response -> {
@@ -106,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
                                     AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() - 1
                             );
                         }
+                        Logger.d("Vibrations", Long.toString(AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer()));
                     }
-                    Logger.d("Vibrations", Long.toString(AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer()));
-                } catch( InterruptedException e) {}
+                } catch(InterruptedException e) {}
         }};
         thread.start();
 }
