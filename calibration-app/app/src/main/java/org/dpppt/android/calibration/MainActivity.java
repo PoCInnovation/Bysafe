@@ -17,8 +17,9 @@ import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.dpppt.android.calibration.handshakes.HandshakesFragment;
+import org.dpppt.android.calibration.handwash.ActivitiesFragment;
+import org.dpppt.android.calibration.handwash.HandwashFragment;
 import org.dpppt.android.calibration.parameters.ParametersFragment;
-import org.dpppt.android.sdk.internal.database.models.Handshake;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_fragment_container, ParametersFragment.newInstance())
+                    .add(R.id.main_fragment_container, HandwashFragment.newInstance())
                     .commit();
         }
     }
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.action_parameters:
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment_container, ParametersFragment.newInstance())
+                            .replace(R.id.main_fragment_container, HandwashFragment.newInstance())
                             .commit();
                     break;
                 case R.id.action_handshakes:
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.action_activities:
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment_container, ParametersFragment.newInstance())
+                            .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
                             .commit();
                     break;
             }
