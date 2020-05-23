@@ -1,8 +1,3 @@
-/*
- * Created by Ubique Innovation AG
- * https://www.ubique.ch
- * Copyright (c) 2020. All rights reserved.
- */
 package org.dpppt.android.calibration.parameters;
 
 import android.Manifest;
@@ -21,14 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.dpppt.android.calibration.MainApplication;
 import org.dpppt.android.calibration.R;
@@ -38,7 +34,7 @@ import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.TracingStatus;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 
-public class ParametersFragment extends Fragment {
+public class ParameterActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_PERMISSION_LOCATION = 1;
     private BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
@@ -72,27 +68,36 @@ public class ParametersFragment extends Fragment {
     private EditText inputScanDuration;
     private EditText inputRSSIDetectedLevel;
 
-    public static ParametersFragment newInstance() {
-        return new ParametersFragment();
+    private static Context mContext;
+
+    public static Context getContext() {
+        return mContext;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_parameters, container, false);
+    public void setContext(Context mContext) {
+        this.mContext = mContext;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        seekBarScanInterval = view.findViewById(R.id.parameter_seekbar_scan_interval);
-        inputScanInterval = view.findViewById(R.id.parameter_input_scan_interval);
-        seekBarScanDuration = view.findViewById(R.id.parameter_seekbar_scan_duration);
-        inputScanDuration = view.findViewById(R.id.parameter_input_scan_duration);
-        seekBarRSSIDetectedLevel = view.findViewById(R.id.parameter_seekbar_rssi_detected_level);
-        inputRSSIDetectedLevel = view.findViewById(R.id.parameter_input_rssi_detected_level);
+        setContentView(R.layout.fragment_parameters);
+        this.setContext(this);
+
+        final Button button = findViewById(R.id.settings_go_back);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        seekBarScanInterval = findViewById(R.id.parameter_seekbar_scan_interval);
+        inputScanInterval = findViewById(R.id.parameter_input_scan_interval);
+        seekBarScanDuration = findViewById(R.id.parameter_seekbar_scan_duration);
+        inputScanDuration = findViewById(R.id.parameter_input_scan_duration);
+        seekBarRSSIDetectedLevel = findViewById(R.id.parameter_seekbar_rssi_detected_level);
+        inputRSSIDetectedLevel = findViewById(R.id.parameter_input_rssi_detected_level);
 
         seekBarRSSIDetectedLevel.setMax(-MIN_RSSI_DETECTED_LEVEL + MAX_RSSI_DETECTED_LEVEL);
         seekBarRSSIDetectedLevel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -207,10 +212,7 @@ public class ParametersFragment extends Fragment {
             return false;
         });
 
-        //control
-        setupUi(view);
-
-        //end_control
+        setupUi();
     }
 
     private void adjustNewDurationMaximum(int durationProgressMaximum) {
@@ -269,23 +271,18 @@ public class ParametersFragment extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    // Control
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-    }
-
-    private void setupUi(View view) {
-        Button locationButton = view.findViewById(R.id.home_button_location);
+    private void setupUi() {
+        Button locationButton = findViewById(R.id.home_button_location);
         locationButton.setOnClickListener(
                 v -> requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_CODE_PERMISSION_LOCATION));
 
-        Button batteryButton = view.findViewById(R.id.home_button_battery_optimization);
+        Button batteryButton = findViewById(R.id.home_button_battery_optimization);
         batteryButton.setOnClickListener(
                 v -> startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                         Uri.parse("package:" + getContext().getPackageName()))));
 
-        Button bluetoothButton = view.findViewById(R.id.home_button_bluetooth);
+        Button bluetoothButton = findViewById(R.id.home_button_bluetooth);
         bluetoothButton.setOnClickListener(v -> {
             if (BluetoothAdapter.getDefaultAdapter() != null) {
                 BluetoothAdapter.getDefaultAdapter().enable();
@@ -294,7 +291,7 @@ public class ParametersFragment extends Fragment {
             }
         });
 
-        Button buttonClearData = view.findViewById(R.id.home_button_clear_data);
+        Button buttonClearData = findViewById(R.id.home_button_clear_data);
         buttonClearData.setOnClickListener(v -> {
             DialogUtil.showConfirmDialog(v.getContext(), R.string.dialog_clear_data_title,
                     (dialog, which) -> {
@@ -315,37 +312,33 @@ public class ParametersFragment extends Fragment {
     }
 
     private void checkPermissionRequirements() {
-        View view = getView();
         Context context = getContext();
-        if (view == null || context == null) return;
 
         boolean locationGranted = RequirementsUtil.isLocationPermissionGranted(context);
-        Button locationButton = view.findViewById(R.id.home_button_location);
+        Button locationButton = findViewById(R.id.home_button_location);
         locationButton.setEnabled(!locationGranted);
         locationButton.setText(locationGranted ? R.string.req_location_permission_granted
                 : R.string.req_location_permission_ungranted);
 
         boolean batteryOptDeactivated = RequirementsUtil.isBatteryOptimizationDeactivated(context);
-        Button batteryButton = view.findViewById(R.id.home_button_battery_optimization);
+        Button batteryButton = findViewById(R.id.home_button_battery_optimization);
         batteryButton.setEnabled(!batteryOptDeactivated);
         batteryButton.setText(batteryOptDeactivated ? R.string.req_battery_deactivated
                 : R.string.req_battery_deactivated);
 
         boolean bluetoothActivated = RequirementsUtil.isBluetoothEnabled();
-        Button bluetoothButton = view.findViewById(R.id.home_button_bluetooth);
+        Button bluetoothButton = findViewById(R.id.home_button_bluetooth);
         bluetoothButton.setEnabled(!bluetoothActivated);
         bluetoothButton.setText(bluetoothActivated ? R.string.req_bluetooth_active
                 : R.string.req_bluetooth_inactive);
     }
 
     private void updateSdkStatus() {
-        View view = getView();
         Context context = getContext();
-        if (context == null || view == null) return;
 
         TracingStatus status = DP3T.getStatus(context);
 
-        Button buttonStartStopTracking = view.findViewById(R.id.home_button_start_stop_tracking);
+        Button buttonStartStopTracking = findViewById(R.id.home_button_start_stop_tracking);
         boolean isRunning = status.isAdvertising() || status.isReceiving();
         buttonStartStopTracking.setSelected(isRunning);
         buttonStartStopTracking.setText(getString(isRunning ? R.string.button_tracking_stop
@@ -359,10 +352,9 @@ public class ParametersFragment extends Fragment {
             updateSdkStatus();
         });
 
-        Button buttonClearData = view.findViewById(R.id.home_button_clear_data);
+        Button buttonClearData = findViewById(R.id.home_button_clear_data);
         buttonClearData.setEnabled(!isRunning);
     }
-
-    // end control
-
 }
+
+

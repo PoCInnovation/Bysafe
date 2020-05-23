@@ -9,34 +9,22 @@
  */
 package org.dpppt.android.calibration.handshakes;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
+
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.Date;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import org.dpppt.android.calibration.MainActivity;
-import org.dpppt.android.calibration.MainApplication;
 import org.dpppt.android.calibration.R;
-import org.dpppt.android.sdk.backend.models.ApplicationInfo;
+import org.dpppt.android.calibration.parameters.ParameterActivity;
 import org.dpppt.android.sdk.internal.AppConfigManager;
-import org.dpppt.android.sdk.internal.database.Database;
-import org.dpppt.android.sdk.internal.database.models.Handshake;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
 public class HandshakesFragment extends Fragment {
@@ -44,6 +32,7 @@ public class HandshakesFragment extends Fragment {
     private TextView handshakeList;
     private Thread thread;
     private boolean continueWork = true;
+
 
     public static HandshakesFragment newInstance() {
         return new HandshakesFragment();
@@ -60,7 +49,13 @@ public class HandshakesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        handshakeList = view.findViewById(R.id.handshake_list);
+        final ImageButton button = getView().findViewById(R.id.button_settings);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ParameterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         loadHandshakes();
     }
@@ -82,7 +77,13 @@ public class HandshakesFragment extends Fragment {
                             Logger.d("Contacts", Integer.toString(counter));
                             handshakeList.setText(stringBuilder.toString());
                         });
-                        Thread.sleep(1000);
+                        for (int i = 0; i < 10; i++) {
+                            if (continueWork) {
+                                Thread.sleep(100);
+                            } else {
+                                return;
+                            }
+                        }
                     }
                 } catch (InterruptedException e) {
                 }
@@ -92,7 +93,7 @@ public class HandshakesFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView () {
+    public void onDestroyView() {
         super.onDestroyView();
         continueWork = false;
 
