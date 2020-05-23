@@ -9,8 +9,11 @@
  */
 package org.dpppt.android.calibration.handshakes;
 
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +30,14 @@ import org.dpppt.android.calibration.parameters.ParameterActivity;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
+import java.util.Objects;
+
 public class HandshakesFragment extends Fragment {
 
     private TextView handshakeList;
     private Thread thread;
     private boolean continueWork = true;
-
+    private static final int REQUEST_CODE_PERMISSION_LOCATION = 1;
 
     public static HandshakesFragment newInstance() {
         return new HandshakesFragment();
@@ -55,11 +60,20 @@ public class HandshakesFragment extends Fragment {
             startActivity(intent);
         });
 
-        handshakeList = view.findViewById(R.id.handshake_list);
-        loadHandshakes();
+        handshakeList = getView().findViewById(R.id.handshake_list);
+
+        loadContacts();
+
+        // PERMISSIONS
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_CODE_PERMISSION_LOCATION);
+
+        startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                Uri.parse("package:" + requireContext().getPackageName())));
+        // PERMISSIONS
     }
 
-    private void loadHandshakes() {
+    private void loadContacts() {
         handshakeList.setText("Loading...");
 
         thread = new Thread() {
@@ -102,5 +116,4 @@ public class HandshakesFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 }

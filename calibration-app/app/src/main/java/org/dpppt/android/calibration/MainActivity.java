@@ -21,9 +21,8 @@ import android.os.Vibrator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.dpppt.android.calibration.handshakes.HandshakesFragment;
-import org.dpppt.android.calibration.handwash.ActivitiesFragment;
+import org.dpppt.android.calibration.report.ActivitiesFragment;
 import org.dpppt.android.calibration.handwash.HandwashFragment;
-import org.dpppt.android.calibration.parameters.ParametersFragment;
 
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
@@ -31,6 +30,7 @@ import org.dpppt.android.sdk.internal.database.models.Handshake;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,18 +51,22 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.main_fragment_container, HandwashFragment.newInstance())
                     .commit();
         }
-
-        loadHandshakes();
+        Calendar calendarThen = Calendar.getInstance();
+        Calendar calendarNow = Calendar.getInstance();
+        calendarThen.setTimeInMillis(AppConfigManager.getInstance(MainApplication.getContext()).getJourneyStart());
+        if (calendarThen.get(Calendar.DAY_OF_MONTH) != calendarNow.get(Calendar.DAY_OF_MONTH)) {
+            AppConfigManager.getInstance(MainApplication.getContext()).setJourneyStart(System.currentTimeMillis());
+        }
+        uploadContact();
     }
 
-    private void loadHandshakes() {
+    private void uploadContact() {
         Thread thread = new Thread() {
 
             @Override
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        Logger.d("MDR", "TEST12121221221212");
                         Thread.sleep(1000);
                         runOnUiThread(() -> {
                             new Database(MainApplication.getContext()).getHandshakes(response -> {
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                 long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
                                 long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
                                 for (Handshake handShake : response) {
-                                    if (handShake.getTimestamp() < System.currentTimeMillis() - (scanInterval - scanDuration) * 2) {
+                                    if (handShake.getTimestamp() > System.currentTimeMillis() - (scanInterval - scanDuration) * 2) {
                                         byte[] head = new byte[4];
                                         for (int i = 0; i < 4; i++) {
                                             head[i] = handShake.getEphId().getData()[i];
@@ -109,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
                                     AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() - 1
                             );
                         }
+                        Logger.d("Vibrations", Long.toString(AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer()));
                     }
-                    Logger.d("Vibrations", Long.toString(AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer()));
-                } catch( InterruptedException e) {}
+                } catch(InterruptedException e) {}
         }};
         thread.start();
 }
