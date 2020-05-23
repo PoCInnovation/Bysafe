@@ -9,11 +9,16 @@
  */
 package org.dpppt.android.calibration;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
+
+import androidx.core.app.ActivityCompat;
 
 import java.security.PublicKey;
 
@@ -26,6 +31,8 @@ import org.dpppt.android.sdk.internal.util.ProcessUtil;
 import org.dpppt.android.sdk.util.SignatureUtil;
 
 import okhttp3.CertificatePinner;
+
+import static androidx.core.app.ActivityCompat.requestPermissions;
 
 public class MainApplication extends Application {
 

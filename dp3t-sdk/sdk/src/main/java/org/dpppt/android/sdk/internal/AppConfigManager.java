@@ -34,9 +34,9 @@ public class AppConfigManager {
 
 	public static final int CALIBRATION_TEST_DEVICE_NAME_LENGTH = 4;
 
-	public static final long DEFAULT_SCAN_INTERVAL = 1 * 60 * 1000L;
-	public static final long DEFAULT_SCAN_DURATION = 20 * 1000L;
-	public static final long DEFAULT_RSSI_DETECTED_LEVEL = -85;
+	static final long DEFAULT_SCAN_INTERVAL = 60 * 1000L;
+	static final long DEFAULT_SCAN_DURATION = 20 * 1000L;
+	private static final long DEFAULT_RSSI_DETECTED_LEVEL = -85;
 	private static final BluetoothScanMode DEFAULT_BLUETOOTH_SCAN_MODE = BluetoothScanMode.SCAN_MODE_LOW_POWER;
 	private static final BluetoothTxPowerLevel DEFAULT_BLUETOOTH_POWER_LEVEL = BluetoothTxPowerLevel.ADVERTISE_TX_POWER_ULTRA_LOW;
 	private static final BluetoothAdvertiseMode DEFAULT_BLUETOOTH_ADVERTISE_MODE = BluetoothAdvertiseMode.ADVERTISE_MODE_BALANCED;
@@ -45,6 +45,7 @@ public class AppConfigManager {
 	private static final int DEFAULT_NUMBER_OF_WINDOWS_FOR_EXPOSURE = 3;
 	private static final int DEFAULT_CONTACT_NUMBER = 0;
 	private static final long DEFAULT_VIBRATION_TIMER = 0;
+	private static final long DEFAULT_JOURNEY_START = 0;
 	private static final float DEFAULT_CONTACT_ATTENUATION_THRESHOLD = 73.0f;
 
 	private static final String PREFS_NAME = "dp3t_sdk_preferences";
@@ -67,6 +68,7 @@ public class AppConfigManager {
 	private static final String PREF_NUMBER_OF_WINDOWS_FOR_EXPOSURE = "number_of_windows_for_exposure";
 	private static final String PREF_CONTACT_NUMBER = "number_of_contact";
 	private static final String PREF_VIBRATION_TIMER = "timer_for_vibration";
+	private static final String PREF_JOURNEY_START = "journey_start";
 
 	private String appId;
 	private boolean useDiscovery = false;
@@ -285,6 +287,14 @@ public class AppConfigManager {
 
 	public long getVibrationTimer() {
 		return sharedPrefs.getLong(PREF_VIBRATION_TIMER, DEFAULT_VIBRATION_TIMER);
+	}
+
+	public void setJourneyStart(long journeyStart) {
+		sharedPrefs.edit().putLong(PREF_JOURNEY_START, journeyStart).apply();
+	}
+
+	public long getJourneyStart() {
+		return sharedPrefs.getLong(PREF_JOURNEY_START, DEFAULT_JOURNEY_START);
 	}
 
 	public void clearPreferences() {

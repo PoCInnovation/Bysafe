@@ -75,7 +75,7 @@ public class ParameterActivity extends AppCompatActivity {
     }
 
     public void setContext(Context mContext) {
-        this.mContext = mContext;
+        ParameterActivity.mContext = mContext;
     }
 
     @Override
