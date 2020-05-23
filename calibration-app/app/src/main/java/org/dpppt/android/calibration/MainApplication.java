@@ -29,6 +29,8 @@ import okhttp3.CertificatePinner;
 
 public class MainApplication extends Application {
 
+	private static Context mContext;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -41,6 +43,15 @@ public class MainApplication extends Application {
 		}
 		Logger.init(getApplicationContext(), LogLevel.DEBUG);
 	}
+
+	public static Context getContext() {
+		return mContext;
+	}
+
+	public void setContext(Context mContext) {
+		MainApplication.mContext = mContext;
+	}
+
 
 	public static void initDP3T(Context context) {
 		PublicKey publicKey = SignatureUtil.getPublicKeyFromBase64OrThrow(

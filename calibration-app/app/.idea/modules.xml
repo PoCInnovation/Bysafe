@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../DP3T Calibration App.iml" filepath="$PROJECT_DIR$/../DP3T Calibration App.iml" group="DP3T Calibration App" />
+      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" group="DP3T Calibration App/app" />
+      <module fileurl="file://$PROJECT_DIR$/../../dp3t-sdk/sdk/dp3t-sdk.iml" filepath="$PROJECT_DIR$/../../dp3t-sdk/sdk/dp3t-sdk.iml" group="DP3T Calibration App/dp3t-sdk" />
+    </modules>
+  </component>
+</project>

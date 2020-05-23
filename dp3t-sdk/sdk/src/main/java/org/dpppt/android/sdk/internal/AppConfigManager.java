@@ -43,6 +43,8 @@ public class AppConfigManager {
 	private static final boolean DEFAULT_BLUETOOTH_USE_SCAN_RESPONSE_ENABLED = true;
 
 	private static final int DEFAULT_NUMBER_OF_WINDOWS_FOR_EXPOSURE = 3;
+	private static final int DEFAULT_CONTACT_NUMBER = 0;
+	private static final long DEFAULT_VIBRATION_TIMER = 0;
 	private static final float DEFAULT_CONTACT_ATTENUATION_THRESHOLD = 73.0f;
 
 	private static final String PREFS_NAME = "dp3t_sdk_preferences";
@@ -63,6 +65,8 @@ public class AppConfigManager {
 	private static final String PREF_BLUETOOTH_USE_SCAN_RESPONSE = "scanResponseEnabled";
 	private static final String PREF_CONTACT_ATTENUATION_THRESHOLD = "contact_attenuation_threshold";
 	private static final String PREF_NUMBER_OF_WINDOWS_FOR_EXPOSURE = "number_of_windows_for_exposure";
+	private static final String PREF_CONTACT_NUMBER = "number_of_contact";
+	private static final String PREF_VIBRATION_TIMER = "timer_for_vibration";
 
 	private String appId;
 	private boolean useDiscovery = false;
@@ -265,6 +269,22 @@ public class AppConfigManager {
 
 	public void setNumberOfWindowsForExposure(int threshold) {
 		sharedPrefs.edit().putInt(PREF_NUMBER_OF_WINDOWS_FOR_EXPOSURE, threshold).apply();
+	}
+
+	public int getContactNumber() {
+		return sharedPrefs.getInt(PREF_CONTACT_NUMBER, DEFAULT_CONTACT_NUMBER);
+	}
+
+	public void setContactNumber(int threshold) {
+		sharedPrefs.edit().putInt(PREF_CONTACT_NUMBER, threshold).apply();
+	}
+
+	public void setVibrationTimer(long vibrationTimer) {
+		sharedPrefs.edit().putLong(PREF_VIBRATION_TIMER, vibrationTimer).apply();
+	}
+
+	public long getVibrationTimer() {
+		return sharedPrefs.getLong(PREF_VIBRATION_TIMER, DEFAULT_VIBRATION_TIMER);
 	}
 
 	public void clearPreferences() {

@@ -154,11 +154,9 @@ public class BleClient {
 					gattConnectionThread.addTask(new GattConnectionTask(context, bluetoothDevice, scanResult,
 							(ephId, device) -> {
 								connectedEphIdMap.put(device.getAddress(), ephId);
-								Logger.i(TAG, "handshake with " + device.getAddress() + " (gatt connection)");
 							}));
 				}
 				handshakesForDevice.add(createHandshake(null, scanResult, power));
-				Logger.i(TAG,  "here it created a handshake in scan result map which is used to complete db");
 			}
 		} catch (Exception e) {
 			Logger.e(TAG, e);
@@ -201,11 +199,13 @@ public class BleClient {
 				for (Handshake handshake : handshakes) {
 					handshake.setEphId(ephId);
 					database.addHandshake(context, handshake);
+					Logger.i(TAG,  "here it created a handshake in scan result map which is used to complete db");
 				}
 			} else {
 				for (Handshake handshake : handshakes) {
 					if (handshake.getEphId() != null) {
 						database.addHandshake(context, handshake);
+						Logger.i(TAG,  "here it created a handshake in scan result map which is used to complete db");
 					}
 				}
 			}
