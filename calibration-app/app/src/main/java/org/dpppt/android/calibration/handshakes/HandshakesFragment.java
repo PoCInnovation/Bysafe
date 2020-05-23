@@ -41,8 +41,6 @@ import org.dpppt.android.sdk.internal.logger.Logger;
 
 public class HandshakesFragment extends Fragment {
 
-    private static final int MAX_NUMBER_OF_MISSING_HANDSHAKES = 3;
-
     private TextView handshakeList;
     private Thread thread;
     private boolean continueWork = true;
@@ -82,7 +80,7 @@ public class HandshakesFragment extends Fragment {
                             StringBuilder stringBuilder = new StringBuilder();
                             int counter = AppConfigManager.getInstance(getContext()).getContactNumber();
                             stringBuilder.append(counter);
-                            Logger.d("HandShake", Integer.toString(counter));
+                            Logger.d("Contacts", Integer.toString(counter));
                             handshakeList.setText(stringBuilder.toString());
                         });
                         Thread.sleep(1000);
@@ -97,7 +95,7 @@ public class HandshakesFragment extends Fragment {
     @Override
     public void onDestroyView () {
         super.onDestroyView();
-        continueWork = true;
+        continueWork = false;
 
         try {
             thread.join();
