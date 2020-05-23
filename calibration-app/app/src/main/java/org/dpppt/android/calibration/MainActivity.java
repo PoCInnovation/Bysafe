@@ -12,11 +12,11 @@ package org.dpppt.android.calibration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.TextView;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.main_fragment_container, HandwashFragment.newInstance())
                     .commit();
         }
+
         loadHandshakes();
     }
 
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     while (!isInterrupted()) {
+                        Logger.d("MDR", "TEST12121221221212");
                         Thread.sleep(1000);
                         runOnUiThread(() -> {
                             new Database(MainApplication.getContext()).getHandshakes(response -> {
@@ -83,21 +85,36 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                                 for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                                    if (stringListEntry.getValue().size() >= 1 && !stringListEntry.getKey().equals("null"))
+                                    if (stringListEntry.getValue().size() >= 3)
                                         AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(
                                                 AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() + 1
                                         );
                                 }
                             });
                         });
+                        if (AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() == 0) {
+                            if (AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() != 0) {
+                                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    assert v != null;
+                                    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                                } else {
+                                    assert v != null;
+                                    v.vibrate(500);
+                                }
+                                AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(20);
+                            }
+                        } else {
+                            AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(
+                                    AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() - 1
+                            );
+                        }
                     }
-                } catch (InterruptedException e) {
-                }
-            }
-        };
-
+                    Logger.d("Vibrations", Long.toString(AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer()));
+                } catch( InterruptedException e) {}
+        }};
         thread.start();
-    }
+}
 
     private void setupNavigationView() {
         BottomNavigationView navigationView = findViewById(R.id.main_navigation_view);
