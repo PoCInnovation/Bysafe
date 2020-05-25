@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                 long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
                                 long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
                                 for (Handshake handShake : response) {
-                                    if (handShake.getTimestamp() > System.currentTimeMillis() - (scanInterval + scanDuration) * 2) { // Durée durant laquelle un handshake est pris en compte
+                                    if (handShake.getTimestamp() > System.currentTimeMillis() - (scanInterval + scanDuration)) { // Durée durant laquelle un handshake est pris en compte
                                         byte[] head = new byte[4];
                                         for (int i = 0; i < 4; i++) {
                                             head[i] = handShake.getEphId().getData()[i];
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                                 for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                                    if (stringListEntry.getValue().size() >= 2) // Nombre de handshake necessaire pour valider un contact
+                                    if (stringListEntry.getValue().size() >= 1) // Nombre de handshake necessaire pour valider un contact
                                         AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(
                                                 AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() + 1
                                         );
