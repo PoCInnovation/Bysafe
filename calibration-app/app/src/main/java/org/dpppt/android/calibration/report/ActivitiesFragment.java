@@ -1,5 +1,6 @@
 package org.dpppt.android.calibration.report;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import java.util.Map;
 public class ActivitiesFragment extends Fragment {
 
     private TextView percentage;
+    private TextView percentage_header;
     private long interval = 300000;
     private ArrayList<String> list = new ArrayList<>();
     @Nullable
@@ -47,6 +49,7 @@ public class ActivitiesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         percentage = view.findViewById(R.id.text_percentage);
+        percentage_header = view.findViewById(R.id.text_percentage_header);
         getJourneyPercentage();
 
 
@@ -100,7 +103,10 @@ public class ActivitiesFragment extends Fragment {
                 temp += interval;
             }
             // (float)(contacts / loop) * 100 = pourcentage de temps passer en contact avec des gens
-            percentage.setText(String.format("Pourcentage d'exposition\n depuis le début de la journée\n%.1f", ((float)(contacts / loop) * 100)));
+            percentage_header.setText("Pourcentage d'exposition de la journée:\n");
+            float percent = ((float)(contacts / loop) * 100);
+            percentage.setText(String.format("%.1f", percent) + "%");
+            percentage.setTextColor(percent >= 20 ? Color.RED : Color.GREEN);
         });
     }
 }

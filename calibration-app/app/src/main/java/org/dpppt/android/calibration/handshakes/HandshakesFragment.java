@@ -11,6 +11,7 @@ package org.dpppt.android.calibration.handshakes;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -95,6 +96,7 @@ public class HandshakesFragment extends Fragment {
                             stringBuilder.append(counter);
                             Logger.d("Contacts", Integer.toString(counter));
                             handshakeList.setText(stringBuilder.toString());
+                            handshakeList.setTextColor(counter != 0 ? Color.RED : Color.GREEN);
                         });
                         for (int i = 0; i < 10; i++) {
                             if (continueWork) {
