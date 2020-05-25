@@ -112,6 +112,14 @@ public class HandwashFragment extends Fragment {
         setArguments(b);
     }
 
+    public static Bundle getBundle() {
+        Bundle b = new Bundle();
+        b.putLong("lastWashedTime", System.currentTimeMillis());
+        b.putLong("pausedTime", 0);
+        b.putBoolean("isRunning", false);
+        return b;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -168,7 +176,7 @@ public class HandwashFragment extends Fragment {
             final TextView text = view != null ? view.findViewById(R.id.washed_hands_timer) : null;
 
             if (text != null) {
-                
+
                 text.setText(getTimerString());
             }
 

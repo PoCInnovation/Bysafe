@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import org.dpppt.android.calibration.MainActivity;
 import org.dpppt.android.calibration.MainApplication;
 import org.dpppt.android.calibration.R;
 import org.dpppt.android.sdk.internal.AppConfigManager;
@@ -52,6 +55,12 @@ public class ActivitiesFragment extends Fragment {
 
         percentage = view.findViewById(R.id.text_percentage);
         getJourneyPercentage();
+
+
+        ListView ll = (ListView) view.findViewById(R.id.log_list);
+        String[] list = new String[] {"A","B","C"};
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.row, R.id.row_text, list);
+        ll.setAdapter(arrayAdapter);
     }
 
     private void getJourneyPercentage() {

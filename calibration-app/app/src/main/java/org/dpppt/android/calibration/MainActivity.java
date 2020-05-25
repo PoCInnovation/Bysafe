@@ -48,11 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
 
-        Bundle b = new Bundle();
-        b.putLong("lastWashedTime", System.currentTimeMillis());
-        b.putLong("pausedTime", 0);
-        b.putBoolean("isRunning", false);
-        handwashFragment.setArguments(b);
+        handwashFragment.setArguments(handwashFragment.getBundle());
 
         setContentView(R.layout.activity_main);
 
