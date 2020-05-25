@@ -77,14 +77,14 @@ public class HandshakesFragment extends Fragment {
     }
 
     private void loadContacts() {
-        handshakeList.setText("Loading...");
+//        handshakeList.setText("Loading...");
 
         thread = new Thread() {
 
             @Override
             public void run() {
                 try {
-                    while (!isInterrupted() && getActivity() != null && continueWork && DP3T.isStarted(MainActivity.getContext())) {
+                    while (!isInterrupted() && getActivity() != null && continueWork) {
 
                         getActivity().runOnUiThread(() -> {
                             StringBuilder stringBuilder = new StringBuilder();
