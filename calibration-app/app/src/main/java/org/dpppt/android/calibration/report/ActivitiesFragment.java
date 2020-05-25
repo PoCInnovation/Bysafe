@@ -12,26 +12,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import org.dpppt.android.calibration.MainActivity;
 import org.dpppt.android.calibration.MainApplication;
 import org.dpppt.android.calibration.R;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class ActivitiesFragment extends Fragment {
@@ -57,8 +49,11 @@ public class ActivitiesFragment extends Fragment {
         getJourneyPercentage();
 
 
-        ListView ll = (ListView) view.findViewById(R.id.log_list);
-        String[] list = new String[] {"A","B","C"};
+        ListView ll = view.findViewById(R.id.log_list);
+        List<String> list = new ArrayList();
+        for (int i = 0; i < 3; i++) {
+            list.add("A");
+        }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.row, R.id.row_text, list);
         ll.setAdapter(arrayAdapter);
     }
