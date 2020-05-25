@@ -39,9 +39,21 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static Context context;
+    private HandwashFragment handwashFragment = HandwashFragment.newInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = this;
+
+        Bundle b = new Bundle();
+        b.putLong("lastWashedTime", System.currentTimeMillis());
+        b.putLong("pausedTime", 0);
+        b.putBoolean("isRunning", false);
+        handwashFragment.setArguments(b);
+
         setContentView(R.layout.activity_main);
 
         setupNavigationView();
@@ -58,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
             AppConfigManager.getInstance(MainApplication.getContext()).setJourneyStart(System.currentTimeMillis());
         }
         uploadContact();
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     private void uploadContact() {
@@ -113,12 +129,13 @@ public class MainActivity extends AppCompatActivity {
                                     AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() - 1
                             );
                         }
-                        Logger.d("Vibrations", Long.toString(AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer()));
                     }
-                } catch(InterruptedException e) {}
-        }};
+                } catch (InterruptedException e) {
+                }
+            }
+        };
         thread.start();
-}
+    }
 
     private void setupNavigationView() {
         BottomNavigationView navigationView = findViewById(R.id.main_navigation_view);
@@ -128,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.action_parameters:
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment_container, HandwashFragment.newInstance())
+                            .replace(R.id.main_fragment_container, handwashFragment)
                             .commit();
                     break;
                 case R.id.action_handshakes:

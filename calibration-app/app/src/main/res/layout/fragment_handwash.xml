@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/washed_hands_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/washed_hands"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:text=""/>
+
     <Button
         android:id="@+id/washed_hands"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/button_wash" />
+        android:layout_centerVertical="true"
+        android:text="@string/button_wash_start" />
+
+    <Button
+        android:id="@+id/pause_resume_hand_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/washed_hands"
+        android:text="@string/button_pause_hand_wash" />
 
 </RelativeLayout>

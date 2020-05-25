@@ -18,6 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.dpppt.android.calibration.MainActivity;
+import org.dpppt.android.sdk.DP3T;
+
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -81,7 +84,7 @@ public class HandshakesFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    while (!isInterrupted() && getActivity() != null && continueWork) {
+                    while (!isInterrupted() && getActivity() != null && continueWork && DP3T.isStarted(MainActivity.getContext())) {
 
                         getActivity().runOnUiThread(() -> {
                             StringBuilder stringBuilder = new StringBuilder();

@@ -11,14 +11,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -60,7 +57,7 @@ public class ParameterActivity extends AppCompatActivity {
     private static final int MIN_DURATION_SCANNING_SECONDS = 10;
     private static final int MIN_RSSI_DETECTED_LEVEL = -127;
     private static final int MAX_RSSI_DETECTED_LEVEL = 126;
-    private static final int DEFAULT_RSSI_DETECTED_LEVEL = -85;
+    private static final int DEFAULT_RSSI_DETECTED_LEVEL = -100;
     private SeekBar seekBarScanInterval;
     private SeekBar seekBarScanDuration;
     private SeekBar seekBarRSSIDetectedLevel;
@@ -86,11 +83,7 @@ public class ParameterActivity extends AppCompatActivity {
         this.setContext(this);
 
         final Button button = findViewById(R.id.settings_go_back);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        button.setOnClickListener(v -> finish());
 
         seekBarScanInterval = findViewById(R.id.parameter_seekbar_scan_interval);
         inputScanInterval = findViewById(R.id.parameter_input_scan_interval);
