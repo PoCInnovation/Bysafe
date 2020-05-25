@@ -31,7 +31,7 @@ public class ActivitiesFragment extends Fragment {
 
     private TextView percentage;
     private TextView percentage_header;
-    private long interval = 300000;
+    private long interval = 60000;
     private ArrayList<String> list = new ArrayList<>();
     @Nullable
     @Override
