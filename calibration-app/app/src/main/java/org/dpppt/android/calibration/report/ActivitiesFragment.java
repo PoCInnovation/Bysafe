@@ -81,14 +81,15 @@ public class ActivitiesFragment extends Fragment {
                     }
                 }
                 for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                    if (stringListEntry.getValue().size() >= 3) {
+                    if (stringListEntry.getValue().size() >= 2) { // Nombre de handshake necessaire pour valider un contact
                         contacts += 1;
                         break;
                     }
                 }
                 temp += interval;
             }
-            percentage.setText(String.format("%.1f", 100 - ((float)(contacts / loop) * 100)));
+            // (float)(contacts / loop) * 100 = pourcentage de temps passer en contact avec des gens
+            percentage.setText(String.format("Pourcentage d'exposition\n depuis le début de la journée\n%.1f", ((float)(contacts / loop) * 100)));
         });
     }
 }

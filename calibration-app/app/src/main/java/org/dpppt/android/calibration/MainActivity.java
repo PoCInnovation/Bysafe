@@ -70,13 +70,13 @@ public class MainActivity extends AppCompatActivity {
                         Thread.sleep(1000);
                         runOnUiThread(() -> {
                             new Database(MainApplication.getContext()).getHandshakes(response -> {
-                                AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(0);
+                                AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(0); // modifier si besoin de debug
                                 HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
                                 Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
                                 long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
                                 long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
                                 for (Handshake handShake : response) {
-                                    if (handShake.getTimestamp() > System.currentTimeMillis() - (scanInterval - scanDuration) * 2) {
+                                    if (handShake.getTimestamp() > System.currentTimeMillis() - (scanInterval + scanDuration) * 2) { // Durée durant laquelle un handshake est pris en compte
                                         byte[] head = new byte[4];
                                         for (int i = 0; i < 4; i++) {
                                             head[i] = handShake.getEphId().getData()[i];
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                                 for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                                    if (stringListEntry.getValue().size() >= 3)
+                                    if (stringListEntry.getValue().size() >= 2) // Nombre de handshake necessaire pour valider un contact
                                         AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(
                                                 AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() + 1
                                         );
@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         if (AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() == 0) {
                             if (AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() != 0) {
                                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                // Durée de vibration = 500
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                     assert v != null;
                                     v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                                     assert v != null;
                                     v.vibrate(500);
                                 }
-                                AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(20);
+                                AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(20); // Modifier le nombre de tour de thread à attendre entre deux vibrations
                             }
                         } else {
                             AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         Logger.d("Vibrations", Long.toString(AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer()));
                     }
-                } catch(InterruptedException e) {}
+                } catch(InterruptedException ignored) {}
         }};
         thread.start();
 }

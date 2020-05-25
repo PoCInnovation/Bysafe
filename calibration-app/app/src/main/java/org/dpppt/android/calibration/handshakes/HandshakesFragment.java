@@ -85,6 +85,7 @@ public class HandshakesFragment extends Fragment {
 
                         getActivity().runOnUiThread(() -> {
                             StringBuilder stringBuilder = new StringBuilder();
+
                             int counter = AppConfigManager.getInstance(getContext()).getContactNumber();
                             stringBuilder.append(counter);
                             Logger.d("Contacts", Integer.toString(counter));
