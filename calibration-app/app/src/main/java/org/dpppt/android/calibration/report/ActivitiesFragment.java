@@ -57,6 +57,10 @@ public class ActivitiesFragment extends Fragment {
     private void getJourneyPercentage() {
         long journeyStart = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyStart();
         long now = System.currentTimeMillis();
+        Date timer = new Date();
+        SimpleDateFormat formater = new SimpleDateFormat("hh:mm");
+
+        StringBuilder stringBuilder = new StringBuilder();
 
         new Database(MainApplication.getContext()).getHandshakes(response -> {
             long temp = journeyStart;
@@ -64,9 +68,12 @@ public class ActivitiesFragment extends Fragment {
             if (loop == 0)
                 loop = 1;
             long contacts = 0;
+            long minContacts = 0;
             HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
             Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
             while (temp <= now) {
+                minContacts = 0;
+                groupedHandshakes.clear();
                 for (Handshake handShake : response) {
                     if (handShake.getTimestamp() > temp && handShake.getTimestamp() < temp + interval) {
                         byte[] head = new byte[4];
@@ -82,14 +89,19 @@ public class ActivitiesFragment extends Fragment {
                 }
                 for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
                     if (stringListEntry.getValue().size() >= 2) { // Nombre de handshake necessaire pour valider un contact
-                        contacts += 1;
-                        break;
+                        minContacts += 1;
                     }
                 }
+                if (minContacts != 0)
+                    contacts += 1;
+                timer.setTime(temp);
+
+                stringBuilder.append(formater.format(timer)).append(String.format(" %d", minContacts));
                 temp += interval;
             }
             // (float)(contacts / loop) * 100 = pourcentage de temps passer en contact avec des gens
-            percentage.setText(String.format("Pourcentage d'exposition\n depuis le début de la journée\n%.1f", ((float)(contacts / loop) * 100)));
+            stringBuilder.insert(0, String.format("Pourcentage d'exposition\n depuis le début de la journée\n%.1f", ((float)(contacts / loop) * 100)));
+            percentage.setText(stringBuilder.toString());
         });
     }
 }
