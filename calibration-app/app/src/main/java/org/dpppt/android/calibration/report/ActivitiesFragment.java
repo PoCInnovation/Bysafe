@@ -1,7 +1,5 @@
 package org.dpppt.android.calibration.report;
 
-import android.icu.util.ULocale;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +18,10 @@ import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,7 @@ public class ActivitiesFragment extends Fragment {
 
     private TextView percentage;
     private long interval = 300000;
+    private ArrayList<String> list = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -50,10 +51,6 @@ public class ActivitiesFragment extends Fragment {
 
 
         ListView ll = view.findViewById(R.id.log_list);
-        List<String> list = new ArrayList();
-        for (int i = 0; i < 3; i++) {
-            list.add("A");
-        }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.row, R.id.row_text, list);
         ll.setAdapter(arrayAdapter);
     }
@@ -99,13 +96,11 @@ public class ActivitiesFragment extends Fragment {
                 if (minContacts != 0)
                     contacts += 1;
                 timer.setTime(temp);
-
-                stringBuilder.append(formater.format(timer)).append(String.format(" %d\n", minContacts));
+                list.add(formater.format(timer) + String.format(" %d", minContacts));
                 temp += interval;
             }
             // (float)(contacts / loop) * 100 = pourcentage de temps passer en contact avec des gens
-            stringBuilder.insert(0, String.format("Pourcentage d'exposition\n depuis le début de la journée\n%.1f\n\n", ((float)(contacts / loop) * 100)));
-            percentage.setText(stringBuilder.toString());
+            percentage.setText(String.format("Pourcentage d'exposition\n depuis le début de la journée\n%.1f", ((float)(contacts / loop) * 100)));
         });
     }
 }
