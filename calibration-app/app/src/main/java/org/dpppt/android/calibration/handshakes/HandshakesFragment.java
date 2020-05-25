@@ -18,6 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.dpppt.android.calibration.MainActivity;
+import org.dpppt.android.calibration.MainApplication;
+import org.dpppt.android.sdk.DP3T;
+
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -70,11 +74,12 @@ public class HandshakesFragment extends Fragment {
 
         startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                 Uri.parse("package:" + requireContext().getPackageName())));
+
         // PERMISSIONS
     }
 
     private void loadContacts() {
-        handshakeList.setText("Loading...");
+//        handshakeList.setText("Loading...");
 
         thread = new Thread() {
 

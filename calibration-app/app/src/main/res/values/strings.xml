@@ -13,6 +13,7 @@
 	<string name="dp3t_sdk_service_notification_channel">@string/app_name</string>
 	<string name="dp3t_sdk_service_notification_title">@string/app_name</string>
 	<string name="dp3t_sdk_service_notification_text">Recherche de personnes à proximité…</string>
+	<string name="wash_alert">C\'est le moment de se laver les mains</string>
 	<string name="push_exposed_title">push_exposed_title</string>
 	<string name="push_exposed_text">push_exposed_text</string>
 	<string name="req_location_permission_ungranted">Autoriser la géolocalisation</string>
@@ -21,6 +22,10 @@
 	<string name="req_bluetooth_active">Bluetooth activé</string>
 	<string name="req_battery_active">Désactiver l\'optimisation de la batterie</string>
 	<string name="req_battery_deactivated">Optimisation de la batterie activée</string>
+	<string name="button_wash">Pensez à vous laver les mains</string>
+	<string name="button_wash_start">Démarrer le décompte</string>
+	<string name="button_pause_hand_wash">Pauser</string>
+	<string name="button_resume_hand_wash">Reprendre</string>
 	<string name="button_sync">force backend sync</string>
 	<string name="button_export_db">export database</string>
 	<string name="button_upload_db">upload database</string>

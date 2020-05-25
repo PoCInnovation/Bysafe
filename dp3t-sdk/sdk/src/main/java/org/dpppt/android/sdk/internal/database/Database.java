@@ -172,10 +172,8 @@ public class Database {
 		List<Handshake> handshakes = new ArrayList<>();
 		while (cursor.moveToNext()) {
 			int id = cursor.getInt(cursor.getColumnIndexOrThrow(Handshakes.ID));
-			Logger.d("DB", "Ya au moins ça ici");
 			long timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(Handshakes.TIMESTAMP));
 			EphId ephId = new EphId(cursor.getBlob(cursor.getColumnIndexOrThrow(Handshakes.EPHID)));
-			Logger.i("EPHID IS", String.valueOf(ephId));
 			int txPowerLevel = cursor.getInt(cursor.getColumnIndexOrThrow(Handshakes.TX_POWER_LEVEL));
 			int rssi = cursor.getInt(cursor.getColumnIndexOrThrow(Handshakes.RSSI));
 			String primaryPhy = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.PHY_PRIMARY));

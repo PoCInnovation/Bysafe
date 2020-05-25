@@ -96,11 +96,11 @@ public class ActivitiesFragment extends Fragment {
                     contacts += 1;
                 timer.setTime(temp);
 
-                stringBuilder.append(formater.format(timer)).append(String.format(" %d", minContacts));
+                stringBuilder.append(formater.format(timer)).append(String.format(" %d\n", minContacts));
                 temp += interval;
             }
             // (float)(contacts / loop) * 100 = pourcentage de temps passer en contact avec des gens
-            stringBuilder.insert(0, String.format("Pourcentage d'exposition\n depuis le début de la journée\n%.1f", ((float)(contacts / loop) * 100)));
+            stringBuilder.insert(0, String.format("Pourcentage d'exposition\n depuis le début de la journée\n%.1f\n\n", ((float)(contacts / loop) * 100)));
             percentage.setText(stringBuilder.toString());
         });
     }
