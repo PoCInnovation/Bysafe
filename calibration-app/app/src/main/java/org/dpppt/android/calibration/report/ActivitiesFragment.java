@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import org.dpppt.android.sdk.internal.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +19,9 @@ import org.dpppt.android.calibration.R;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
+import org.dpppt.android.sdk.internal.logger.Logger;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,55 +62,32 @@ public class ActivitiesFragment extends Fragment {
     }
 
     private void getJourneyPercentage() {
-        long journeyStart = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyStart();
-        long now = System.currentTimeMillis();
-        Date timer = new Date();
-        SimpleDateFormat formater = new SimpleDateFormat("hh:mm");
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        new Database(MainApplication.getContext()).getHandshakes(response -> {
-            long temp = journeyStart;
-            long loop = (now - journeyStart) / interval;
-            if (loop == 0)
-                loop = 1;
+        try {
+            ArrayList<Pair<Long, Integer>> journeyContact = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyContact();
+            SimpleDateFormat formater = new SimpleDateFormat("hh:mm");
+            long total = journeyContact.size();
+            float totalTime = (float)total / (float)12;
+            if (total == 0)
+                total = 1;
             long contacts = 0;
-            long minContacts = 0;
-            HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
-            Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
-            while (temp <= now) {
-                minContacts = 0;
-                groupedHandshakes.clear();
-                for (Handshake handShake : response) {
-                    if (handShake.getTimestamp() > temp && handShake.getTimestamp() < temp + interval) {
-                        byte[] head = new byte[4];
-                        for (int i = 0; i < 4; i++) {
-                            head[i] = handShake.getEphId().getData()[i];
-                        }
-                        String identifier = new String(head);
-                        if (!groupedHandshakes.containsKey(identifier)) {
-                            groupedHandshakes.put(identifier, new ArrayList<>());
-                        }
-                        groupedHandshakes.get(identifier).add(handShake);
-                    }
-                }
-                for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                    if (stringListEntry.getValue().size() >= 1) { // Nombre de handshake necessaire pour valider un contact
-                        minContacts += 1;
-                    }
-                }
-                if (minContacts != 0) {
-                    list.add(formater.format(timer) + String.format(" %d", minContacts));
+
+            StringBuilder stringBuilder = new StringBuilder();
+            Logger.d("TOTAL INTERVAL TODAY", Long.toString(total));
+            for (Pair<Long, Integer> interval: journeyContact) {
+                if (interval.second > 0) {
                     contacts += 1;
                 }
-                timer.setTime(temp);
-                temp += interval;
+                list.add(formater.format(interval.first) + String.format(" %d", interval.second));
             }
-            // (float)(contacts / loop) * 100 = pourcentage de temps passer en contact avec des gens
-            percentage_header.setText("Pourcentage d'exposition de la journée:\n");
-            float percent = ((float)(contacts / loop) * 100);
+            String toDisplay = String.format("Pourcentage d'exposition de la journée (sur %.1f heures): \n", totalTime);
+            percentage_header.setText(toDisplay);
+            float percent = ((((float)(contacts)) / ((float)total)) * 100);
             percentage.setText(String.format("%.1f", percent) + "%");
             percentage.setTextColor(percent >= 20 ? Color.RED : Color.GREEN);
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
