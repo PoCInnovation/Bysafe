@@ -21,15 +21,12 @@ import android.os.Vibrator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.dpppt.android.calibration.handshakes.HandshakesFragment;
-import org.dpppt.android.calibration.parameters.ParameterActivity;
 import org.dpppt.android.calibration.report.ActivitiesFragment;
 import org.dpppt.android.calibration.handwash.HandwashFragment;
 
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
-import org.dpppt.android.sdk.internal.logger.Logger;
-import org.dpppt.android.sdk.DP3T;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,9 +34,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import retrofit2.http.HEAD;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -131,8 +125,10 @@ public class MainActivity extends AppCompatActivity {
                             );
                         }
                     }
-                } catch(InterruptedException ignored) {}
-        }};
+                } catch (InterruptedException ignored) {
+                }
+            }
+        };
         thread.start();
     }
 

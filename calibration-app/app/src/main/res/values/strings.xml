@@ -59,9 +59,11 @@
 	<string name="dialog_button_ok">OK</string>
 	<string name="tab_controls">Contrôles</string>
 	<string name="tab_protection">Protection</string>
-	<string name="tab_barrier_gesture">Gestes barrière</string>
+	<string name="tab_barrier_gesture">Gestes barrières</string>
 	<string name="tab_activities">Activités</string>
 	<string name="tab_parameters">Paramètres</string>
+	<string name="barrier_gesture_title">Adoptez\nles gestes barrières</string>
+	<string name="redirect_gov_info">gouvernement.fr/info-coronavirus</string>
 	<string name="tab_logs">Registres</string>
 	<string name="raw_handshakes">raw handshakes</string>
 	<string name="merged_handshakes">merged handshakes</string>
