@@ -28,6 +28,7 @@ import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -35,6 +36,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+<<<<<<< HEAD
+=======
+import retrofit2.http.HEAD;
+import org.dpppt.android.sdk.internal.util.Pair;
+
+import static java.lang.Math.floor;
+
+
+>>>>>>> 9b9d3bffd564ebef33ac104a584dc4ba03cd48e0
 public class MainActivity extends AppCompatActivity {
 
     private static Context context;
@@ -46,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
 
-        handwashFragment.setArguments(handwashFragment.getBundle());
+        handwashFragment.setArguments(HandwashFragment.getBundle());
 
         setContentView(R.layout.activity_main);
 
@@ -62,15 +72,20 @@ public class MainActivity extends AppCompatActivity {
         calendarThen.setTimeInMillis(AppConfigManager.getInstance(MainApplication.getContext()).getJourneyStart());
         if (calendarThen.get(Calendar.DAY_OF_MONTH) != calendarNow.get(Calendar.DAY_OF_MONTH)) {
             AppConfigManager.getInstance(MainApplication.getContext()).setJourneyStart(System.currentTimeMillis());
+            try {
+                AppConfigManager.getInstance(MainApplication.getContext()).setJourneyContact(new ArrayList<>());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        uploadContact();
+        threadContact();
     }
 
     public static Context getContext() {
         return context;
     }
 
-    private void uploadContact() {
+    private void threadContact() {
         Thread thread = new Thread() {
 
             @Override
@@ -78,51 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     while (!isInterrupted()) {
                         Thread.sleep(1000);
-                        runOnUiThread(() -> {
-                            new Database(MainApplication.getContext()).getHandshakes(response -> {
-                                AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(0); // modifier si besoin de debug
-                                HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
-                                Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
-                                long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
-                                long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
-                                for (Handshake handShake : response) {
-                                    if (handShake.getTimestamp() > System.currentTimeMillis() - (scanInterval + scanDuration)) { // Durée durant laquelle un handshake est pris en compte
-                                        byte[] head = new byte[4];
-                                        for (int i = 0; i < 4; i++) {
-                                            head[i] = handShake.getEphId().getData()[i];
-                                        }
-                                        String identifier = new String(head);
-                                        if (!groupedHandshakes.containsKey(identifier)) {
-                                            groupedHandshakes.put(identifier, new ArrayList<>());
-                                        }
-                                        groupedHandshakes.get(identifier).add(handShake);
-                                    }
-                                }
-                                for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                                    if (stringListEntry.getValue().size() >= 1) // Nombre de handshake necessaire pour valider un contact
-                                        AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(
-                                                AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() + 1
-                                        );
-                                }
-                            });
-                        });
-                        if (AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() == 0) {
-                            if (AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() != 0) {
-                                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                // Durée de vibration = 500
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    assert v != null;
-                                    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-                                } else {
-                                    assert v != null;
-                                    v.vibrate(500);
-                                }
-                                AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(20); // Modifier le nombre de tour de thread à attendre entre deux vibrations
-                            }
-                        } else {
-                            AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(
-                                    AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() - 1
-                            );
+                        updateContact();
+                        vibrateContact();
+                        long now = System.currentTimeMillis();
+                        Logger.d("TIMESTAMP", Long.toString(((long)floor(now / 1000.0)) % 300));
+                        if (((long)floor(now / 1000.0)) % 300 == 0) {
+                            addContactToReport( (((long)(floor(now / 1000.0)) - 300) * 1000));
                         }
                     }
                 } catch (InterruptedException ignored) {
@@ -130,6 +106,89 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         thread.start();
+    }
+
+    private void addContactToReport(long now) {
+        new Database(MainApplication.getContext()).getHandshakes(response -> {
+            int contacts = 0;
+            HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
+            Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
+            long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
+            long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
+            for (Handshake handShake : response) {
+                if (handShake.getTimestamp() > now - 300000) { // Durée durant laquelle un handshake est pris en compte
+                    byte[] head = new byte[4];
+                    for (int i = 0; i < 4; i++) {
+                        head[i] = handShake.getEphId().getData()[i];
+                    }
+                    String identifier = new String(head);
+                    if (!groupedHandshakes.containsKey(identifier)) {
+                        groupedHandshakes.put(identifier, new ArrayList<>());
+                    }
+                    groupedHandshakes.get(identifier).add(handShake);
+                }
+            }
+            for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
+                if (stringListEntry.getValue().size() >= 1) // Nombre de handshake necessaire pour valider un contact
+                    contacts += 1;
+            }
+            try {
+                Logger.d("OK HERE WE ARE", "Interval +1");
+                AppConfigManager.getInstance(MainApplication.getContext()).addJourneyContact(new Pair<Long, Integer>(now, contacts));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void vibrateContact() {
+        if (AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() == 0) {
+            if (AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() != 0) {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                // Durée de vibration = 500
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    assert v != null;
+                    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    assert v != null;
+                    v.vibrate(500);
+                }
+                AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(20); // Modifier le nombre de tour de thread à attendre entre deux vibrations
+            }
+        } else {
+            AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(
+                    AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() - 1
+            );
+        }
+    }
+
+    private void updateContact() {
+        new Database(MainApplication.getContext()).getHandshakes(response -> {
+            AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(0); // modifier si besoin de debug
+            HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
+            Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
+            long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
+            long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
+            for (Handshake handShake : response) {
+                if (handShake.getTimestamp() > System.currentTimeMillis() - (scanInterval + scanDuration)) { // Durée durant laquelle un handshake est pris en compte
+                    byte[] head = new byte[4];
+                    for (int i = 0; i < 4; i++) {
+                        head[i] = handShake.getEphId().getData()[i];
+                    }
+                    String identifier = new String(head);
+                    if (!groupedHandshakes.containsKey(identifier)) {
+                        groupedHandshakes.put(identifier, new ArrayList<>());
+                    }
+                    groupedHandshakes.get(identifier).add(handShake);
+                }
+            }
+            for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
+                if (stringListEntry.getValue().size() >= 1) // Nombre de handshake necessaire pour valider un contact
+                    AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(
+                            AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() + 1
+                    );
+            }
+        });
     }
 
     private void setupNavigationView() {

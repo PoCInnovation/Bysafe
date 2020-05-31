@@ -11,8 +11,25 @@ package org.dpppt.android.sdk.internal;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.service.autofill.Dataset;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.dpppt.android.sdk.backend.ResponseCallback;
 import org.dpppt.android.sdk.backend.models.ApplicationInfo;
@@ -20,6 +37,8 @@ import org.dpppt.android.sdk.internal.backend.BackendReportRepository;
 import org.dpppt.android.sdk.internal.backend.DiscoveryRepository;
 import org.dpppt.android.sdk.internal.backend.models.ApplicationsList;
 import org.dpppt.android.sdk.internal.util.Json;
+import org.dpppt.android.sdk.internal.util.Pair;
+import org.json.JSONObject;
 
 public class AppConfigManager {
 
@@ -36,7 +55,7 @@ public class AppConfigManager {
 
 	static final long DEFAULT_SCAN_INTERVAL = 30 * 1000L;
 	static final long DEFAULT_SCAN_DURATION = 29 * 1000L;
-	private static final long DEFAULT_RSSI_DETECTED_LEVEL = -100;
+	private static final long DEFAULT_RSSI_DETECTED_LEVEL = -85;
 	private static final BluetoothScanMode DEFAULT_BLUETOOTH_SCAN_MODE = BluetoothScanMode.SCAN_MODE_LOW_POWER;
 	private static final BluetoothTxPowerLevel DEFAULT_BLUETOOTH_POWER_LEVEL = BluetoothTxPowerLevel.ADVERTISE_TX_POWER_ULTRA_LOW;
 	private static final BluetoothAdvertiseMode DEFAULT_BLUETOOTH_ADVERTISE_MODE = BluetoothAdvertiseMode.ADVERTISE_MODE_BALANCED;
@@ -46,6 +65,7 @@ public class AppConfigManager {
 	private static final int DEFAULT_CONTACT_NUMBER = 0;
 	private static final long DEFAULT_VIBRATION_TIMER = 0;
 	private static final long DEFAULT_JOURNEY_START = 0;
+	private static final String DEFAULT_JOURNEY_CONTACT =  new Gson().toJson(new ArrayList<Pair<Long, Integer>>());
 	private static final float DEFAULT_CONTACT_ATTENUATION_THRESHOLD = 73.0f;
 
 	private static final String PREFS_NAME = "dp3t_sdk_preferences";
@@ -69,6 +89,7 @@ public class AppConfigManager {
 	private static final String PREF_CONTACT_NUMBER = "number_of_contact";
 	private static final String PREF_VIBRATION_TIMER = "timer_for_vibration";
 	private static final String PREF_JOURNEY_START = "journey_start";
+	private static final String PREF_JOURNEY_CONTACT = "journey_contact";
 
 	private String appId;
 	private boolean useDiscovery = false;
@@ -297,8 +318,27 @@ public class AppConfigManager {
 		return sharedPrefs.getLong(PREF_JOURNEY_START, DEFAULT_JOURNEY_START);
 	}
 
+	public void addJourneyContact(Pair<Long, Integer> pair) throws IOException {
+		Gson gson = new Gson();
+
+		Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {}.getType();
+		ArrayList<Pair<Long, Integer>> list = gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
+		list.add(pair);
+		sharedPrefs.edit().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).apply();
+	}
+
+	public void setJourneyContact(ArrayList<Pair<Long, Integer>> list) throws IOException {
+		Gson gson = new Gson();
+		sharedPrefs.edit().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).apply();
+	}
+
+	public ArrayList<Pair<Long, Integer>> getJourneyContact() throws IOException {
+		Gson gson = new Gson();
+		Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {}.getType();
+		return gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
+	}
+
 	public void clearPreferences() {
 		sharedPrefs.edit().clear().apply();
 	}
-
 }
