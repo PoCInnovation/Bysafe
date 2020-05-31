@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "980222166759",
+    "firebase_url": "https://bysafe-4ee9a.firebaseio.com",
+    "project_id": "bysafe-4ee9a",
+    "storage_bucket": "bysafe-4ee9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980222166759:android:c836150aaf46c7e3d88442",
+        "android_client_info": {
+          "package_name": "com.bouygues.bysafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980222166759-4j9qato52e81e1u1mtbffavbh22r650j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "PLACEHOLDER_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980222166759-4j9qato52e81e1u1mtbffavbh22r650j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
