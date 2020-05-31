@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: MPL-2.0
  */
-package org.dpppt.android.calibration.handshakes;
+package com.bouygues.bysafe.handshakes;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,8 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.dpppt.android.calibration.MainActivity;
-import org.dpppt.android.calibration.MainApplication;
+import com.bouygues.bysafe.MainActivity;
+import com.bouygues.bysafe.MainApplication;
 import org.dpppt.android.sdk.DP3T;
 
 import android.widget.ImageButton;
@@ -30,8 +30,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.dpppt.android.calibration.R;
-import org.dpppt.android.calibration.parameters.ParameterActivity;
+import com.bouygues.bysafe.R;
+import com.bouygues.bysafe.parameters.ParameterActivity;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
 

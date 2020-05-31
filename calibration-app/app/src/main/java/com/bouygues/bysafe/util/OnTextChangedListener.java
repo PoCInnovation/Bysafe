@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-package org.dpppt.android.calibration.util;
+package com.bouygues.bysafe.util;
 
 import android.text.Editable;
 import android.text.TextWatcher;

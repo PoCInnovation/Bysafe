@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: MPL-2.0
  */
-package org.dpppt.android.calibration;
+package com.bouygues.bysafe;
 
 import android.Manifest;
 import android.app.Application;
@@ -22,8 +22,8 @@ import androidx.core.app.ActivityCompat;
 
 import java.security.PublicKey;
 
-import org.dpppt.android.calibration.util.NotificationUtil;
-import org.dpppt.android.calibration.util.PreferencesUtil;
+import com.bouygues.bysafe.util.NotificationUtil;
+import com.bouygues.bysafe.util.PreferencesUtil;
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.internal.logger.LogLevel;
 import org.dpppt.android.sdk.internal.logger.Logger;

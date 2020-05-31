@@ -1,4 +1,4 @@
-package org.dpppt.android.calibration.parameters;
+package com.bouygues.bysafe.parameters;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,10 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.dpppt.android.calibration.MainApplication;
-import org.dpppt.android.calibration.R;
-import org.dpppt.android.calibration.util.DialogUtil;
-import org.dpppt.android.calibration.util.RequirementsUtil;
+import com.bouygues.bysafe.MainApplication;
+import com.bouygues.bysafe.R;
+import com.bouygues.bysafe.util.DialogUtil;
+import com.bouygues.bysafe.util.RequirementsUtil;
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.TracingStatus;
 import org.dpppt.android.sdk.internal.AppConfigManager;

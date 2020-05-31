@@ -1,4 +1,4 @@
-package org.dpppt.android.calibration.auth;
+package com.bouygues.bysafe.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +7,9 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.dpppt.android.calibration.MainActivity;
-import org.dpppt.android.calibration.MainApplication;
-import org.dpppt.android.calibration.R;
+import com.bouygues.bysafe.MainActivity;
+import com.bouygues.bysafe.MainApplication;
+import com.bouygues.bysafe.R;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
