@@ -36,15 +36,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-<<<<<<< HEAD
-=======
 import retrofit2.http.HEAD;
+
+import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Pair;
 
 import static java.lang.Math.floor;
 
-
->>>>>>> 9b9d3bffd564ebef33ac104a584dc4ba03cd48e0
 public class MainActivity extends AppCompatActivity {
 
     private static Context context;
@@ -96,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
                         updateContact();
                         vibrateContact();
                         long now = System.currentTimeMillis();
-                        Logger.d("TIMESTAMP", Long.toString(((long)floor(now / 1000.0)) % 300));
-                        if (((long)floor(now / 1000.0)) % 300 == 0) {
-                            addContactToReport( (((long)(floor(now / 1000.0)) - 300) * 1000));
+                        Logger.d("TIMESTAMP", Long.toString(((long) floor(now / 1000.0)) % 300));
+                        if (((long) floor(now / 1000.0)) % 300 == 0) {
+                            addContactToReport((((long) (floor(now / 1000.0)) - 300) * 1000));
                         }
                     }
                 } catch (InterruptedException ignored) {
