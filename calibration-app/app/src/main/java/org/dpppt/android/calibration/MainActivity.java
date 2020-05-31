@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         handwashFragment.setArguments(HandwashFragment.getBundle());
 
         boolean isLogged = AppConfigManager.getInstance(MainApplication.getContext()).getIsLogged();
-        Logger.d("auth", "is logged == " + String.valueOf(isLogged));
         if (!isLogged) {
             Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);

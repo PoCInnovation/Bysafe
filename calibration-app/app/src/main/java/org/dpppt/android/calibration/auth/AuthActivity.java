@@ -22,11 +22,9 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
 
         final Button authButton = findViewById(R.id.auth_button);
-        Logger.d("button", "text value is : " + authButton.getText());
         authButton.setOnClickListener(v -> {
             AppConfigManager cfgManager = AppConfigManager.getInstance(MainApplication.getContext());
             cfgManager.setIsLogged(true);
-            Logger.d("auth", "is logged is now at : " + String.valueOf(cfgManager.getIsLogged()));
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
