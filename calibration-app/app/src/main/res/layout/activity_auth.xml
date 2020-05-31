@@ -13,4 +13,14 @@
         android:text="Authenticate"
         />
 
+    <EditText
+        android:id="@+id/site_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/site_id"
+        android:inputType="textPersonName" />
+
 </RelativeLayout>
