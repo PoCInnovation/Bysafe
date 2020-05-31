@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,14 @@ public class BarrierGestureInfoFragment extends Fragment {
         final Button infoGovButton = view.findViewById(R.id.redirect_gov_info);
         infoGovButton.setOnClickListener(v -> {
             startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://www.gouvernement.fr/info-coronavirus")));
+        });
+
+
+        final ImageButton goToHandwashButton = view.findViewById(R.id.go_to_handwash);
+        goToHandwashButton.setOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment_container, HandwashFragment.newInstance())
+                    .commit();
         });
     }
 }
