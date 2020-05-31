@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2020 Ubique Innovation AG <https://www.ubique.ch>
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -10,35 +9,40 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.dpppt.android.calibration">
+    package="org.dpppt.android.calibration">
 
-	<uses-permission android:name="android.permission.BLUETOOTH"/>
-	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
-	<!-- If your app targets Android 9 or lower, you can declare
+    <!-- If your app targets Android 9 or lower, you can declare
          ACCESS_COARSE_LOCATION instead. -->
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
-	<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
 
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<application
-		android:name="org.dpppt.android.calibration.MainApplication"
-		android:allowBackup="false"
-		android:icon="@mipmap/ic_launcher"
-		android:label="@string/app_name"
-		android:roundIcon="@mipmap/ic_launcher"
-		android:networkSecurityConfig="@xml/network_security_config"
-		android:supportsRtl="true"
-		android:theme="@style/AppTheme">
-		<activity android:name="org.dpppt.android.calibration.MainActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<activity android:name="org.dpppt.android.calibration.parameters.ParameterActivity"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <application
+        android:name="org.dpppt.android.calibration.MainApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="org.dpppt.android.calibration.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="org.dpppt.android.calibration.parameters.ParameterActivity" />
+        <activity
+            android:name="org.dpppt.android.calibration.auth.AuthActivity"
+            android:noHistory="true" />
 
         <meta-data
             android:name="preloaded_fonts"
