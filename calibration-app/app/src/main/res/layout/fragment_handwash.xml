@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -32,5 +33,16 @@
         android:layout_centerVertical="true"
         android:layout_below="@+id/washed_hands"
         android:text="@string/button_pause_hand_wash" />
+
+    <ImageButton
+        android:id="@+id/button_info_barrier_gesture"
+        android:src="@drawable/ic_info_white"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:backgroundTint="@color/colorSecondary"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

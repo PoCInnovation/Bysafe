@@ -21,15 +21,12 @@ import android.os.Vibrator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.dpppt.android.calibration.handshakes.HandshakesFragment;
-import org.dpppt.android.calibration.parameters.ParameterActivity;
 import org.dpppt.android.calibration.report.ActivitiesFragment;
 import org.dpppt.android.calibration.handwash.HandwashFragment;
 
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
-import org.dpppt.android.sdk.internal.logger.Logger;
-import org.dpppt.android.sdk.DP3T;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,10 +37,11 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.http.HEAD;
+
+import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Pair;
 
 import static java.lang.Math.floor;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -96,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
                         updateContact();
                         vibrateContact();
                         long now = System.currentTimeMillis();
-                        Logger.d("TIMESTAMP", Long.toString(((long)floor(now / 1000.0)) % 300));
-                        if (((long)floor(now / 1000.0)) % 300 == 0) {
-                            addContactToReport( (((long)(floor(now / 1000.0)) - 300) * 1000));
+                        Logger.d("TIMESTAMP", Long.toString(((long) floor(now / 1000.0)) % 300));
+                        if (((long) floor(now / 1000.0)) % 300 == 0) {
+                            addContactToReport((((long) (floor(now / 1000.0)) - 300) * 1000));
                         }
                     }
                 } catch (InterruptedException ignored) {

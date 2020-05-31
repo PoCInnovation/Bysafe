@@ -39,6 +39,10 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="org.dpppt.android.calibration.parameters.ParameterActivity"/>
-	</application>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
 
 </manifest>

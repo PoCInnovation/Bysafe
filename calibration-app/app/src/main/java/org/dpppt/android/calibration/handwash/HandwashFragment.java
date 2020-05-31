@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import org.dpppt.android.calibration.MainActivity;
 import org.dpppt.android.calibration.R;
+import org.dpppt.android.calibration.handshakes.HandshakesFragment;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
 import java.util.concurrent.TimeUnit;
@@ -64,8 +66,9 @@ public class HandwashFragment extends Fragment {
             }
         }
 
-        final Button handWashButton = getView().findViewById(R.id.washed_hands);
-        final Button pauseHandWashButton = getView().findViewById(R.id.pause_resume_hand_wash);
+        final ImageButton infoBarrierGesture = view.findViewById(R.id.button_info_barrier_gesture);
+        final Button handWashButton = view.findViewById(R.id.washed_hands);
+        final Button pauseHandWashButton = view.findViewById(R.id.pause_resume_hand_wash);
 
         pauseHandWashButton.setText(handler.hasCallbacks(timerTask) ? R.string.button_resume_hand_wash : R.string.button_pause_hand_wash);
         handWashButton.setOnClickListener(v -> {
@@ -92,6 +95,12 @@ public class HandwashFragment extends Fragment {
                 pauseHandWashButton.setText(getString(R.string.button_pause_hand_wash));
                 isRunning = true;
             }
+        });
+
+        infoBarrierGesture.setOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment_container, BarrierGestureInfoFragment.newInstance())
+                    .commit();
         });
     }
 
