@@ -111,7 +111,7 @@ public class AppConfigManager {
 		discoveryRepository.getDiscovery(new ResponseCallback<ApplicationsList>() {
 			@Override
 			public void onSuccess(ApplicationsList response) {
-				sharedPrefs.edit().putString(PREF_APPLICATION_LIST, Json.toJson(response)).apply();
+				sharedPrefs.edit().clear().putString(PREF_APPLICATION_LIST, Json.toJson(response)).commit();
 			}
 
 			@Override
@@ -126,13 +126,13 @@ public class AppConfigManager {
 		setAppId(applicationInfo.getAppId());
 		ApplicationsList applicationsList = new ApplicationsList();
 		applicationsList.getApplications().add(applicationInfo);
-		sharedPrefs.edit().putString(PREF_APPLICATION_LIST, Json.toJson(applicationsList)).apply();
+		sharedPrefs.edit().clear().putString(PREF_APPLICATION_LIST, Json.toJson(applicationsList)).commit();
 	}
 
 	public void updateFromDiscoverySynchronous() throws IOException {
 		if (useDiscovery) {
 			ApplicationsList response = discoveryRepository.getDiscoverySync(isDevDiscoveryMode);
-			sharedPrefs.edit().putString(PREF_APPLICATION_LIST, Json.toJson(response)).apply();
+			sharedPrefs.edit().clear().putString(PREF_APPLICATION_LIST, Json.toJson(response)).commit();
 		}
 	}
 
@@ -151,7 +151,7 @@ public class AppConfigManager {
 	}
 
 	public void setAdvertisingEnabled(boolean enabled) {
-		sharedPrefs.edit().putBoolean(PREF_ADVERTISING_ENABLED, enabled).apply();
+		sharedPrefs.edit().clear().putBoolean(PREF_ADVERTISING_ENABLED, enabled).commit();
 	}
 
 	public boolean isAdvertisingEnabled() {
@@ -159,7 +159,7 @@ public class AppConfigManager {
 	}
 
 	public void setReceivingEnabled(boolean enabled) {
-		sharedPrefs.edit().putBoolean(PREF_RECEIVING_ENABLED, enabled).apply();
+		sharedPrefs.edit().clear().putBoolean(PREF_RECEIVING_ENABLED, enabled).commit();
 	}
 
 	public boolean isReceivingEnabled() {
@@ -167,7 +167,7 @@ public class AppConfigManager {
 	}
 
 	public void setLastLoadedBatchReleaseTime(long lastLoadedBatchReleaseTime) {
-		sharedPrefs.edit().putLong(PREF_LAST_LOADED_BATCH_RELEASE_TIME, lastLoadedBatchReleaseTime).apply();
+		sharedPrefs.edit().clear().putLong(PREF_LAST_LOADED_BATCH_RELEASE_TIME, lastLoadedBatchReleaseTime).commit();
 	}
 
 	public long getLastLoadedBatchReleaseTime() {
@@ -175,7 +175,7 @@ public class AppConfigManager {
 	}
 
 	public void setLastSyncDate(long lastSyncDate) {
-		sharedPrefs.edit().putLong(PREF_LAST_SYNC_DATE, lastSyncDate).apply();
+		sharedPrefs.edit().clear().putLong(PREF_LAST_SYNC_DATE, lastSyncDate).commit();
 	}
 
 	public long getLastSyncDate() {
@@ -183,7 +183,7 @@ public class AppConfigManager {
 	}
 
 	public void setLastSyncNetworkSuccess(boolean success) {
-		sharedPrefs.edit().putBoolean(PREF_LAST_SYNC_NET_SUCCESS, success).apply();
+		sharedPrefs.edit().clear().putBoolean(PREF_LAST_SYNC_NET_SUCCESS, success).commit();
 	}
 
 	public boolean getLastSyncNetworkSuccess() {
@@ -195,7 +195,7 @@ public class AppConfigManager {
 	}
 
 	public void setIAmInfected(boolean exposed) {
-		sharedPrefs.edit().putBoolean(PREF_I_AM_INFECTED, exposed).apply();
+		sharedPrefs.edit().clear().putBoolean(PREF_I_AM_INFECTED, exposed).commit();
 	}
 
 	public BackendReportRepository getBackendReportRepository(Context context) throws IllegalStateException {
@@ -213,7 +213,7 @@ public class AppConfigManager {
 					"CalibrationTestDevice Name must have length " + CALIBRATION_TEST_DEVICE_NAME_LENGTH + ", provided string '" +
 							name + "' with length " + name.length());
 		}
-		sharedPrefs.edit().putString(PREF_CALIBRATION_TEST_DEVICE_NAME, name).apply();
+		sharedPrefs.edit().clear().putString(PREF_CALIBRATION_TEST_DEVICE_NAME, name).commit();
 	}
 
 	public String getCalibrationTestDeviceName() {
@@ -221,7 +221,7 @@ public class AppConfigManager {
 	}
 
 	public void setScanDuration(long scanDuration) {
-		sharedPrefs.edit().putLong(PREF_SCAN_DURATION, scanDuration).apply();
+		sharedPrefs.edit().clear().putLong(PREF_SCAN_DURATION, scanDuration).commit();
 	}
 
 	public long getScanDuration() {
@@ -229,7 +229,7 @@ public class AppConfigManager {
 	}
 
 	public void setRSSIDetectedLevel(long rssiDetectedLevel) {
-		sharedPrefs.edit().putLong(PREF_RSSI_DETECTED_LEVEL, rssiDetectedLevel).apply();
+		sharedPrefs.edit().clear().putLong(PREF_RSSI_DETECTED_LEVEL, rssiDetectedLevel).commit();
 	}
 
 	public long getRSSIDetectedLevel() {
@@ -237,7 +237,7 @@ public class AppConfigManager {
 	}
 
 	public void setScanInterval(long scanInterval) {
-		sharedPrefs.edit().putLong(PREF_SCAN_INTERVAL, scanInterval).apply();
+		sharedPrefs.edit().clear().putLong(PREF_SCAN_INTERVAL, scanInterval).commit();
 	}
 
 	public long getScanInterval() {
@@ -245,7 +245,7 @@ public class AppConfigManager {
 	}
 
 	public void setBluetoothPowerLevel(BluetoothTxPowerLevel powerLevel) {
-		sharedPrefs.edit().putInt(PREF_ADVERTISEMENT_POWER_LEVEL, powerLevel.ordinal()).apply();
+		sharedPrefs.edit().clear().putInt(PREF_ADVERTISEMENT_POWER_LEVEL, powerLevel.ordinal()).commit();
 	}
 
 	public BluetoothTxPowerLevel getBluetoothTxPowerLevel() {
@@ -258,11 +258,11 @@ public class AppConfigManager {
 	}
 
 	public void setBluetoothScanMode(BluetoothScanMode scanMode) {
-		sharedPrefs.edit().putInt(PREF_BLUETOOTH_SCAN_MODE, scanMode.ordinal()).apply();
+		sharedPrefs.edit().clear().putInt(PREF_BLUETOOTH_SCAN_MODE, scanMode.ordinal()).commit();
 	}
 
 	public void setBluetoothAdvertiseMode(BluetoothAdvertiseMode advertiseMode) {
-		sharedPrefs.edit().putInt(PREF_ADVERTISEMENT_MODE, advertiseMode.ordinal()).apply();
+		sharedPrefs.edit().clear().putInt(PREF_ADVERTISEMENT_MODE, advertiseMode.ordinal()).commit();
 	}
 
 	public BluetoothAdvertiseMode getBluetoothAdvertiseMode() {
@@ -275,7 +275,7 @@ public class AppConfigManager {
 	}
 
 	public void setUseScanResponse(boolean useScanResponse) {
-		sharedPrefs.edit().putBoolean(PREF_BLUETOOTH_USE_SCAN_RESPONSE, useScanResponse).apply();
+		sharedPrefs.edit().clear().putBoolean(PREF_BLUETOOTH_USE_SCAN_RESPONSE, useScanResponse).commit();
 	}
 
 	public float getContactAttenuationThreshold() {
@@ -283,7 +283,7 @@ public class AppConfigManager {
 	}
 
 	public void setContactAttenuationThreshold(float threshold) {
-		sharedPrefs.edit().putFloat(PREF_CONTACT_ATTENUATION_THRESHOLD, threshold).apply();
+		sharedPrefs.edit().clear().putFloat(PREF_CONTACT_ATTENUATION_THRESHOLD, threshold).commit();
 	}
 
 	public int getNumberOfWindowsForExposure() {
@@ -291,7 +291,7 @@ public class AppConfigManager {
 	}
 
 	public void setNumberOfWindowsForExposure(int threshold) {
-		sharedPrefs.edit().putInt(PREF_NUMBER_OF_WINDOWS_FOR_EXPOSURE, threshold).apply();
+		sharedPrefs.edit().clear().putInt(PREF_NUMBER_OF_WINDOWS_FOR_EXPOSURE, threshold).commit();
 	}
 
 	public int getContactNumber() {
@@ -299,11 +299,11 @@ public class AppConfigManager {
 	}
 
 	public void setContactNumber(int threshold) {
-		sharedPrefs.edit().putInt(PREF_CONTACT_NUMBER, threshold).apply();
+		sharedPrefs.edit().clear().putInt(PREF_CONTACT_NUMBER, threshold).commit();
 	}
 
 	public void setVibrationTimer(long vibrationTimer) {
-		sharedPrefs.edit().putLong(PREF_VIBRATION_TIMER, vibrationTimer).apply();
+		sharedPrefs.edit().clear().putLong(PREF_VIBRATION_TIMER, vibrationTimer).commit();
 	}
 
 	public long getVibrationTimer() {
@@ -311,7 +311,7 @@ public class AppConfigManager {
 	}
 
 	public void setJourneyStart(long journeyStart) {
-		sharedPrefs.edit().putLong(PREF_JOURNEY_START, journeyStart).apply();
+		sharedPrefs.edit().clear().putLong(PREF_JOURNEY_START, journeyStart).commit();
 	}
 
 	public long getJourneyStart() {
@@ -324,12 +324,12 @@ public class AppConfigManager {
 		Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {}.getType();
 		ArrayList<Pair<Long, Integer>> list = gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
 		list.add(pair);
-		sharedPrefs.edit().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).apply();
+		sharedPrefs.edit().clear().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).commit();
 	}
 
 	public void setJourneyContact(ArrayList<Pair<Long, Integer>> list) throws IOException {
 		Gson gson = new Gson();
-		sharedPrefs.edit().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).apply();
+		sharedPrefs.edit().clear().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).commit();
 	}
 
 	public ArrayList<Pair<Long, Integer>> getJourneyContact() throws IOException {
@@ -339,6 +339,6 @@ public class AppConfigManager {
 	}
 
 	public void clearPreferences() {
-		sharedPrefs.edit().clear().apply();
+		sharedPrefs.edit().clear().clear().commit();
 	}
 }

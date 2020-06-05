@@ -148,10 +148,10 @@ public class MainActivity extends AppCompatActivity {
                 // Durée de vibration = 500
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     assert v != null;
-                    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                    v.vibrate(VibrationEffect.createWaveform(new long[]{0, 400, 200, 200, 200, 400}, -1));
                 } else {
                     assert v != null;
-                    v.vibrate(500);
+                    v.vibrate(new long[]{0, 400, 200, 200, 200, 400}, -1);
                 }
                 AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(20); // Modifier le nombre de tour de thread à attendre entre deux vibrations
             }
