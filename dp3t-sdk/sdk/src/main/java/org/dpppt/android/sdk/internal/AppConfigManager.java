@@ -90,6 +90,7 @@ public class AppConfigManager {
 	private static final String PREF_VIBRATION_TIMER = "timer_for_vibration";
 	private static final String PREF_JOURNEY_START = "journey_start";
 	private static final String PREF_JOURNEY_CONTACT = "journey_contact";
+	private static final String PREF_IS_LOGGED = "is_logged";
 
 	private String appId;
 	private boolean useDiscovery = false;
@@ -337,6 +338,15 @@ public class AppConfigManager {
 		Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {}.getType();
 		return gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
 	}
+
+	public void setIsLogged(boolean isLogged) {
+		sharedPrefs.edit().putBoolean(PREF_IS_LOGGED, isLogged).apply();
+	}
+
+	public boolean getIsLogged() {
+		return sharedPrefs.getBoolean(PREF_IS_LOGGED, false);
+	}
+
 
 	public void clearPreferences() {
 		sharedPrefs.edit().clear().clear().commit();

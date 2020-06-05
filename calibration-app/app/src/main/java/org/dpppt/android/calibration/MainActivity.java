@@ -13,23 +13,24 @@ package org.dpppt.android.calibration;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.dpppt.android.calibration.auth.AuthActivity;
 import org.dpppt.android.calibration.handshakes.HandshakesFragment;
-import org.dpppt.android.calibration.parameters.ParameterActivity;
 import org.dpppt.android.calibration.report.ActivitiesFragment;
 import org.dpppt.android.calibration.handwash.HandwashFragment;
 
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
-import org.dpppt.android.sdk.internal.logger.Logger;
-import org.dpppt.android.sdk.DP3T;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,10 +41,11 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.http.HEAD;
+
+import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Pair;
 
 import static java.lang.Math.floor;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,27 +60,40 @@ public class MainActivity extends AppCompatActivity {
 
         handwashFragment.setArguments(HandwashFragment.getBundle());
 
-        setContentView(R.layout.activity_main);
-
-        setupNavigationView();
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_fragment_container, HandwashFragment.newInstance())
-                    .commit();
-        }
-        Calendar calendarThen = Calendar.getInstance();
-        Calendar calendarNow = Calendar.getInstance();
-        calendarThen.setTimeInMillis(AppConfigManager.getInstance(MainApplication.getContext()).getJourneyStart());
-        if (calendarThen.get(Calendar.DAY_OF_MONTH) != calendarNow.get(Calendar.DAY_OF_MONTH)) {
-            AppConfigManager.getInstance(MainApplication.getContext()).setJourneyStart(System.currentTimeMillis());
-            try {
-                AppConfigManager.getInstance(MainApplication.getContext()).setJourneyContact(new ArrayList<>());
-            } catch (IOException e) {
-                e.printStackTrace();
+        boolean isLogged = AppConfigManager.getInstance(MainApplication.getContext()).getIsLogged();
+        if (!isLogged) {
+            Intent intent = new Intent(this, AuthActivity.class);
+            startActivity(intent);
+        } else {
+            setContentView(R.layout.activity_main);
+            setupNavigationView();
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.main_fragment_container, HandwashFragment.newInstance())
+                        .commit();
             }
+
+            final ImageButton logoutButton = findViewById(R.id.logout_button);
+            logoutButton.setOnClickListener(v -> {
+                AppConfigManager.getInstance(MainApplication.getContext()).setIsLogged(false);
+                Intent intent = new Intent(this, AuthActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            Calendar calendarThen = Calendar.getInstance();
+            Calendar calendarNow = Calendar.getInstance();
+            calendarThen.setTimeInMillis(AppConfigManager.getInstance(MainApplication.getContext()).getJourneyStart());
+            if (calendarThen.get(Calendar.DAY_OF_MONTH) != calendarNow.get(Calendar.DAY_OF_MONTH)) {
+                AppConfigManager.getInstance(MainApplication.getContext()).setJourneyStart(System.currentTimeMillis());
+                try {
+                    AppConfigManager.getInstance(MainApplication.getContext()).setJourneyContact(new ArrayList<>());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            threadContact();
         }
-        threadContact();
     }
 
     public static Context getContext() {
@@ -96,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
                         updateContact();
                         vibrateContact();
                         long now = System.currentTimeMillis();
-                        Logger.d("TIMESTAMP", Long.toString(((long)floor(now / 1000.0)) % 300));
-                        if (((long)floor(now / 1000.0)) % 300 == 0) {
-                            addContactToReport( (((long)(floor(now / 1000.0)) - 300) * 1000));
+                        Logger.d("TIMESTAMP", Long.toString(((long) floor(now / 1000.0)) % 300));
+                        if (((long) floor(now / 1000.0)) % 300 == 0) {
+                            addContactToReport((((long) (floor(now / 1000.0)) - 300) * 1000));
                         }
                     }
                 } catch (InterruptedException ignored) {

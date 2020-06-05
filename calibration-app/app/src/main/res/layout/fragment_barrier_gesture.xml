@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/barrier_gesture_top_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/title_barrier_gesture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/title_background"
+            android:fontFamily="@font/roboto_medium"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/barrier_gesture_title"
+            android:textAlignment="center"
+            android:textColor="@color/textPrimary"
+            android:textSize="27sp" />
+
+        <ImageButton
+            android:id="@+id/go_to_handwash"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="38dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/ic_arrow_back"
+            app:iconTint="@color/colorSecondary" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/barrier_gesture_top_container"
+        android:background="@drawable/gray_background" />
+
+    <LinearLayout
+        android:id="@+id/first_line_barrier_gesture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/barrier_gesture_top_container"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="10sp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/washing_hands_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_wash_hands" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="110dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Se laver\ntrès régulièrement\nles mains."
+                android:textAlignment="center"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cough" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="110dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Tousser ou éternuer\ndans son coude ou\ndans un mouchoir."
+                android:textAlignment="center"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/second_line_barrier_gesture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/first_line_barrier_gesture"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_tissues" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="110dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Utiliser un\nmouchoir à usage\nunique."
+                android:textAlignment="center"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_no_handshake" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="110dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Saluer sans serrer\nles mains, arrêter\nles embrassades."
+                android:textAlignment="center"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/redirect_gov_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/second_line_barrier_gesture"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/colorSecondary"
+        android:insetTop="8dp"
+        android:insetBottom="8dp"
+        android:text="@string/redirect_gov_info"
+        android:textSize="14sp"
+        app:cornerRadius="0dp" />
+
+</RelativeLayout>
