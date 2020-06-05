@@ -36,6 +36,7 @@ import org.dpppt.android.sdk.backend.models.ApplicationInfo;
 import org.dpppt.android.sdk.internal.backend.BackendReportRepository;
 import org.dpppt.android.sdk.internal.backend.DiscoveryRepository;
 import org.dpppt.android.sdk.internal.backend.models.ApplicationsList;
+import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Json;
 import org.dpppt.android.sdk.internal.util.Pair;
 import org.json.JSONObject;
@@ -53,8 +54,8 @@ public class AppConfigManager {
 
 	public static final int CALIBRATION_TEST_DEVICE_NAME_LENGTH = 4;
 
-	static final long DEFAULT_SCAN_INTERVAL = 30 * 1000L;
-	static final long DEFAULT_SCAN_DURATION = 29 * 1000L;
+	static final long DEFAULT_SCAN_INTERVAL = 10 * 1000L;
+	static final long DEFAULT_SCAN_DURATION = 20 * 1000L;
 	private static final long DEFAULT_RSSI_DETECTED_LEVEL = -85;
 	private static final BluetoothScanMode DEFAULT_BLUETOOTH_SCAN_MODE = BluetoothScanMode.SCAN_MODE_LOW_POWER;
 	private static final BluetoothTxPowerLevel DEFAULT_BLUETOOTH_POWER_LEVEL = BluetoothTxPowerLevel.ADVERTISE_TX_POWER_ULTRA_LOW;
@@ -92,6 +93,7 @@ public class AppConfigManager {
 	private static final String PREF_JOURNEY_CONTACT = "journey_contact";
 	private static final String PREF_IS_LOGGED = "is_logged";
 
+
 	private String appId;
 	private boolean useDiscovery = false;
 	private boolean isDevDiscoveryMode = false;
@@ -112,7 +114,7 @@ public class AppConfigManager {
 		discoveryRepository.getDiscovery(new ResponseCallback<ApplicationsList>() {
 			@Override
 			public void onSuccess(ApplicationsList response) {
-				sharedPrefs.edit().clear().putString(PREF_APPLICATION_LIST, Json.toJson(response)).commit();
+				sharedPrefs.edit().putString(PREF_APPLICATION_LIST, Json.toJson(response)).apply();
 			}
 
 			@Override
@@ -127,13 +129,13 @@ public class AppConfigManager {
 		setAppId(applicationInfo.getAppId());
 		ApplicationsList applicationsList = new ApplicationsList();
 		applicationsList.getApplications().add(applicationInfo);
-		sharedPrefs.edit().clear().putString(PREF_APPLICATION_LIST, Json.toJson(applicationsList)).commit();
+		sharedPrefs.edit().putString(PREF_APPLICATION_LIST, Json.toJson(applicationsList)).apply();
 	}
 
 	public void updateFromDiscoverySynchronous() throws IOException {
 		if (useDiscovery) {
 			ApplicationsList response = discoveryRepository.getDiscoverySync(isDevDiscoveryMode);
-			sharedPrefs.edit().clear().putString(PREF_APPLICATION_LIST, Json.toJson(response)).commit();
+			sharedPrefs.edit().putString(PREF_APPLICATION_LIST, Json.toJson(response)).apply();
 		}
 	}
 
@@ -152,7 +154,7 @@ public class AppConfigManager {
 	}
 
 	public void setAdvertisingEnabled(boolean enabled) {
-		sharedPrefs.edit().clear().putBoolean(PREF_ADVERTISING_ENABLED, enabled).commit();
+		sharedPrefs.edit().putBoolean(PREF_ADVERTISING_ENABLED, enabled).apply();
 	}
 
 	public boolean isAdvertisingEnabled() {
@@ -160,7 +162,7 @@ public class AppConfigManager {
 	}
 
 	public void setReceivingEnabled(boolean enabled) {
-		sharedPrefs.edit().clear().putBoolean(PREF_RECEIVING_ENABLED, enabled).commit();
+		sharedPrefs.edit().putBoolean(PREF_RECEIVING_ENABLED, enabled).apply();
 	}
 
 	public boolean isReceivingEnabled() {
@@ -168,7 +170,7 @@ public class AppConfigManager {
 	}
 
 	public void setLastLoadedBatchReleaseTime(long lastLoadedBatchReleaseTime) {
-		sharedPrefs.edit().clear().putLong(PREF_LAST_LOADED_BATCH_RELEASE_TIME, lastLoadedBatchReleaseTime).commit();
+		sharedPrefs.edit().putLong(PREF_LAST_LOADED_BATCH_RELEASE_TIME, lastLoadedBatchReleaseTime).apply();
 	}
 
 	public long getLastLoadedBatchReleaseTime() {
@@ -176,7 +178,7 @@ public class AppConfigManager {
 	}
 
 	public void setLastSyncDate(long lastSyncDate) {
-		sharedPrefs.edit().clear().putLong(PREF_LAST_SYNC_DATE, lastSyncDate).commit();
+		sharedPrefs.edit().putLong(PREF_LAST_SYNC_DATE, lastSyncDate).apply();
 	}
 
 	public long getLastSyncDate() {
@@ -184,7 +186,7 @@ public class AppConfigManager {
 	}
 
 	public void setLastSyncNetworkSuccess(boolean success) {
-		sharedPrefs.edit().clear().putBoolean(PREF_LAST_SYNC_NET_SUCCESS, success).commit();
+		sharedPrefs.edit().putBoolean(PREF_LAST_SYNC_NET_SUCCESS, success).apply();
 	}
 
 	public boolean getLastSyncNetworkSuccess() {
@@ -196,7 +198,7 @@ public class AppConfigManager {
 	}
 
 	public void setIAmInfected(boolean exposed) {
-		sharedPrefs.edit().clear().putBoolean(PREF_I_AM_INFECTED, exposed).commit();
+		sharedPrefs.edit().putBoolean(PREF_I_AM_INFECTED, exposed).apply();
 	}
 
 	public BackendReportRepository getBackendReportRepository(Context context) throws IllegalStateException {
@@ -214,7 +216,7 @@ public class AppConfigManager {
 					"CalibrationTestDevice Name must have length " + CALIBRATION_TEST_DEVICE_NAME_LENGTH + ", provided string '" +
 							name + "' with length " + name.length());
 		}
-		sharedPrefs.edit().clear().putString(PREF_CALIBRATION_TEST_DEVICE_NAME, name).commit();
+		sharedPrefs.edit().putString(PREF_CALIBRATION_TEST_DEVICE_NAME, name).apply();
 	}
 
 	public String getCalibrationTestDeviceName() {
@@ -222,7 +224,7 @@ public class AppConfigManager {
 	}
 
 	public void setScanDuration(long scanDuration) {
-		sharedPrefs.edit().clear().putLong(PREF_SCAN_DURATION, scanDuration).commit();
+		sharedPrefs.edit().putLong(PREF_SCAN_DURATION, scanDuration).apply();
 	}
 
 	public long getScanDuration() {
@@ -230,7 +232,7 @@ public class AppConfigManager {
 	}
 
 	public void setRSSIDetectedLevel(long rssiDetectedLevel) {
-		sharedPrefs.edit().clear().putLong(PREF_RSSI_DETECTED_LEVEL, rssiDetectedLevel).commit();
+		sharedPrefs.edit().putLong(PREF_RSSI_DETECTED_LEVEL, rssiDetectedLevel).apply();
 	}
 
 	public long getRSSIDetectedLevel() {
@@ -238,7 +240,7 @@ public class AppConfigManager {
 	}
 
 	public void setScanInterval(long scanInterval) {
-		sharedPrefs.edit().clear().putLong(PREF_SCAN_INTERVAL, scanInterval).commit();
+		sharedPrefs.edit().putLong(PREF_SCAN_INTERVAL, scanInterval).apply();
 	}
 
 	public long getScanInterval() {
@@ -246,7 +248,7 @@ public class AppConfigManager {
 	}
 
 	public void setBluetoothPowerLevel(BluetoothTxPowerLevel powerLevel) {
-		sharedPrefs.edit().clear().putInt(PREF_ADVERTISEMENT_POWER_LEVEL, powerLevel.ordinal()).commit();
+		sharedPrefs.edit().putInt(PREF_ADVERTISEMENT_POWER_LEVEL, powerLevel.ordinal()).apply();
 	}
 
 	public BluetoothTxPowerLevel getBluetoothTxPowerLevel() {
@@ -259,11 +261,11 @@ public class AppConfigManager {
 	}
 
 	public void setBluetoothScanMode(BluetoothScanMode scanMode) {
-		sharedPrefs.edit().clear().putInt(PREF_BLUETOOTH_SCAN_MODE, scanMode.ordinal()).commit();
+		sharedPrefs.edit().putInt(PREF_BLUETOOTH_SCAN_MODE, scanMode.ordinal()).apply();
 	}
 
 	public void setBluetoothAdvertiseMode(BluetoothAdvertiseMode advertiseMode) {
-		sharedPrefs.edit().clear().putInt(PREF_ADVERTISEMENT_MODE, advertiseMode.ordinal()).commit();
+		sharedPrefs.edit().putInt(PREF_ADVERTISEMENT_MODE, advertiseMode.ordinal()).apply();
 	}
 
 	public BluetoothAdvertiseMode getBluetoothAdvertiseMode() {
@@ -276,7 +278,7 @@ public class AppConfigManager {
 	}
 
 	public void setUseScanResponse(boolean useScanResponse) {
-		sharedPrefs.edit().clear().putBoolean(PREF_BLUETOOTH_USE_SCAN_RESPONSE, useScanResponse).commit();
+		sharedPrefs.edit().putBoolean(PREF_BLUETOOTH_USE_SCAN_RESPONSE, useScanResponse).apply();
 	}
 
 	public float getContactAttenuationThreshold() {
@@ -284,7 +286,7 @@ public class AppConfigManager {
 	}
 
 	public void setContactAttenuationThreshold(float threshold) {
-		sharedPrefs.edit().clear().putFloat(PREF_CONTACT_ATTENUATION_THRESHOLD, threshold).commit();
+		sharedPrefs.edit().putFloat(PREF_CONTACT_ATTENUATION_THRESHOLD, threshold).apply();
 	}
 
 	public int getNumberOfWindowsForExposure() {
@@ -292,7 +294,7 @@ public class AppConfigManager {
 	}
 
 	public void setNumberOfWindowsForExposure(int threshold) {
-		sharedPrefs.edit().clear().putInt(PREF_NUMBER_OF_WINDOWS_FOR_EXPOSURE, threshold).commit();
+		sharedPrefs.edit().putInt(PREF_NUMBER_OF_WINDOWS_FOR_EXPOSURE, threshold).apply();
 	}
 
 	public int getContactNumber() {
@@ -300,11 +302,11 @@ public class AppConfigManager {
 	}
 
 	public void setContactNumber(int threshold) {
-		sharedPrefs.edit().clear().putInt(PREF_CONTACT_NUMBER, threshold).commit();
+		sharedPrefs.edit().putInt(PREF_CONTACT_NUMBER, threshold).apply();
 	}
 
 	public void setVibrationTimer(long vibrationTimer) {
-		sharedPrefs.edit().clear().putLong(PREF_VIBRATION_TIMER, vibrationTimer).commit();
+		sharedPrefs.edit().putLong(PREF_VIBRATION_TIMER, vibrationTimer).apply();
 	}
 
 	public long getVibrationTimer() {
@@ -312,7 +314,7 @@ public class AppConfigManager {
 	}
 
 	public void setJourneyStart(long journeyStart) {
-		sharedPrefs.edit().clear().putLong(PREF_JOURNEY_START, journeyStart).commit();
+		sharedPrefs.edit().putLong(PREF_JOURNEY_START, journeyStart).apply();
 	}
 
 	public long getJourneyStart() {
@@ -325,17 +327,18 @@ public class AppConfigManager {
 		Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {}.getType();
 		ArrayList<Pair<Long, Integer>> list = gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
 		list.add(pair);
-		sharedPrefs.edit().clear().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).commit();
+		sharedPrefs.edit().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).apply();
 	}
 
 	public void setJourneyContact(ArrayList<Pair<Long, Integer>> list) throws IOException {
 		Gson gson = new Gson();
-		sharedPrefs.edit().clear().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).commit();
+		sharedPrefs.edit().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).apply();
 	}
 
 	public ArrayList<Pair<Long, Integer>> getJourneyContact() throws IOException {
 		Gson gson = new Gson();
 		Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {}.getType();
+		Logger.d("C'est quoi cette merde", sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT));
 		return gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
 	}
 
@@ -347,8 +350,7 @@ public class AppConfigManager {
 		return sharedPrefs.getBoolean(PREF_IS_LOGGED, false);
 	}
 
-
 	public void clearPreferences() {
-		sharedPrefs.edit().clear().clear().commit();
+		sharedPrefs.edit().clear().apply();
 	}
 }

@@ -1,6 +1,9 @@
 package com.bouygues.bysafe.auth;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
@@ -21,6 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
@@ -82,6 +86,13 @@ public class AuthActivity extends AppCompatActivity {
         // prepare main activity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+
+
+        MainActivity activity = (MainActivity) MainActivity.getContext();
+        if (activity != null) {
+            activity.threadContact();
+            DP3T.start(MainActivity.getContext());
+        }
 
         // close auth panel
         finish();

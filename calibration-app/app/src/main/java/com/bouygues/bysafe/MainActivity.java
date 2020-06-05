@@ -12,13 +12,16 @@ package com.bouygues.bysafe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,6 +31,7 @@ import com.bouygues.bysafe.handshakes.HandshakesFragment;
 import com.bouygues.bysafe.report.ActivitiesFragment;
 import com.bouygues.bysafe.handwash.HandwashFragment;
 
+import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
@@ -42,8 +46,10 @@ import java.util.Map;
 
 import retrofit2.http.HEAD;
 
+import org.dpppt.android.sdk.internal.gatt.BleClient;
 import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import static java.lang.Math.floor;
 
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static Context context;
     private HandwashFragment handwashFragment = HandwashFragment.newInstance();
+    private static Thread thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         if (!isLogged) {
             Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);
+            finish();
         } else {
             setContentView(R.layout.activity_main);
             setupNavigationView();
@@ -92,7 +100,15 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            threadContact();
+
+            // PERMISSIONS
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+
+            startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                    Uri.parse("package:" + MainActivity.getContext().getPackageName())));
+
+            // PERMISSIONS
         }
     }
 
@@ -100,27 +116,27 @@ public class MainActivity extends AppCompatActivity {
         return context;
     }
 
-    private void threadContact() {
-        Thread thread = new Thread() {
+    public void threadContact() {
+            thread = new Thread() {
 
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        updateContact();
-                        vibrateContact();
-                        long now = System.currentTimeMillis();
-                        Logger.d("TIMESTAMP", Long.toString(((long) floor(now / 1000.0)) % 300));
-                        if (((long) floor(now / 1000.0)) % 300 == 0) {
-                            addContactToReport((((long) (floor(now / 1000.0)) - 300) * 1000));
+                @Override
+                public void run() {
+                    try {
+                        while (!isInterrupted()) {
+                            Thread.sleep(1000);
+                            updateContact();
+                            vibrateContact();
+                            long now = System.currentTimeMillis();
+                            Logger.d("TIMESTAMP", Long.toString(((long) floor(now / 1000.0)) % 300));
+                            if (((long) floor(now / 1000.0)) % 300 == 0) {
+                                addContactToReport((((long) (floor(now / 1000.0)) - 300) * 1000));
+                            }
                         }
+                    } catch (InterruptedException ignored) {
                     }
-                } catch (InterruptedException ignored) {
                 }
-            }
-        };
-        thread.start();
+            };
+            thread.start();
     }
 
     private void addContactToReport(long now) {
@@ -160,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         if (AppConfigManager.getInstance(MainApplication.getContext()).getVibrationTimer() == 0) {
             if (AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() != 0) {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                // Durée de vibration = 500
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     assert v != null;
                     v.vibrate(VibrationEffect.createWaveform(new long[]{0, 400, 200, 200, 200, 400}, -1));
@@ -168,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     assert v != null;
                     v.vibrate(new long[]{0, 400, 200, 200, 200, 400}, -1);
                 }
-                AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(20); // Modifier le nombre de tour de thread à attendre entre deux vibrations
+                AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(300); // Modifier le nombre de tour de thread à attendre entre deux vibrations
             }
         } else {
             AppConfigManager.getInstance(MainApplication.getContext()).setVibrationTimer(
@@ -198,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                if (stringListEntry.getValue().size() >= 1) // Nombre de handshake necessaire pour valider un contact
+                if (stringListEntry.getValue().size() >= 3) // Nombre de handshake necessaire pour valider un contact
                     AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(
                             AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() + 1
                     );
@@ -232,4 +247,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+
+        if (!AppConfigManager.getInstance(MainApplication.getContext()).getIsLogged()) {
+            if (thread != null) {
+                DP3T.stop(getContext());
+                thread.interrupt();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

@@ -23,7 +23,10 @@ import org.dpppt.android.sdk.internal.logger.Logger;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,7 +67,7 @@ public class ActivitiesFragment extends Fragment {
     private void getJourneyPercentage() {
         try {
             ArrayList<Pair<Long, Integer>> journeyContact = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyContact();
-            SimpleDateFormat formater = new SimpleDateFormat("hh:mm");
+            SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
             long total = journeyContact.size();
             float totalTime = (float)total / (float)12;
             if (total == 0)
@@ -72,11 +75,32 @@ public class ActivitiesFragment extends Fragment {
             long contacts = 0;
 
             StringBuilder stringBuilder = new StringBuilder();
+            for (long i = atStartOfDay(new java.util.Date()); i < atEndOfDay(new java.util.Date()); i += 3600000) {
+                stringBuilder.append(formater.format(i)).append("  ");
+                for (long j = i; j < i + 3600000; j += 300000) {
+                    if (journeyContact.isEmpty()) {
+                        stringBuilder.append('V');
+                    }
+                    for (Pair<Long, Integer> interval: journeyContact) {
+                        if (interval.first >= j && interval.first < j + 300000) {
+                            if (interval.second > 0) {
+                                stringBuilder.append('O');
+                                break;
+                            }
+                        }
+                        stringBuilder.append('V');
+                    }
+                }
+                stringBuilder.append('\n');
+            }
+            Logger.d("futur display", stringBuilder.toString());
+
             Logger.d("TOTAL INTERVAL TODAY", Long.toString(total));
             for (Pair<Long, Integer> interval: journeyContact) {
                 if (interval.second > 0) {
                     contacts += 1;
                 }
+                Logger.d("I_WANT_TO_SEE_THE_TIMESTAMP", Long.toString(interval.first));
                 list.add(formater.format(interval.first) + String.format(" %d", interval.second));
             }
             String toDisplay = String.format("Pourcentage d'exposition de la journée (sur %.1f heures): \n", totalTime);
@@ -87,7 +111,25 @@ public class ActivitiesFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public long atEndOfDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
 
+    private long atStartOfDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
 }

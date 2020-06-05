@@ -52,7 +52,7 @@ public class ParameterActivity extends AppCompatActivity {
         }
     };
 
-    private static final int MIN_INTERVAL_SCANNING_SECONDS = 30;
+    private static final int MIN_INTERVAL_SCANNING_SECONDS = 10;
     private static final int MAX_INTERVAL_SCANNING_SECONDS = 900;
     private static final int MIN_DURATION_SCANNING_SECONDS = 10;
     private static final int MIN_RSSI_DETECTED_LEVEL = -127;

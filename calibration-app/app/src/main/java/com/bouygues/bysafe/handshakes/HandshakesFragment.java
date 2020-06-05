@@ -68,15 +68,6 @@ public class HandshakesFragment extends Fragment {
         handshakeList = getView().findViewById(R.id.handshake_list);
 
         loadContacts();
-
-        // PERMISSIONS
-        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_CODE_PERMISSION_LOCATION);
-
-        startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                Uri.parse("package:" + requireContext().getPackageName())));
-
-        // PERMISSIONS
     }
 
     private void loadContacts() {
