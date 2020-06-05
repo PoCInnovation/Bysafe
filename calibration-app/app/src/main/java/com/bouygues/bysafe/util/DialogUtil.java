@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-package org.dpppt.android.calibration.util;
+package com.bouygues.bysafe.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +17,7 @@ import android.graphics.Color;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import org.dpppt.android.calibration.R;
+import com.bouygues.bysafe.R;
 
 public class DialogUtil {
 

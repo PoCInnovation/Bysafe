@@ -14,6 +14,7 @@
 	<string name="dp3t_sdk_service_notification_title">@string/app_name</string>
 	<string name="dp3t_sdk_service_notification_text">Recherche de personnes à proximité…</string>
 	<string name="wash_alert">C\'est le moment de se laver les mains</string>
+	<string name="site_id">ID de chantier</string>
 	<string name="push_exposed_title">push_exposed_title</string>
 	<string name="push_exposed_text">push_exposed_text</string>
 	<string name="req_location_permission_ungranted">Autoriser la géolocalisation</string>

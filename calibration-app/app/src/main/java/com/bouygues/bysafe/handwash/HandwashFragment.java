@@ -1,4 +1,4 @@
-package org.dpppt.android.calibration.handwash;
+package com.bouygues.bysafe.handwash;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -24,9 +24,9 @@ import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
-import org.dpppt.android.calibration.MainActivity;
-import org.dpppt.android.calibration.R;
-import org.dpppt.android.calibration.handshakes.HandshakesFragment;
+import com.bouygues.bysafe.MainActivity;
+import com.bouygues.bysafe.R;
+import com.bouygues.bysafe.handshakes.HandshakesFragment;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
 import java.util.concurrent.TimeUnit;

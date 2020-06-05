@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-package org.dpppt.android.calibration;
+package com.bouygues.bysafe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,10 +23,10 @@ import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.dpppt.android.calibration.auth.AuthActivity;
-import org.dpppt.android.calibration.handshakes.HandshakesFragment;
-import org.dpppt.android.calibration.report.ActivitiesFragment;
-import org.dpppt.android.calibration.handwash.HandwashFragment;
+import com.bouygues.bysafe.auth.AuthActivity;
+import com.bouygues.bysafe.handshakes.HandshakesFragment;
+import com.bouygues.bysafe.report.ActivitiesFragment;
+import com.bouygues.bysafe.handwash.HandwashFragment;
 
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;

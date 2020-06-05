@@ -1,4 +1,4 @@
-package org.dpppt.android.calibration.report;
+package com.bouygues.bysafe.report;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.dpppt.android.calibration.MainApplication;
-import org.dpppt.android.calibration.R;
+import com.bouygues.bysafe.MainApplication;
+import com.bouygues.bysafe.R;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;

@@ -1,4 +1,4 @@
-package org.dpppt.android.calibration.handwash;
+package com.bouygues.bysafe.handwash;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.dpppt.android.calibration.R;
+import com.bouygues.bysafe.R;
 
 public class BarrierGestureInfoFragment extends Fragment {
     @Override

@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: MPL-2.0
  */
-package org.dpppt.android.calibration.util;
+package com.bouygues.bysafe.util;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -21,7 +21,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 
-import org.dpppt.android.calibration.R;
+import com.bouygues.bysafe.R;
 
 public class NotificationUtil {
 
