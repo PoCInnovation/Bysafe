@@ -21,6 +21,6 @@
         android:ems="10"
         android:gravity="center"
         android:hint="@string/site_id"
-        android:inputType="textPersonName" />
+        android:inputType="number" />
 
 </RelativeLayout>
