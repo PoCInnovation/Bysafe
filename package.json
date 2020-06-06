@@ -8,9 +8,11 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "firebase": "^7.15.0"
+    "firebase": "^7.15.0",
+    "firebase-tools": "^8.4.2"
   },
   "scripts": {
-    "deploy": "node index.js"
+    "serve": "firebase serve",
+    "deploy": "firebase deploy"
   }
 }
