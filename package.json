@@ -7,6 +7,10 @@
   "author": "Lorenzo Rosmarino <lorenzo.rosmarino@epitech.eu>",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.17.1",
     "firebase": "^7.15.0"
+  },
+  "scripts": {
+    "deploy": "node index.js"
   }
 }
