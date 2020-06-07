@@ -78,18 +78,18 @@ public class ActivitiesFragment extends Fragment {
             for (long i = atStartOfDay(new java.util.Date()); i < atEndOfDay(new java.util.Date()); i += 3600000) {
                 stringBuilder.append(formater.format(i)).append("  ");
                 for (long j = i; j < i + 3600000; j += 300000) {
-                    if (journeyContact.isEmpty()) {
-                        stringBuilder.append('V');
-                    }
+                    boolean set = false;
                     for (Pair<Long, Integer> interval: journeyContact) {
                         if (interval.first >= j && interval.first < j + 300000) {
-                            if (interval.second > 0) {
+                            if (interval.second > 0)
                                 stringBuilder.append('O');
-                                break;
-                            }
+                            else
+                                stringBuilder.append('V');
+                            set = true;
                         }
-                        stringBuilder.append('V');
                     }
+                    if (!set)
+                        stringBuilder.append('V');
                 }
                 stringBuilder.append('\n');
             }

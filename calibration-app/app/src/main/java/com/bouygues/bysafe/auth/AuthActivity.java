@@ -90,6 +90,7 @@ public class AuthActivity extends AppCompatActivity {
 
         MainActivity activity = (MainActivity) MainActivity.getContext();
         if (activity != null) {
+            AppConfigManager.getInstance(MainApplication.getContext()).setIsThread(true);
             activity.threadContact();
             DP3T.start(MainActivity.getContext());
         }

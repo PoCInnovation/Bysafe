@@ -68,6 +68,7 @@ public class AppConfigManager {
 	private static final long DEFAULT_JOURNEY_START = 0;
 	private static final String DEFAULT_JOURNEY_CONTACT =  new Gson().toJson(new ArrayList<Pair<Long, Integer>>());
 	private static final float DEFAULT_CONTACT_ATTENUATION_THRESHOLD = 73.0f;
+	private static final boolean DEFAULT_THREAD = false;
 
 	private static final String PREFS_NAME = "dp3t_sdk_preferences";
 	private static final String PREF_APPLICATION_LIST = "applicationList";
@@ -92,7 +93,7 @@ public class AppConfigManager {
 	private static final String PREF_JOURNEY_START = "journey_start";
 	private static final String PREF_JOURNEY_CONTACT = "journey_contact";
 	private static final String PREF_IS_LOGGED = "is_logged";
-
+	private static final String PREF_IS_THREAD = "is_thread";
 
 	private String appId;
 	private boolean useDiscovery = false;
@@ -348,6 +349,14 @@ public class AppConfigManager {
 
 	public boolean getIsLogged() {
 		return sharedPrefs.getBoolean(PREF_IS_LOGGED, false);
+	}
+
+	public void setIsThread(boolean isThread) {
+		sharedPrefs.edit().putBoolean(PREF_IS_THREAD, isThread).apply();
+	}
+
+	public boolean getIsThread() {
+		return sharedPrefs.getBoolean(PREF_IS_THREAD, DEFAULT_THREAD);
 	}
 
 	public void clearPreferences() {
