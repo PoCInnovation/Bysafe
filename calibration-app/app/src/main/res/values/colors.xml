@@ -18,6 +18,7 @@
 
     <color name="transparent">#0000</color>
     <color name="red">#DD3737</color>
+    <color name="strong_red">#FF0900</color>
     <color name="green">#81CA84</color>
     <color name="blue">#37AEDD</color>
     <color name="blueLight">#76C9EA</color>

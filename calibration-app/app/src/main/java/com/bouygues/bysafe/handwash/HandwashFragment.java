@@ -26,17 +26,21 @@ import androidx.fragment.app.Fragment;
 
 import com.bouygues.bysafe.MainActivity;
 import com.bouygues.bysafe.R;
-import com.bouygues.bysafe.handshakes.HandshakesFragment;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+
+import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
 import java.util.concurrent.TimeUnit;
 
 public class HandwashFragment extends Fragment {
     private long washingTime = 5;
-    private boolean isRunning;
-    private long pausedTime;
-    private long lastWashedTime;
+    private boolean isRunning = false;
+    private long pausedTime = 0;
+    private long lastWashingTime = 0;
+    private boolean isPaused = false;
     private Handler handler = new Handler();
+    AppConfigManager appConfigManager;
 
     @Nullable
     @Override
@@ -49,51 +53,48 @@ public class HandwashFragment extends Fragment {
             NotificationChannel channel = new NotificationChannel(channelName, channelName, NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
-        View view = inflater.inflate(R.layout.fragment_handwash, container, false);
-        TextView text = view.findViewById(R.id.washed_hands_timer);
-        text.setText(getTimerString());
-        return view;
+        appConfigManager = AppConfigManager.getInstance(getContext());
+        Bundle _savedInstanceState = appConfigManager.getHandwashBundle();
+        Logger.d("BUNDLE", String.valueOf(_savedInstanceState));
+        isPaused = _savedInstanceState.getBoolean("is_paused");
+        isRunning = _savedInstanceState.getBoolean("is_running");
+        lastWashingTime = _savedInstanceState.getLong("last_washing_time");
+        pausedTime = _savedInstanceState.getLong("paused_time");
+        return inflater.inflate(R.layout.fragment_handwash, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null) {
-            if (lastWashedTime > 0) {
-                handler.removeCallbacks(timerTask);
-                handler.post(timerTask);
-            }
-        }
 
         final ImageButton infoBarrierGesture = view.findViewById(R.id.button_info_barrier_gesture);
         final Button handWashButton = view.findViewById(R.id.washed_hands);
         final Button pauseHandWashButton = view.findViewById(R.id.pause_resume_hand_wash);
 
-        pauseHandWashButton.setText(handler.hasCallbacks(timerTask) ? R.string.button_resume_hand_wash : R.string.button_pause_hand_wash);
         handWashButton.setOnClickListener(v -> {
-            lastWashedTime = System.currentTimeMillis();
+            lastWashingTime = System.currentTimeMillis();
             handler.removeCallbacks(timerTask);
             handler.post(timerTask);
             isRunning = true;
+            isPaused = false;
             pauseHandWashButton.setText(R.string.button_pause_hand_wash);
         });
-        Logger.d("debuuuuuuuuuug", "isRunning: " + isRunning);
 
         pauseHandWashButton.setOnClickListener(v -> {
-            if (isRunning) {
-                // pauses the counter
-                pausedTime = System.currentTimeMillis() - lastWashedTime;
+            if (!isPaused && isRunning) {
+                pausedTime = System.currentTimeMillis() - lastWashingTime;
                 handler.removeCallbacks(timerTask);
                 pauseHandWashButton.setText(R.string.button_resume_hand_wash);
                 isRunning = false;
-            } else if (pausedTime != 0) {
-                // resume it
-                lastWashedTime = System.currentTimeMillis() - pausedTime;
+                isPaused = true;
+            } else if (!isRunning && isPaused) {
+                lastWashingTime = System.currentTimeMillis() - pausedTime;
                 pausedTime = 0;
                 handler.post(timerTask);
                 pauseHandWashButton.setText(getString(R.string.button_pause_hand_wash));
                 isRunning = true;
+                isPaused = false;
             }
         });
 
@@ -111,34 +112,42 @@ public class HandwashFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Bundle b = getArguments();
-        if (b == null) {
-            b = new Bundle();
-        }
-        b.putLong("lastWashedTime", lastWashedTime);
-        b.putLong("pausedTime", pausedTime);
-        b.putBoolean("isRunning", isRunning);
-        setArguments(b);
+        appConfigManager.setHandwashBundle(getBundle());
     }
 
-    public static Bundle getBundle() {
+    private Bundle getBundle() {
         Bundle b = new Bundle();
-        b.putLong("lastWashedTime", System.currentTimeMillis());
-        b.putLong("pausedTime", 0);
-        b.putBoolean("isRunning", false);
+        b.putLong("last_washing_time", lastWashingTime);
+        b.putLong("paused_time", pausedTime);
+        b.putBoolean("is_running", isRunning);
+        b.putBoolean("is_paused", isPaused);
         return b;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Bundle savedInstanceState = getArguments();
-        if (savedInstanceState != null) {
-            lastWashedTime = savedInstanceState.getLong("lastWashedTime");
-            pausedTime = savedInstanceState.getLong("pausedTime");
-            isRunning = savedInstanceState.getBoolean("isRunning");
-            Logger.d("tatata", "getting args : " + savedInstanceState);
+        if (lastWashingTime > 0 && !isPaused) {
+            handler.removeCallbacks(timerTask);
+            handler.post(timerTask);
         }
+        long millis;
+
+        Logger.d("isPaused", String.valueOf(isPaused));
+        if (isPaused) {
+            millis = TimeUnit.SECONDS.toMillis(washingTime) - pausedTime;
+        } else {
+            millis = TimeUnit.SECONDS.toMillis(washingTime) - (System.currentTimeMillis() - lastWashingTime);
+        }
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+        CircularProgressBar pb = getView().findViewById(R.id.circularProgressBar);
+        pb.setProgress(millis != 0 ? ((float) seconds / (float) washingTime) * 100 : 0);
+
+        Button pauseHandWashButton = getView().findViewById(R.id.pause_resume_hand_wash);
+        TextView text = getView().findViewById(R.id.washed_hands_timer);
+
+        text.setText(getTimerString());
+        pauseHandWashButton.setText(isPaused ? R.string.button_resume_hand_wash : R.string.button_pause_hand_wash);
     }
 
     public static void showNotification(Context context, @StringRes int title, @StringRes int message, @DrawableRes int icon) {
@@ -162,7 +171,12 @@ public class HandwashFragment extends Fragment {
     }
 
     private String getTimerString() {
-        long millis = TimeUnit.SECONDS.toMillis(washingTime) - (System.currentTimeMillis() - lastWashedTime);
+        long millis;
+        if (isPaused) {
+            millis = TimeUnit.SECONDS.toMillis(washingTime) - pausedTime;
+        } else {
+            millis = TimeUnit.SECONDS.toMillis(washingTime) - (System.currentTimeMillis() - lastWashingTime);
+        }
         long days = TimeUnit.MILLISECONDS.toDays(millis);
         millis -= TimeUnit.DAYS.toMillis(days);
         long hours = TimeUnit.MILLISECONDS.toHours(millis);
@@ -171,7 +185,7 @@ public class HandwashFragment extends Fragment {
         millis -= TimeUnit.MINUTES.toMillis(minutes);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        if (seconds > 0) {
+        if (millis > 0) {
             return String.format("%02d:%02d:%02d", hours, minutes, seconds);
         }
         return MainActivity.getContext().getString(R.string.button_wash);
@@ -179,23 +193,27 @@ public class HandwashFragment extends Fragment {
 
     private Runnable timerTask = new Runnable() {
         public void run() {
-            long millis = TimeUnit.SECONDS.toMillis(washingTime) - (System.currentTimeMillis() - lastWashedTime);
+            long millis = TimeUnit.SECONDS.toMillis(washingTime) - (System.currentTimeMillis() - lastWashingTime);
             long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
             final View view = getView();
             final TextView text = view != null ? view.findViewById(R.id.washed_hands_timer) : null;
+            final CircularProgressBar pb = view != null ? view.findViewById(R.id.circularProgressBar) : null;
 
             if (text != null) {
-
                 text.setText(getTimerString());
             }
+            if (pb != null) {
+                pb.setProgress(((float) seconds / (float) washingTime) * 100);
+            }
 
-            if (seconds > 0) {
+            if (millis > 0) {
                 handler.postDelayed(this, 1000);
             } else {
                 if (text != null) {
                     text.setText(getTimerString());
                 }
-//                isRunning = false;
+                isPaused = false;
+                isRunning = false;
                 showNotification(MainActivity.getContext(), R.string.app_name, R.string.wash_alert, R.drawable.ic_bysafe);
             }
         }

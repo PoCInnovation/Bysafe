@@ -24,12 +24,12 @@
 
     <ImageButton
         android:id="@+id/logout_button"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_power"
-        />
+        android:background="@null"
+        android:src="@drawable/ic_power" />
 
 </RelativeLayout>

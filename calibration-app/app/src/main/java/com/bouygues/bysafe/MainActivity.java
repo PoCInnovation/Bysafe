@@ -57,7 +57,7 @@ import static java.lang.Math.floor;
 public class MainActivity extends AppCompatActivity {
 
     private static Context context;
-    private HandwashFragment handwashFragment = HandwashFragment.newInstance();
+//    private HandwashFragment handwashFragment = HandwashFragment.newInstance();
     private static Thread thread;
 
     @Override
@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         context = this;
-
-        handwashFragment.setArguments(HandwashFragment.getBundle());
 
         boolean isLogged = AppConfigManager.getInstance(MainApplication.getContext()).getIsLogged();
         if (!isLogged) {
@@ -103,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 AppConfigManager.getInstance(MainApplication.getContext()).setJourneyStart(System.currentTimeMillis());
                 try {
                     AppConfigManager.getInstance(MainApplication.getContext()).setJourneyContact(new ArrayList<>());
-                    DP3T.clearData(getContext(), () -> {});
+//                    DP3T.clearData(getContext(), () -> {});
                     MainApplication.initDP3T(getContext());
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -236,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.action_parameters:
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment_container, handwashFragment)
+                            .replace(R.id.main_fragment_container, HandwashFragment.newInstance())
                             .commit();
                     break;
                 case R.id.action_handshakes:

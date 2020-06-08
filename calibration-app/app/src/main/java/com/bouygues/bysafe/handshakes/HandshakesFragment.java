@@ -9,19 +9,12 @@
  */
 package com.bouygues.bysafe.handshakes;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.bouygues.bysafe.MainActivity;
-import com.bouygues.bysafe.MainApplication;
-import org.dpppt.android.sdk.DP3T;
 
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -34,8 +27,6 @@ import com.bouygues.bysafe.R;
 import com.bouygues.bysafe.parameters.ParameterActivity;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
-
-import java.util.Objects;
 
 public class HandshakesFragment extends Fragment {
 
@@ -52,7 +43,7 @@ public class HandshakesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_handshakes, container, false);
+        return inflater.inflate(R.layout.fragment_protection, container, false);
     }
 
     @Override
@@ -87,6 +78,9 @@ public class HandshakesFragment extends Fragment {
                             stringBuilder.append(counter);
                             Logger.d("Contacts", Integer.toString(counter));
                             handshakeList.setText(stringBuilder.toString());
+                            if (counter != 0) {
+
+                            }
                             handshakeList.setTextColor(counter != 0 ? Color.RED : Color.GREEN);
                         });
                         for (int i = 0; i < 10; i++) {
