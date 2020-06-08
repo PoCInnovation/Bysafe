@@ -77,11 +77,12 @@ public class HandshakesFragment extends Fragment {
                             int counter = AppConfigManager.getInstance(getContext()).getContactNumber();
                             stringBuilder.append(counter);
                             Logger.d("Contacts", Integer.toString(counter));
-                            handshakeList.setText(stringBuilder.toString());
-                            if (counter != 0) {
-
+                            if (counter == 0) {
+                                handshakeList.setText("");
+                            } else {
+                                handshakeList.setText(stringBuilder.toString());
+                                handshakeList.setTextColor(Color.RED);
                             }
-                            handshakeList.setTextColor(counter != 0 ? Color.RED : Color.GREEN);
                         });
                         for (int i = 0; i < 10; i++) {
                             if (continueWork) {

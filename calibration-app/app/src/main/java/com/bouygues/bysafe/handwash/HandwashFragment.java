@@ -34,7 +34,7 @@ import org.dpppt.android.sdk.internal.logger.Logger;
 import java.util.concurrent.TimeUnit;
 
 public class HandwashFragment extends Fragment {
-    private long washingTime = 5;
+    private long washingTime = 7200;
     private boolean isRunning = false;
     private long pausedTime = 0;
     private long lastWashingTime = 0;

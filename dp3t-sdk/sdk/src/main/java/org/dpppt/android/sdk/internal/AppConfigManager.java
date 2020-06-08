@@ -99,6 +99,8 @@ public class AppConfigManager {
     private static final String PREF_HANDWASH_IS_RUNNING = "is_running";
     private static final String PREF_HANDWASH_PAUSED_TIME = "paused_time";
     private static final String PREF_HANDWASH_LAST_WASHING_TIME = "last_washing_time";
+    private static final String PREF_IS_FIRST_OPENING = "is_first_opening";
+    private static final String PREF_FIRST_OPENING_CHOSEN_MENU = "first_opening_chosen_menu";
 
     private String appId;
     private boolean useDiscovery = false;
@@ -253,10 +255,6 @@ public class AppConfigManager {
         return sharedPrefs.getLong(PREF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL);
     }
 
-    public void setBluetoothPowerLevel(BluetoothTxPowerLevel powerLevel) {
-        sharedPrefs.edit().putInt(PREF_ADVERTISEMENT_POWER_LEVEL, powerLevel.ordinal()).apply();
-    }
-
     public BluetoothTxPowerLevel getBluetoothTxPowerLevel() {
         return BluetoothTxPowerLevel.values()[sharedPrefs
                 .getInt(PREF_ADVERTISEMENT_POWER_LEVEL, DEFAULT_BLUETOOTH_POWER_LEVEL.ordinal())];
@@ -266,13 +264,6 @@ public class AppConfigManager {
         return BluetoothScanMode.values()[sharedPrefs.getInt(PREF_BLUETOOTH_SCAN_MODE, DEFAULT_BLUETOOTH_SCAN_MODE.ordinal())];
     }
 
-    public void setBluetoothScanMode(BluetoothScanMode scanMode) {
-        sharedPrefs.edit().putInt(PREF_BLUETOOTH_SCAN_MODE, scanMode.ordinal()).apply();
-    }
-
-    public void setBluetoothAdvertiseMode(BluetoothAdvertiseMode advertiseMode) {
-        sharedPrefs.edit().putInt(PREF_ADVERTISEMENT_MODE, advertiseMode.ordinal()).apply();
-    }
 
     public BluetoothAdvertiseMode getBluetoothAdvertiseMode() {
         return BluetoothAdvertiseMode.values()[sharedPrefs
@@ -281,10 +272,6 @@ public class AppConfigManager {
 
     public boolean isScanResponseEnabled() {
         return sharedPrefs.getBoolean(PREF_BLUETOOTH_USE_SCAN_RESPONSE, DEFAULT_BLUETOOTH_USE_SCAN_RESPONSE_ENABLED);
-    }
-
-    public void setUseScanResponse(boolean useScanResponse) {
-        sharedPrefs.edit().putBoolean(PREF_BLUETOOTH_USE_SCAN_RESPONSE, useScanResponse).apply();
     }
 
     public float getContactAttenuationThreshold() {
@@ -375,6 +362,22 @@ public class AppConfigManager {
         b.putBoolean(PREF_HANDWASH_IS_PAUSED, sharedPrefs.getBoolean(PREF_HANDWASH_IS_PAUSED, false));
         b.putBoolean(PREF_HANDWASH_IS_RUNNING, sharedPrefs.getBoolean(PREF_HANDWASH_IS_RUNNING, false));
         return b;
+    }
+
+    public void setPrefIsFirstOpening(boolean isFirstOpening) {
+        sharedPrefs.edit().putBoolean(PREF_IS_FIRST_OPENING, isFirstOpening).apply();
+    }
+
+    public boolean getPrefIsFirstOpening() {
+        return sharedPrefs.getBoolean(PREF_IS_FIRST_OPENING, true);
+    }
+
+    public void setPrefChosenOpeningMenu(String chosenMenu) {
+        sharedPrefs.edit().putString(PREF_FIRST_OPENING_CHOSEN_MENU, chosenMenu).apply();
+    }
+
+    public String getPrefChosenOpeningMenu() {
+        return sharedPrefs.getString(PREF_FIRST_OPENING_CHOSEN_MENU, null);
     }
 
     public boolean getIsThread() {

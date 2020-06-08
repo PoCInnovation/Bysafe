@@ -45,6 +45,9 @@
             android:name="com.bouygues.bysafe.parameters.ParameterActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.bouygues.bysafe.OpeningScreen"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.bouygues.bysafe.auth.AuthActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" />
