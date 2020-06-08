@@ -3,24 +3,72 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_auth"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/auth_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/ic_top_auth"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Authenticate"
-        />
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
-    <EditText
+        <ImageView
+            android:id="@+id/ic_auth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_auth" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:text="@string/bysafe_upper"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/site_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ic_top_auth"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/background_site_id_text"
+        android:ems="10"
+        android:elevation="2dp"
+        android:fontFamily="@font/roboto_medium"
+        android:hint="@string/site_id"
+        android:inputType="number"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/greyLight" />
+
+    <TextView
+        android:id="@+id/auth_button"
+        android:elevation="2dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/site_id"
-        android:inputType="number" />
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/auth_button"
+        android:fontFamily="@font/roboto_medium"
+        android:paddingLeft="40dp"
+        android:paddingTop="10dp"
+        android:paddingRight="40dp"
+        android:paddingBottom="10dp"
+        android:text="@string/connect"
+        android:textColor="#D97D54" />
 
 </RelativeLayout>

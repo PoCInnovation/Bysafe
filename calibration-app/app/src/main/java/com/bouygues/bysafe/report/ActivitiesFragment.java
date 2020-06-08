@@ -105,7 +105,7 @@ public class ActivitiesFragment extends Fragment {
                     for (Pair<Long, Integer> interval: journeyContact) {
                         if (interval.first >= j && interval.first < j + 300000) {
                             if (interval.second > 0) {
-                                stringBuilder.append("O");
+                                stringBuilder.append("V");
                                 stringBuilder.setSpan(new BackgroundColorSpan(Color.RED),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 stringBuilder.setSpan(new ForegroundColorSpan(Color.RED),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                             } else {
@@ -118,8 +118,8 @@ public class ActivitiesFragment extends Fragment {
                     }
                     if (!set) {
                         stringBuilder.append("V");
-                        stringBuilder.setSpan(new BackgroundColorSpan(Color.GREEN), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        stringBuilder.setSpan(new ForegroundColorSpan(Color.GREEN),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        stringBuilder.setSpan(new BackgroundColorSpan(Color.LTGRAY), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        stringBuilder.setSpan(new ForegroundColorSpan(Color.LTGRAY),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                 }
                 long x = (i - atStartOfDay(new java.util.Date())) / 3600000;
