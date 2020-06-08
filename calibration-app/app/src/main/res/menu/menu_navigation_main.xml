@@ -10,7 +10,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_parameters"
+        android:id="@+id/action_barrier_gestures"
         android:enabled="true"
         android:icon="@drawable/ic_barrier_gesture"
         android:title="@string/tab_barrier_gesture" />

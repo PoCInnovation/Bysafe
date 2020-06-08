@@ -15,11 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
@@ -45,78 +43,91 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.http.HEAD;
-
-import org.dpppt.android.sdk.internal.gatt.BleClient;
 import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import static java.lang.Math.floor;
 
 public class MainActivity extends AppCompatActivity {
 
     private static Context context;
-//    private HandwashFragment handwashFragment = HandwashFragment.newInstance();
     private static Thread thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AppConfigManager appConfigManager = AppConfigManager.getInstance(getContext());
         context = this;
 
-        boolean isLogged = AppConfigManager.getInstance(MainApplication.getContext()).getIsLogged();
+        boolean isLogged = appConfigManager.getIsLogged();
         if (!isLogged) {
             Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);
             finish();
         } else {
+            if (appConfigManager.getPrefIsFirstOpening()) {
+                Intent intent = new Intent(this, OpeningScreen.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+
             setContentView(R.layout.activity_main);
             setupNavigationView();
+
             if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.main_fragment_container, HandwashFragment.newInstance())
-                        .commit();
+                String chosenMenu = appConfigManager.getPrefChosenOpeningMenu();
+                BottomNavigationView navigationView = findViewById(R.id.main_navigation_view);
+                if (chosenMenu == "barrier_gestures") {
+                    navigationView.setSelectedItemId(R.id.action_barrier_gestures);
+                } else if (chosenMenu == "protection") {
+                    navigationView.setSelectedItemId(R.id.action_handshakes);
+                } else if (chosenMenu == "activities") {
+                    navigationView.setSelectedItemId(R.id.action_activities);
+                } else {
+                    navigationView.setSelectedItemId(R.id.action_barrier_gestures);
+                }
+                if (chosenMenu != null) {
+                    appConfigManager.setPrefChosenOpeningMenu(null);
+                }
             }
 
             final ImageButton logoutButton = findViewById(R.id.logout_button);
             logoutButton.setOnClickListener(v -> {
-                AppConfigManager.getInstance(MainApplication.getContext()).setIsLogged(false);
+                appConfigManager.setIsLogged(false);
                 Intent intent = new Intent(this, AuthActivity.class);
                 startActivity(intent);
                 finish();
             });
 
-           if (!AppConfigManager.getInstance(MainApplication.getContext()).getIsThread()) {
-               AppConfigManager.getInstance(MainApplication.getContext()).setIsThread(true);
-               threadContact();
-               DP3T.start(getContext());
-           }
+            if (!appConfigManager.getIsThread()) {
+                appConfigManager.setIsThread(true);
+                threadContact();
+                DP3T.start(getContext());
+            }
 
             Calendar calendarThen = Calendar.getInstance();
             Calendar calendarNow = Calendar.getInstance();
             calendarThen.setTimeInMillis(AppConfigManager.getInstance(MainApplication.getContext()).getJourneyStart());
             if (calendarThen.get(Calendar.DAY_OF_MONTH) != calendarNow.get(Calendar.DAY_OF_MONTH)) {
-                AppConfigManager.getInstance(MainApplication.getContext()).setJourneyStart(System.currentTimeMillis());
+                appConfigManager.setJourneyStart(System.currentTimeMillis());
                 try {
-                    AppConfigManager.getInstance(MainApplication.getContext()).setJourneyContact(new ArrayList<>());
+                    appConfigManager.setJourneyContact(new ArrayList<>());
 //                    DP3T.clearData(getContext(), () -> {});
                     MainApplication.initDP3T(getContext());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
             // PERMISSIONS
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     1);
-
             startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                     Uri.parse("package:" + MainActivity.getContext().getPackageName())));
-
             // PERMISSIONS
         }
+
     }
 
     public static Context getContext() {
@@ -124,26 +135,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void threadContact() {
-            thread = new Thread() {
+        thread = new Thread() {
 
-                @Override
-                public void run() {
-                    try {
-                        while (!isInterrupted()) {
-                            Thread.sleep(1000);
-                            updateContact();
-                            vibrateContact();
-                            long now = System.currentTimeMillis();
-                            Logger.d("TIMESTAMP", Long.toString(((long) floor(now / 1000.0)) % 300));
-                            if (((long) floor(now / 1000.0)) % 300 == 0) {
-                                addContactToReport((((long) (floor(now / 1000.0)) - 300) * 1000));
-                            }
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        updateContact();
+                        vibrateContact();
+                        long now = System.currentTimeMillis();
+                        Logger.d("TIMESTAMP", Long.toString(((long) floor(now / 1000.0)) % 300));
+                        if (((long) floor(now / 1000.0)) % 300 == 0) {
+                            addContactToReport((((long) (floor(now / 1000.0)) - 300) * 1000));
                         }
-                    } catch (InterruptedException ignored) {
                     }
+                } catch (InterruptedException ignored) {
                 }
-            };
-            thread.start();
+            }
+        };
+        thread.start();
     }
 
     private void addContactToReport(long now) {
@@ -232,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.action_parameters:
+                case R.id.action_barrier_gestures:
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment_container, HandwashFragment.newInstance())
                             .commit();
@@ -253,9 +264,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
-    protected void onDestroy () {
+    protected void onDestroy() {
         super.onDestroy();
 
         if (!AppConfigManager.getInstance(MainApplication.getContext()).getIsLogged()) {
@@ -270,5 +280,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        AppConfigManager.getInstance(MainApplication.getContext()).setPrefIsFirstOpening(true);
     }
 }
