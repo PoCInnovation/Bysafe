@@ -1,7 +1,16 @@
 package com.bouygues.bysafe.report;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bouygues.bysafe.MainActivity;
 import com.bouygues.bysafe.MainApplication;
 import com.bouygues.bysafe.R;
 import org.dpppt.android.sdk.internal.AppConfigManager;
@@ -39,6 +49,7 @@ public class ActivitiesFragment extends Fragment {
     private TextView percentage_header;
     private long interval = 60000;
     private ArrayList<String> list = new ArrayList<>();
+    private ArrayList<android.widget.TextView> listId = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -54,14 +65,26 @@ public class ActivitiesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        listId.add(view.findViewById(R.id.Hour8));
+        listId.add(view.findViewById(R.id.Hour9));
+        listId.add(view.findViewById(R.id.Hour10));
+        listId.add(view.findViewById(R.id.Hour11));
+        listId.add(view.findViewById(R.id.Hour12));
+        listId.add(view.findViewById(R.id.Hour13));
+        listId.add(view.findViewById(R.id.Hour14));
+        listId.add(view.findViewById(R.id.Hour15));
+        listId.add(view.findViewById(R.id.Hour16));
+        listId.add(view.findViewById(R.id.Hour17));
+        listId.add(view.findViewById(R.id.Hour18));
+
         percentage = view.findViewById(R.id.text_percentage);
         percentage_header = view.findViewById(R.id.text_percentage_header);
         getJourneyPercentage();
 
 
-        ListView ll = view.findViewById(R.id.log_list);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.row, R.id.row_text, list);
-        ll.setAdapter(arrayAdapter);
+        //ListView ll = view.findViewById(R.id.log_list);
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(view.getContext(), R.layout.row, R.id.row_text, list);
+        //ll.setAdapter(arrayAdapter);
     }
 
     private void getJourneyPercentage() {
@@ -74,34 +97,41 @@ public class ActivitiesFragment extends Fragment {
                 total = 1;
             long contacts = 0;
 
-            StringBuilder stringBuilder = new StringBuilder();
-            for (long i = atStartOfDay(new java.util.Date()); i < atEndOfDay(new java.util.Date()); i += 3600000) {
-                stringBuilder.append(formater.format(i)).append("  ");
+            SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+            for (long i = atStartOfDay(new java.util.Date()); i <= atEndOfDay(new java.util.Date()); i += 3600000) {
+                stringBuilder.append(formater.format(i)).append("   ");
                 for (long j = i; j < i + 3600000; j += 300000) {
                     boolean set = false;
                     for (Pair<Long, Integer> interval: journeyContact) {
                         if (interval.first >= j && interval.first < j + 300000) {
-                            if (interval.second > 0)
-                                stringBuilder.append('O');
-                            else
-                                stringBuilder.append('V');
+                            if (interval.second > 0) {
+                                stringBuilder.append("O");
+                                stringBuilder.setSpan(new BackgroundColorSpan(Color.RED),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                stringBuilder.setSpan(new ForegroundColorSpan(Color.RED),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            } else {
+                                stringBuilder.append("V");
+                                stringBuilder.setSpan(new BackgroundColorSpan(Color.GREEN),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                stringBuilder.setSpan(new ForegroundColorSpan(Color.GREEN),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            }
                             set = true;
                         }
                     }
-                    if (!set)
-                        stringBuilder.append('V');
+                    if (!set) {
+                        stringBuilder.append("V");
+                        stringBuilder.setSpan(new BackgroundColorSpan(Color.GREEN), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        stringBuilder.setSpan(new ForegroundColorSpan(Color.GREEN),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
                 }
-                stringBuilder.append('\n');
+                long x = (i - atStartOfDay(new java.util.Date())) / 3600000;
+                listId.get((int)x).setText(stringBuilder);
+                list.add(stringBuilder.toString());
+                stringBuilder.clear();
+                stringBuilder.clearSpans();
             }
-            Logger.d("futur display", stringBuilder.toString());
-
-            Logger.d("TOTAL INTERVAL TODAY", Long.toString(total));
             for (Pair<Long, Integer> interval: journeyContact) {
                 if (interval.second > 0) {
                     contacts += 1;
                 }
-                Logger.d("I_WANT_TO_SEE_THE_TIMESTAMP", Long.toString(interval.first));
-                list.add(formater.format(interval.first) + String.format(" %d", interval.second));
             }
             String toDisplay = String.format("Pourcentage d'exposition de la journée (sur %.1f heures): \n", totalTime);
             percentage_header.setText(toDisplay);

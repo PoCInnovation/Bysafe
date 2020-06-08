@@ -18,17 +18,143 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:text=""
         android:textAlignment="center"
-        android:textSize="30dp"
-        android:text="" />
+        android:textSize="30dp" />
 
-    <ListView
-        android:id="@+id/log_list"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:divider="#000000"
-        android:dividerHeight="1dp"
-        android:fastScrollEnabled="true" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/log_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="#000000"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Hour8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

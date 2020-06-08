@@ -90,12 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             });
 
-           if (!AppConfigManager.getInstance(MainApplication.getContext()).getIsThread()) {
-               AppConfigManager.getInstance(MainApplication.getContext()).setIsThread(true);
-               threadContact();
-               DP3T.start(getContext());
-           }
-
             Calendar calendarThen = Calendar.getInstance();
             Calendar calendarNow = Calendar.getInstance();
             calendarThen.setTimeInMillis(AppConfigManager.getInstance(MainApplication.getContext()).getJourneyStart());
@@ -103,11 +97,16 @@ public class MainActivity extends AppCompatActivity {
                 AppConfigManager.getInstance(MainApplication.getContext()).setJourneyStart(System.currentTimeMillis());
                 try {
                     AppConfigManager.getInstance(MainApplication.getContext()).setJourneyContact(new ArrayList<>());
-                    DP3T.clearData(getContext(), () -> {});
-                    MainApplication.initDP3T(getContext());
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+
+            if (!AppConfigManager.getInstance(MainApplication.getContext()).getIsThread()) {
+                AppConfigManager.getInstance(MainApplication.getContext()).setIsThread(true);
+                threadContact();
+                DP3T.start(getContext());
             }
 
             // PERMISSIONS
@@ -149,25 +148,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addContactToReport(long now) {
-        new Database(MainApplication.getContext()).getHandshakes(response -> {
+        new Database(MainApplication.getContext()).getHandshakesAfter(now - 300000, response -> {
             int contacts = 0;
             HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
             Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
             for (Handshake handShake : response) {
-                if (handShake.getTimestamp() > now - 300000) { // Durée durant laquelle un handshake est pris en compte
-                    byte[] head = new byte[4];
-                    for (int i = 0; i < 4; i++) {
-                        head[i] = handShake.getEphId().getData()[i];
-                    }
-                    String identifier = new String(head);
-                    if (!groupedHandshakes.containsKey(identifier)) {
-                        groupedHandshakes.put(identifier, new ArrayList<>());
-                    }
-                    groupedHandshakes.get(identifier).add(handShake);
+                byte[] head = new byte[4];
+                for (int i = 0; i < 4; i++) {
+                    head[i] = handShake.getEphId().getData()[i];
                 }
+                String identifier = new String(head);
+                if (!groupedHandshakes.containsKey(identifier)) {
+                    groupedHandshakes.put(identifier, new ArrayList<>());
+                }
+                groupedHandshakes.get(identifier).add(handShake);
             }
             for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                if (stringListEntry.getValue().size() >= 1) // Nombre de handshake necessaire pour valider un contact
+                if (stringListEntry.getValue().size() >= 3) // Nombre de handshake necessaire pour valider un contact
                     contacts += 1;
             }
             try {
@@ -200,14 +197,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateContact() {
-        new Database(MainApplication.getContext()).getHandshakes(response -> {
+        long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
+        long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
+        new Database(MainApplication.getContext()).getHandshakesAfter(System.currentTimeMillis() - (scanInterval + scanDuration), response -> {
             AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(0); // modifier si besoin de debug
             HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
             Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
-            long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
-            long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
+
             for (Handshake handShake : response) {
-                if (handShake.getTimestamp() > System.currentTimeMillis() - (scanInterval + scanDuration)) { // Durée durant laquelle un handshake est pris en compte
                     byte[] head = new byte[4];
                     for (int i = 0; i < 4; i++) {
                         head[i] = handShake.getEphId().getData()[i];
@@ -217,13 +214,14 @@ public class MainActivity extends AppCompatActivity {
                         groupedHandshakes.put(identifier, new ArrayList<>());
                     }
                     groupedHandshakes.get(identifier).add(handShake);
-                }
             }
             for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                if (stringListEntry.getValue().size() >= 3) // Nombre de handshake necessaire pour valider un contact
+                if (stringListEntry.getValue().size() >= 3) {// Nombre de handshake necessaire pour valider un contact
+                    Logger.d("EPHID", stringListEntry.getKey());
                     AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(
                             AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() + 1
                     );
+                }
             }
         });
     }

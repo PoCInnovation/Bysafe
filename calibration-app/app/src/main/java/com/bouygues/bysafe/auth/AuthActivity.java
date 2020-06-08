@@ -32,6 +32,7 @@ public class AuthActivity extends AppCompatActivity {
 
     private static final String TAG = "AuthPanel";
     private FirebaseAuth _auth;
+    private boolean pressed = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,18 +55,21 @@ public class AuthActivity extends AppCompatActivity {
             Logger.d(TAG, "signin with email " + email);
             Logger.d(TAG, "signin with password " + password);
 
-            _auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful())
-                                closePanel();
-                            else {
-                                Toast.makeText(AuthActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                textInput.setBackgroundColor(Color.RED);
+            if (!pressed) {
+                pressed = true;
+                _auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful())
+                                    closePanel();
+                                else {
+                                    Toast.makeText(AuthActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    textInput.setBackgroundColor(Color.RED);
+                                }
                             }
-                        }
-                    });
+                        });
+            }
         });
     }
 

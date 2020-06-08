@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bouygues.bysafe.MainActivity;
 import com.bouygues.bysafe.MainApplication;
 import com.bouygues.bysafe.R;
 import com.bouygues.bysafe.util.DialogUtil;
@@ -284,15 +285,15 @@ public class ParameterActivity extends AppCompatActivity {
             }
         });
 
-        Button buttonClearData = findViewById(R.id.home_button_clear_data);
-        buttonClearData.setOnClickListener(v -> {
-            DialogUtil.showConfirmDialog(v.getContext(), R.string.dialog_clear_data_title,
-                    (dialog, which) -> {
-                        DP3T.clearData(v.getContext(), () ->
-                                new Handler(getContext().getMainLooper()).post(this::updateSdkStatus));
-                        MainApplication.initDP3T(v.getContext());
-                    });
-        });
+//        Button buttonClearData = findViewById(R.id.home_button_clear_data);
+//        buttonClearData.setOnClickListener(v -> {
+//            DialogUtil.showConfirmDialog(v.getContext(), R.string.dialog_clear_data_title,
+//                    (dialog, which) -> {
+//                        DP3T.clearData(v.getContext(), () ->
+//                                new Handler(getContext().getMainLooper()).post(this::updateSdkStatus));
+//                        MainApplication.initDP3T(v.getContext());
+//                    });
+//        });
     }
 
     @Override
@@ -345,8 +346,8 @@ public class ParameterActivity extends AppCompatActivity {
             updateSdkStatus();
         });
 
-        Button buttonClearData = findViewById(R.id.home_button_clear_data);
-        buttonClearData.setEnabled(!isRunning);
+//        Button buttonClearData = findViewById(R.id.home_button_clear_data);
+//        buttonClearData.setEnabled(!isRunning);
     }
 }
 

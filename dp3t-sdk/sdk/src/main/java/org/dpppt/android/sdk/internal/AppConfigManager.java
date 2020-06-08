@@ -56,7 +56,7 @@ public class AppConfigManager {
 
 	static final long DEFAULT_SCAN_INTERVAL = 10 * 1000L;
 	static final long DEFAULT_SCAN_DURATION = 20 * 1000L;
-	private static final long DEFAULT_RSSI_DETECTED_LEVEL = -85;
+	private static final long DEFAULT_RSSI_DETECTED_LEVEL = -83;
 	private static final BluetoothScanMode DEFAULT_BLUETOOTH_SCAN_MODE = BluetoothScanMode.SCAN_MODE_LOW_POWER;
 	private static final BluetoothTxPowerLevel DEFAULT_BLUETOOTH_POWER_LEVEL = BluetoothTxPowerLevel.ADVERTISE_TX_POWER_ULTRA_LOW;
 	private static final BluetoothAdvertiseMode DEFAULT_BLUETOOTH_ADVERTISE_MODE = BluetoothAdvertiseMode.ADVERTISE_MODE_BALANCED;
@@ -339,7 +339,6 @@ public class AppConfigManager {
 	public ArrayList<Pair<Long, Integer>> getJourneyContact() throws IOException {
 		Gson gson = new Gson();
 		Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {}.getType();
-		Logger.d("C'est quoi cette merde", sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT));
 		return gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
 	}
 
