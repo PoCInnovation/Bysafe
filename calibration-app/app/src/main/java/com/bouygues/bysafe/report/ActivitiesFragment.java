@@ -140,7 +140,12 @@ public class ActivitiesFragment extends Fragment {
                     contacts += 1;
                 }
             }
-            String toDisplay = String.format("Pourcentage d'exposition de la journée (sur %.1f heures): \n", totalTime);
+            int t = (int) ( 100 * totalTime * 60 );
+
+            int hour = t/3600;
+            t %= 3600;
+            int min = t/60;
+            String toDisplay = String.format("Pourcentage d'exposition de la journée (sur %d:%d heures): \n", hour, min);
             percentage_header.setText(toDisplay);
             float percent = ((((float)(contacts)) / ((float)total)) * 100);
             if (percent >= 10) {
