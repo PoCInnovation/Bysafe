@@ -110,6 +110,8 @@ public class Database {
 		databaseThread.post(() -> {
 			SQLiteDatabase db = databaseOpenHelper.getWritableDatabase();
 			DayDate lastDayToKeep = new DayDate().subtractDays(CryptoModule.NUMBER_OF_DAYS_TO_KEEP_DATA);
+			db.delete(Handshakes.TABLE_NAME, Handshakes.TIMESTAMP + " < ?",
+					new String[] { Long.toString(lastDayToKeep.getStartOfDayTimestamp()) });
 			db.delete(KnownCases.TABLE_NAME, KnownCases.BUCKET_TIME + " < ?",
 					new String[] { Long.toString(lastDayToKeep.getStartOfDayTimestamp()) });
 			db.delete(Contacts.TABLE_NAME, Contacts.DATE + " < ?",
@@ -156,6 +158,13 @@ public class Database {
 		return getHandshakesFromCursor(cursor);
 	}
 
+	public List<Handshake> getHandshakesAfter(long minTime) {
+		SQLiteDatabase db = databaseOpenHelper.getReadableDatabase();
+		Cursor cursor = db.query(Handshakes.TABLE_NAME, Handshakes.PROJECTION, Handshakes.TIMESTAMP + " > ?",
+				new String[] { "" + minTime }, null, null, Handshakes.ID);
+		return getHandshakesFromCursor(cursor);
+	}
+
 	public void getHandshakes(@NonNull ResultListener<List<Handshake>> resultListener) {
 		databaseThread.post(new Runnable() {
 			List<Handshake> handshakes = new ArrayList<>();
@@ -163,6 +172,18 @@ public class Database {
 			@Override
 			public void run() {
 				handshakes = getHandshakes();
+				databaseThread.onResult(() -> resultListener.onResult(handshakes));
+			}
+		});
+	}
+
+	public void getHandshakesAfter(long minTime, @NonNull ResultListener<List<Handshake>> resultListener) {
+		databaseThread.post(new Runnable() {
+			List<Handshake> handshakes = new ArrayList<>();
+
+			@Override
+			public void run() {
+				handshakes = getHandshakesAfter(minTime);
 				databaseThread.onResult(() -> resultListener.onResult(handshakes));
 			}
 		});
@@ -179,8 +200,6 @@ public class Database {
 			String primaryPhy = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.PHY_PRIMARY));
 			String secondaryPhy = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.PHY_SECONDARY));
 			long timestampNanos = cursor.getLong(cursor.getColumnIndexOrThrow(Handshakes.TIMESTAMP_NANOS));
-//			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
-//					timestampNanos);
 			String model = cursor.getString(cursor.getColumnIndexOrThrow(Handshakes.MODEL));
 			Handshake handShake = new Handshake(id, timestamp, ephId, txPowerLevel, rssi, primaryPhy, secondaryPhy,
 					timestampNanos, model);

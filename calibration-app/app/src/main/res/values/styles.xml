@@ -17,8 +17,8 @@
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:textAppearance">@style/Sample.Text</item>
+		<item name="android:windowBackground">@drawable/startup_screen</item>
 	</style>
-
 	<style name="Sample.Text" parent="TextAppearance.AppCompat">
 		<item name="android:textSize">@dimen/text_size_normal</item>
 		<item name="android:textColor">@color/textPrimary</item>

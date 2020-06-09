@@ -97,18 +97,18 @@ public class SyncWorker extends Worker {
 		} catch (IOException | StatusCodeException | ServerTimeOffsetException | SignatureException | SQLiteException e) {
 			Logger.e(TAG, e);
 			AppConfigManager.getInstance(context).setLastSyncNetworkSuccess(false);
-			ErrorState syncError;
-			if (e instanceof ServerTimeOffsetException) {
-				syncError = ErrorState.SYNC_ERROR_TIMING;
-			} else if (e instanceof SignatureException) {
-				syncError = ErrorState.SYNC_ERROR_SIGNATURE;
-			} else if (e instanceof StatusCodeException || e instanceof InvalidProtocolBufferException) {
-				syncError = ErrorState.SYNC_ERROR_SERVER;
-			} else if (e instanceof SQLiteException) {
-				syncError = ErrorState.SYNC_ERROR_DATABASE;
-			} else {
-				syncError = ErrorState.SYNC_ERROR_NETWORK;
-			}
+//			ErrorState syncError;
+//			if (e instanceof ServerTimeOffsetException) {
+//				syncError = ErrorState.SYNC_ERROR_TIMING;
+//			} else if (e instanceof SignatureException) {
+//				syncError = ErrorState.SYNC_ERROR_SIGNATURE;
+//			} else if (e instanceof StatusCodeException || e instanceof InvalidProtocolBufferException) {
+//				syncError = ErrorState.SYNC_ERROR_SERVER;
+//			} else if (e instanceof SQLiteException) {
+//				syncError = ErrorState.SYNC_ERROR_DATABASE;
+//			} else {
+//				syncError = ErrorState.SYNC_ERROR_NETWORK;
+//			}
 			//SyncErrorState.getInstance().setSyncError(syncError);
 			BroadcastHelper.sendErrorUpdateBroadcast(context);
 			//throw e;

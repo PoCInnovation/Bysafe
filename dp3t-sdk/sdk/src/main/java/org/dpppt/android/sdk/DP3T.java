@@ -56,6 +56,8 @@ public class DP3T {
 
 	private static String appId;
 
+	private static boolean isLaunched = false;
+
 	public static void init(Context context, String appId, PublicKey signaturePublicKey) {
 		init(context, appId, false, signaturePublicKey);
 	}
@@ -89,12 +91,12 @@ public class DP3T {
 
 		SyncWorker.setBucketSignaturePublicKey(signaturePublicKey);
 
-		AppConfigManager appConfigManager = AppConfigManager.getInstance(context);
-		boolean advertising = appConfigManager.isAdvertisingEnabled();
-		boolean receiving = appConfigManager.isReceivingEnabled();
-		if (advertising || receiving) {
-			start(context, advertising, receiving);
-		}
+//		AppConfigManager appConfigManager = AppConfigManager.getInstance(context);
+//		boolean advertising = appConfigManager.isAdvertisingEnabled();
+//		boolean receiving = appConfigManager.isReceivingEnabled();
+//		if (advertising || receiving) {
+//			start(context, advertising, receiving);
+//		}
 	}
 
 	private static void checkInit() throws IllegalStateException {
@@ -108,20 +110,23 @@ public class DP3T {
 	}
 
 	protected static void start(Context context, boolean advertise, boolean receive) {
-		checkInit();
-		AppConfigManager appConfigManager = AppConfigManager.getInstance(context);
-		appConfigManager.setAdvertisingEnabled(advertise);
-		appConfigManager.setReceivingEnabled(receive);
-		long scanInterval = appConfigManager.getScanInterval();
-		long scanDuration = appConfigManager.getScanDuration();
-		Intent intent = new Intent(context, TracingService.class).setAction(TracingService.ACTION_START);
-		intent.putExtra(TracingService.EXTRA_ADVERTISE, advertise);
-		intent.putExtra(TracingService.EXTRA_RECEIVE, receive);
-		intent.putExtra(TracingService.EXTRA_SCAN_INTERVAL, scanInterval);
-		intent.putExtra(TracingService.EXTRA_SCAN_DURATION, scanDuration);
-		ContextCompat.startForegroundService(context, intent);
-		SyncWorker.startSyncWorker(context);
-		BroadcastHelper.sendUpdateBroadcast(context);
+		if (!isLaunched) {
+			isLaunched = true;
+			checkInit();
+			AppConfigManager appConfigManager = AppConfigManager.getInstance(context);
+			appConfigManager.setAdvertisingEnabled(advertise);
+			appConfigManager.setReceivingEnabled(receive);
+			long scanInterval = appConfigManager.getScanInterval();
+			long scanDuration = appConfigManager.getScanDuration();
+			Intent intent = new Intent(context, TracingService.class).setAction(TracingService.ACTION_START);
+			intent.putExtra(TracingService.EXTRA_ADVERTISE, advertise);
+			intent.putExtra(TracingService.EXTRA_RECEIVE, receive);
+			intent.putExtra(TracingService.EXTRA_SCAN_INTERVAL, scanInterval);
+			intent.putExtra(TracingService.EXTRA_SCAN_DURATION, scanDuration);
+			ContextCompat.startForegroundService(context, intent);
+			SyncWorker.startSyncWorker(context);
+			BroadcastHelper.sendUpdateBroadcast(context);
+		}
 	}
 
 	public static boolean isStarted(Context context) {
@@ -210,16 +215,19 @@ public class DP3T {
 	}
 
 	public static void stop(Context context) {
-		checkInit();
+		if (isLaunched) {
+			isLaunched = false;
+			checkInit();
 
-		AppConfigManager appConfigManager = AppConfigManager.getInstance(context);
-		appConfigManager.setAdvertisingEnabled(false);
-		appConfigManager.setReceivingEnabled(false);
+			AppConfigManager appConfigManager = AppConfigManager.getInstance(context);
+			appConfigManager.setAdvertisingEnabled(false);
+			appConfigManager.setReceivingEnabled(false);
 
-		Intent intent = new Intent(context, TracingService.class).setAction(TracingService.ACTION_STOP);
-		context.startService(intent);
-		SyncWorker.stopSyncWorker(context);
-		BroadcastHelper.sendUpdateBroadcast(context);
+			Intent intent = new Intent(context, TracingService.class).setAction(TracingService.ACTION_STOP);
+			context.startService(intent);
+			SyncWorker.stopSyncWorker(context);
+			BroadcastHelper.sendUpdateBroadcast(context);
+		}
 	}
 
 	public static void setMatchingParameters(Context context, float contactAttenuationThreshold, int numberOfWindowsForExposure) {
@@ -246,7 +254,7 @@ public class DP3T {
 		}
 
 		CryptoModule.getInstance(context).reset();
-		appConfigManager.clearPreferences();
+		//appConfigManager.clearPreferences();
 		Logger.clear();
 		Database db = new Database(context);
 		db.recreateTables(response -> onDeleteListener.run());

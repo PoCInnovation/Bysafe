@@ -8,18 +8,29 @@
   ~ SPDX-License-Identifier: MPL-2.0
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/white_rectangle"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="82dp"
         android:layout_height="68dp"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
         android:paddingTop="@dimen/spacing_medium"
         android:paddingBottom="@dimen/spacing_medium"
         android:src="@drawable/ic_bysafe" />
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/logout_button"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:background="@null"
+        android:src="@drawable/ic_power" />
+
+</RelativeLayout>
