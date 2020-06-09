@@ -50,11 +50,11 @@ public class HandshakesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final ImageButton button = getView().findViewById(R.id.button_settings);
-        button.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ParameterActivity.class);
-            startActivity(intent);
-        });
+//        final ImageButton button = getView().findViewById(R.id.button_settings);
+//        button.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), ParameterActivity.class);
+//            startActivity(intent);
+//        });
 
         handshakeList = getView().findViewById(R.id.handshake_list);
 
