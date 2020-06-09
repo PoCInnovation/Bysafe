@@ -82,4 +82,8 @@
 	<string name="version_info">SDK Version Info</string>
 	<string name="parameter_rssi_detected_level">Niveau RSSI detecté</string>
 	<string name="parameter_info_unit_dbm">en dbm</string>
+	<string name="be_vigilant">Soyez vigilant</string>
+	<string name="protect_yourself">Protégez vous !</string>
+	<string name="day_report">Bilan du jour</string>
+	<string name="detail">Détail</string>
 </resources>

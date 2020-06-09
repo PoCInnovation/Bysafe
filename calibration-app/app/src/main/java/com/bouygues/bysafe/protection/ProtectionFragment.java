@@ -7,36 +7,48 @@
  *
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.bouygues.bysafe.handshakes;
+package com.bouygues.bysafe.protection;
 
-import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bouygues.bysafe.R;
-import com.bouygues.bysafe.parameters.ParameterActivity;
+
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
 
-public class HandshakesFragment extends Fragment {
+public class ProtectionFragment extends Fragment {
 
     private TextView handshakeList;
+    private TextView statusMessage;
+    private ImageView centerHappy;
+    private ImageView centerUnhappy;
+    private ImageView discHappy;
+    private ImageView discUnhappy;
+    private GradientDrawable mainBackground;
     private Thread thread;
     private boolean continueWork = true;
     private static final int REQUEST_CODE_PERMISSION_LOCATION = 1;
 
-    public static HandshakesFragment newInstance() {
-        return new HandshakesFragment();
+    public static ProtectionFragment newInstance() {
+        return new ProtectionFragment();
     }
 
     @Nullable
@@ -57,13 +69,20 @@ public class HandshakesFragment extends Fragment {
 //        });
 
         handshakeList = getView().findViewById(R.id.handshake_list);
+        statusMessage = getView().findViewById(R.id.protection_status_message);
+
+        centerHappy = getView().findViewById(R.id.image_view_happy_masked);
+        centerUnhappy = getView().findViewById(R.id.image_view_unhappy_masked);
+
+        discHappy = getView().findViewById(R.id.image_view_disc_happy);
+        discUnhappy = getView().findViewById(R.id.image_view_disc_unhappy);
+
+        mainBackground = (GradientDrawable) getView().findViewById(R.id.main_relative_layout_protection).getBackground();
 
         loadContacts();
     }
 
     private void loadContacts() {
-//        handshakeList.setText("Loading...");
-
         thread = new Thread() {
 
             @Override
@@ -72,16 +91,27 @@ public class HandshakesFragment extends Fragment {
                     while (!isInterrupted() && getActivity() != null && continueWork) {
 
                         getActivity().runOnUiThread(() -> {
-                            StringBuilder stringBuilder = new StringBuilder();
 
                             int counter = AppConfigManager.getInstance(getContext()).getContactNumber();
-                            stringBuilder.append(counter);
                             Logger.d("Contacts", Integer.toString(counter));
                             if (counter == 0) {
                                 handshakeList.setText("");
+                                statusMessage.setText(getString(R.string.be_vigilant));
+                                handshakeList.setVisibility(View.GONE);
+                                centerUnhappy.setVisibility(View.GONE);
+                                centerHappy.setVisibility(View.VISIBLE);
+                                discUnhappy.setVisibility(View.GONE);
+                                discHappy.setVisibility(View.VISIBLE);
+                                mainBackground.setColor(Color.argb(255, 135, 234, 74));
                             } else {
-                                handshakeList.setText(stringBuilder.toString());
-                                handshakeList.setTextColor(Color.RED);
+                                statusMessage.setText(getString(R.string.protect_yourself));
+                                handshakeList.setText(String.valueOf(counter));
+                                handshakeList.setVisibility(View.VISIBLE);
+                                centerUnhappy.setVisibility(View.VISIBLE);
+                                centerHappy.setVisibility(View.GONE);
+                                discUnhappy.setVisibility(View.VISIBLE);
+                                discHappy.setVisibility(View.GONE);
+                                mainBackground.setColor(Color.argb(255, 255, 180, 72));
                             }
                         });
                         for (int i = 0; i < 10; i++) {

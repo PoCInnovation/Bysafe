@@ -45,7 +45,7 @@ public class AuthActivity extends AppCompatActivity {
         _auth = FirebaseAuth.getInstance();
         EditText textInput = findViewById(R.id.site_id);
 
-        textInput.setOnFocusChangeListener((a,b) -> {
+        textInput.setOnFocusChangeListener((a, b) -> {
             textInput.setHint("");
         });
 
@@ -64,23 +64,24 @@ public class AuthActivity extends AppCompatActivity {
             if (!pressed) {
                 pressed = true;
                 _auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            GradientDrawable bg = (GradientDrawable) textInput.getBackground();
-                            bg.setStroke(3, Color.WHITE);
-                            textInput.setTextColor(Color.WHITE);
-                            if (task.isSuccessful())
-                                closePanel();
-                            else {
-                                Toast.makeText(AuthActivity.this, "ID non reconnue", Toast.LENGTH_SHORT).show();
-                                bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
-                                textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                GradientDrawable bg = (GradientDrawable) textInput.getBackground();
+                                bg.setStroke(3, Color.WHITE);
+                                textInput.setTextColor(Color.WHITE);
+                                if (task.isSuccessful())
+                                    closePanel();
+                                else {
+                                    Toast.makeText(AuthActivity.this, "ID non reconnue", Toast.LENGTH_SHORT).show();
+                                    bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                                    textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                                }
                             }
-                        }
-                    });
-                }
-            });
+                        });
+                pressed = false;
+            }
+        });
     }
 
     @Override

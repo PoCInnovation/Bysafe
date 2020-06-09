@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import org.dpppt.android.sdk.internal.util.Pair;
@@ -26,6 +27,8 @@ import androidx.fragment.app.Fragment;
 import com.bouygues.bysafe.MainActivity;
 import com.bouygues.bysafe.MainApplication;
 import com.bouygues.bysafe.R;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
@@ -45,8 +48,10 @@ import java.util.Map;
 
 public class ActivitiesFragment extends Fragment {
 
-    private TextView percentage;
+    private CircularProgressBar pb;
     private TextView percentage_header;
+    private ImageView unhappyMasked;
+    private ImageView happyMasked;
     private long interval = 60000;
     private ArrayList<String> list = new ArrayList<>();
     private ArrayList<android.widget.TextView> listId = new ArrayList<>();
@@ -77,8 +82,10 @@ public class ActivitiesFragment extends Fragment {
         listId.add(view.findViewById(R.id.Hour17));
         listId.add(view.findViewById(R.id.Hour18));
 
-        percentage = view.findViewById(R.id.text_percentage);
+        pb = view.findViewById(R.id.day_report_circular_progress_bar);
         percentage_header = view.findViewById(R.id.text_percentage_header);
+        happyMasked = view.findViewById(R.id.activities_happy_masked);
+        unhappyMasked = view.findViewById(R.id.activities_unhappy_masked);
         getJourneyPercentage();
 
 
@@ -136,8 +143,16 @@ public class ActivitiesFragment extends Fragment {
             String toDisplay = String.format("Pourcentage d'exposition de la journée (sur %.1f heures): \n", totalTime);
             percentage_header.setText(toDisplay);
             float percent = ((((float)(contacts)) / ((float)total)) * 100);
-            percentage.setText(String.format("%.1f", percent) + "%");
-            percentage.setTextColor(percent >= 20 ? Color.RED : Color.GREEN);
+            if (percent >= 10) {
+                pb.setProgressBarColor(Color.parseColor("#FA990C"));
+                happyMasked.setVisibility(View.GONE);
+                unhappyMasked.setVisibility(View.VISIBLE);
+            } else {
+                pb.setProgressBarColor(Color.parseColor("#87EA4A"));
+                unhappyMasked.setVisibility(View.GONE);
+                happyMasked.setVisibility(View.VISIBLE);
+            }
+            pb.setProgress(percent);
         } catch (IOException e) {
             e.printStackTrace();
         }

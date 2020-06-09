@@ -26,7 +26,7 @@ import android.widget.ImageButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.bouygues.bysafe.auth.AuthActivity;
-import com.bouygues.bysafe.handshakes.HandshakesFragment;
+import com.bouygues.bysafe.protection.ProtectionFragment;
 import com.bouygues.bysafe.report.ActivitiesFragment;
 import com.bouygues.bysafe.handwash.HandwashFragment;
 
@@ -45,8 +45,6 @@ import java.util.Map;
 
 import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Pair;
-
-import retrofit2.http.HEAD;
 
 import static java.lang.Math.floor;
 
@@ -252,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.action_handshakes:
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment_container, HandshakesFragment.newInstance())
+                            .replace(R.id.main_fragment_container, ProtectionFragment.newInstance())
                             .commit();
                     break;
                 case R.id.action_activities:
@@ -282,6 +280,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        AppConfigManager.getInstance(MainApplication.getContext()).setPrefIsFirstOpening(true);
     }
 }
