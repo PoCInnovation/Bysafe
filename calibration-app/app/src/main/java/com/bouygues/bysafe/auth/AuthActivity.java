@@ -63,6 +63,7 @@ public class AuthActivity extends AppCompatActivity {
 
             if (!pressed) {
                 pressed = true;
+                AppConfigManager.getInstance(getContext()).setPrefOnline(true);
                 _auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -82,6 +83,14 @@ public class AuthActivity extends AppCompatActivity {
                 pressed = false;
             }
         });
+
+        // TODO OFFLINE BUTTON -> on click listener
+//        if (!pressed) {
+//            Logger.d(TAG, "Launching app offline");
+//            pressed = true;
+//            AppConfigManager.getInstance(getContext()).setPrefOnline(false);
+//            closePanel();
+//        }
     }
 
     @Override

@@ -175,12 +175,15 @@ public class MainActivity extends AppCompatActivity {
                 groupedHandshakes.get(identifier).add(handShake);
             }
             for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                if (stringListEntry.getValue().size() >= 3) // Nombre de handshake necessaire pour valider un contact
+                if (stringListEntry.getValue().size() >= 6) // Nombre de handshake necessaire sur 5 minutes pour envoyé un rapport
                     contacts += 1;
             }
             try {
-                Logger.d("OK HERE WE ARE", "Interval +1");
                 AppConfigManager.getInstance(MainApplication.getContext()).addJourneyContact(new Pair<Long, Integer>(now, contacts));
+                if (AppConfigManager.getInstance(MainApplication.getContext()).getPrefOnline()) {
+                    AppConfigManager.getInstance(MainApplication.getContext()).addContactToSend(new Pair<Long, Integer>(now, contacts));
+                    //TODO SEND ALL IN "TO_SEND"
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -227,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                     groupedHandshakes.get(identifier).add(handShake);
             }
             for (Map.Entry<String, List<Handshake>> stringListEntry : groupedHandshakes.entrySet()) {
-                if (stringListEntry.getValue().size() >= 3) {// Nombre de handshake necessaire pour valider un contact
+                if (stringListEntry.getValue().size() >= 2) {// Nombre de handshake necessaire pour valider un contact
                     Logger.d("EPHID", stringListEntry.getKey());
                     AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(
                             AppConfigManager.getInstance(MainApplication.getContext()).getContactNumber() + 1
@@ -273,6 +276,10 @@ public class MainActivity extends AppCompatActivity {
                 AppConfigManager.getInstance(MainApplication.getContext()).setIsThread(false);
                 DP3T.stop(getContext());
                 thread.interrupt();
+                //TODO SEND ALL IN "TO_SEND"
+                if (AppConfigManager.getInstance(MainApplication.getContext()).getPrefOnline()) {
+                    AppConfigManager.getInstance(MainApplication.getContext()).setPrefOnline(false);
+                }
                 try {
                     thread.join();
                 } catch (InterruptedException e) {

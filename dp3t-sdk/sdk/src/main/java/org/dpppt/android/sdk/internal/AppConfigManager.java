@@ -57,7 +57,7 @@ public class AppConfigManager {
 
     static final long DEFAULT_SCAN_INTERVAL = 20 * 1000L;
     static final long DEFAULT_SCAN_DURATION = 19 * 1000L;
-    private static final long DEFAULT_RSSI_DETECTED_LEVEL = -85;
+    private static final long DEFAULT_RSSI_DETECTED_LEVEL = -88;
     private static final BluetoothScanMode DEFAULT_BLUETOOTH_SCAN_MODE = BluetoothScanMode.SCAN_MODE_LOW_POWER;
     private static final BluetoothTxPowerLevel DEFAULT_BLUETOOTH_POWER_LEVEL = BluetoothTxPowerLevel.ADVERTISE_TX_POWER_ULTRA_LOW;
     private static final BluetoothAdvertiseMode DEFAULT_BLUETOOTH_ADVERTISE_MODE = BluetoothAdvertiseMode.ADVERTISE_MODE_BALANCED;
@@ -68,8 +68,10 @@ public class AppConfigManager {
     private static final long DEFAULT_VIBRATION_TIMER = 0;
     private static final long DEFAULT_JOURNEY_START = 0;
     private static final String DEFAULT_JOURNEY_CONTACT = new Gson().toJson(new ArrayList<Pair<Long, Integer>>());
+    private static final String DEFAULT_CONTACT_TO_SEND = new Gson().toJson(new ArrayList<Pair<Long, Integer>>());
     private static final float DEFAULT_CONTACT_ATTENUATION_THRESHOLD = 73.0f;
     private static final boolean DEFAULT_THREAD = false;
+    private static final boolean DEFAULT_ONLINE = false;
 
     private static final String PREFS_NAME = "dp3t_sdk_preferences";
     private static final String PREF_APPLICATION_LIST = "applicationList";
@@ -93,6 +95,7 @@ public class AppConfigManager {
     private static final String PREF_VIBRATION_TIMER = "timer_for_vibration";
     private static final String PREF_JOURNEY_START = "journey_start";
     private static final String PREF_JOURNEY_CONTACT = "journey_contact";
+    private static final String PREF_CONTACT_TO_SEND = "contact_to_send";
     private static final String PREF_IS_LOGGED = "is_logged";
     private static final String PREF_IS_THREAD = "is_thread";
     private static final String PREF_HANDWASH_IS_PAUSED = "is_paused";
@@ -100,6 +103,7 @@ public class AppConfigManager {
     private static final String PREF_HANDWASH_PAUSED_TIME = "paused_time";
     private static final String PREF_HANDWASH_LAST_WASHING_TIME = "last_washing_time";
     private static final String PREF_IS_FIRST_OPENING = "is_first_opening";
+    private static final String PREF_IS_ONLINE = "is_online";
     private static final String PREF_FIRST_OPENING_CHOSEN_MENU = "first_opening_chosen_menu";
 
     private String appId;
@@ -336,6 +340,28 @@ public class AppConfigManager {
         return gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
     }
 
+    public void addContactToSend(Pair<Long, Integer> pair) throws IOException {
+        Gson gson = new Gson();
+
+        Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {
+        }.getType();
+        ArrayList<Pair<Long, Integer>> list = gson.fromJson(sharedPrefs.getString(PREF_CONTACT_TO_SEND, DEFAULT_CONTACT_TO_SEND), datasetListType);
+        list.add(pair);
+        sharedPrefs.edit().putString(PREF_CONTACT_TO_SEND, gson.toJson(list)).apply();
+    }
+
+    public void setContactToSend(ArrayList<Pair<Long, Integer>> list) throws IOException {
+        Gson gson = new Gson();
+        sharedPrefs.edit().putString(PREF_CONTACT_TO_SEND, gson.toJson(list)).apply();
+    }
+
+    public ArrayList<Pair<Long, Integer>> getContactToSend() throws IOException {
+        Gson gson = new Gson();
+        Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {
+        }.getType();
+        return gson.fromJson(sharedPrefs.getString(PREF_CONTACT_TO_SEND, DEFAULT_CONTACT_TO_SEND), datasetListType);
+    }
+
     public void setIsLogged(boolean isLogged) {
         sharedPrefs.edit().putBoolean(PREF_IS_LOGGED, isLogged).apply();
     }
@@ -370,6 +396,14 @@ public class AppConfigManager {
 
     public boolean getPrefIsFirstOpening() {
         return sharedPrefs.getBoolean(PREF_IS_FIRST_OPENING, true);
+    }
+
+    public void setPrefOnline(boolean online) {
+        sharedPrefs.edit().putBoolean(PREF_IS_ONLINE, online).apply();
+    }
+
+    public boolean getPrefOnline() {
+        return sharedPrefs.getBoolean(PREF_IS_ONLINE, DEFAULT_ONLINE);
     }
 
     public void setPrefChosenOpeningMenu(String chosenMenu) {
