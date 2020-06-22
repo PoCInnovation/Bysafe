@@ -19,8 +19,11 @@ import com.bouygues.bysafe.MainApplication;
 import com.bouygues.bysafe.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
@@ -79,7 +82,18 @@ public class AuthActivity extends AppCompatActivity {
                                 if (task.isSuccessful())
                                     closePanel();
                                 else {
-                                    Toast.makeText(AuthActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    String err;
+                                    if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                        err = "L'id donnée est invalide.";
+                                    } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                        err = "Les identifiants de connection donnés sont invalides.";
+                                    } else if (task.getException() instanceof FirebaseNetworkException) {
+                                        err = "Vous n'êtes pas connecté à internet.";
+                                        // TODO offline mode ?
+                                    } else {
+                                        err = "Une erreur interne est survenue, veuillez réessayer plus tard.";
+                                    }
+                                    Toast.makeText(AuthActivity.this, err, Toast.LENGTH_SHORT).show();
                                     bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                                     textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                                 }
