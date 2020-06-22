@@ -79,7 +79,7 @@ public class AuthActivity extends AppCompatActivity {
                                 if (task.isSuccessful())
                                     closePanel();
                                 else {
-                                    Toast.makeText(AuthActivity.this, "ID non reconnue", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AuthActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                                     textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                                 }
