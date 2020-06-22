@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_auth"
@@ -26,11 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/roboto_bold"
-            android:textAlignment="center"
-            android:textSize="20sp"
             android:paddingTop="10dp"
             android:text="@string/bysafe_upper"
-            android:textColor="@color/white" />
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -39,12 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ic_top_auth"
-        android:layout_marginTop="40dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
         android:layout_marginRight="40dp"
         android:background="@drawable/background_site_id_text"
-        android:ems="10"
         android:elevation="2dp"
+        android:ems="10"
         android:fontFamily="@font/roboto_medium"
         android:hint="@string/site_id"
         android:inputType="number"
@@ -54,15 +55,31 @@
         android:textColor="@color/white"
         android:textColorHint="@color/greyLight" />
 
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/login_progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/site_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:cpb_background_progressbar_color="@color/transparent"
+        app:cpb_indeterminate_mode="true"
+        app:cpb_progress="100"
+        app:cpb_progress_direction="to_right"
+        app:cpb_progressbar_color="@color/white"
+        app:cpb_progressbar_width="5dp" />
+
+
     <TextView
         android:id="@+id/auth_button"
-        android:elevation="2dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="60dp"
         android:background="@drawable/auth_button"
+        android:elevation="2dp"
         android:fontFamily="@font/roboto_medium"
         android:paddingLeft="40dp"
         android:paddingTop="10dp"

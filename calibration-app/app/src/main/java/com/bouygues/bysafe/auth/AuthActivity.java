@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.internal.AppConfigManager;
@@ -54,6 +56,7 @@ public class AuthActivity extends AppCompatActivity {
 
         _auth = FirebaseAuth.getInstance();
         EditText textInput = findViewById(R.id.site_id);
+        CircularProgressBar pb = findViewById(R.id.login_progress_bar);
 
         textInput.setOnFocusChangeListener((a, b) -> {
             textInput.setHint("");
@@ -61,6 +64,8 @@ public class AuthActivity extends AppCompatActivity {
 
         final TextView authButton = findViewById(R.id.auth_button);
         authButton.setOnClickListener(v -> {
+            pb.setProgress(100);
+            pb.setVisibility(View.VISIBLE);
 
             final String site_id = textInput.getText().toString();
 
@@ -72,39 +77,18 @@ public class AuthActivity extends AppCompatActivity {
                 bg.setStroke(3, Color.WHITE);
                 textInput.setTextColor(Color.WHITE);
                 int responseCode = 0;
-                try {
-                    responseCode = new ConnectUser().execute(site_id).get();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (responseCode == 200) {
-                    AppConfigManager.getInstance(getContext()).setPrefOnline(true);
-                    AppConfigManager.getInstance(getContext()).setPrefBadgeNumber(site_id);
-                    closePanel();
-                } else if (responseCode == 404) {
-                    Toast.makeText(AuthActivity.this, "ID non reconnue", Toast.LENGTH_SHORT).show();
-                    bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
-                    textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
-                } else {
-                    // TODO OFFLINE BUTTON -> on click listener
-                    //        if (!pressed) {
-                    //            Logger.d(TAG, "Launching app offline");
-                    //            pressed = true;
-                    //            AppConfigManager.getInstance(getContext()).setPrefOnline(false);
-                    //            AppConfigManager.getInstance(getContext()).setPrefBadgeNumber("");
-                    //            closePanel();
-                    //        }
-                }
-                pressed = false;
+                new ConnectUser().execute(site_id);
             }
         });
     }
 
     class ConnectUser extends AsyncTask<String, Void, Integer> {
 
+        String site_id = "";
+
         @Override
         protected Integer doInBackground(String... strings) {
-            String site_id = strings[0];
+            site_id = strings[0];
             URL url;
             HttpURLConnection urlConnection = null;
 
@@ -122,6 +106,33 @@ public class AuthActivity extends AppCompatActivity {
                 }
             }
             return 503;
+        }
+
+        protected void onPostExecute(Integer responseCode) {
+            CircularProgressBar pb = findViewById(R.id.login_progress_bar);
+            EditText textInput = findViewById(R.id.site_id);
+            GradientDrawable bg = (GradientDrawable) textInput.getBackground();
+            if (responseCode == 200) {
+                AppConfigManager.getInstance(getContext()).setPrefOnline(true);
+                AppConfigManager.getInstance(getContext()).setPrefBadgeNumber(site_id);
+                closePanel();
+            } else if (responseCode == 404) {
+                Toast.makeText(AuthActivity.this, "ID non reconnue", Toast.LENGTH_SHORT).show();
+                bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+            } else {
+                Toast.makeText(AuthActivity.this, "Nous n'avons pas pu ouvrir la connection.\nRéessayez plus tard, ou passez en mode Hors Ligne", Toast.LENGTH_SHORT).show();
+                // TODO OFFLINE BUTTON -> on click listener
+                //        if (!pressed) {
+                //            Logger.d(TAG, "Launching app offline");
+                //            pressed = true;
+                //            AppConfigManager.getInstance(getContext()).setPrefOnline(false);
+                //            AppConfigManager.getInstance(getContext()).setPrefBadgeNumber("");
+                //            closePanel();
+                //        }
+            }
+            pb.setVisibility(View.GONE);
+            pressed = false;
         }
     }
 
