@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.internal.AppConfigManager;
@@ -44,6 +46,7 @@ public class AuthActivity extends AppCompatActivity {
 
         _auth = FirebaseAuth.getInstance();
         EditText textInput = findViewById(R.id.site_id);
+        CircularProgressBar pb = findViewById(R.id.login_progress_bar);
 
         textInput.setOnFocusChangeListener((a, b) -> {
             textInput.setHint("");
@@ -51,6 +54,8 @@ public class AuthActivity extends AppCompatActivity {
 
         final TextView authButton = findViewById(R.id.auth_button);
         authButton.setOnClickListener(v -> {
+            pb.setProgress(100);
+            pb.setVisibility(View.VISIBLE);
 
             final String site_id = textInput.getText().toString();
 
@@ -78,6 +83,7 @@ public class AuthActivity extends AppCompatActivity {
                                     bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                                     textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                                 }
+                                pb.setVisibility(View.GONE);
                             }
                         });
                 pressed = false;
