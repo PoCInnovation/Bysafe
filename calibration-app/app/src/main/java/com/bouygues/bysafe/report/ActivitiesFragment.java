@@ -33,6 +33,7 @@ import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
 import org.dpppt.android.sdk.internal.logger.Logger;
+import org.dpppt.android.sdk.internal.util.Triplet;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -96,7 +97,7 @@ public class ActivitiesFragment extends Fragment {
 
     private void getJourneyPercentage() {
         try {
-            ArrayList<Pair<Long, Integer>> journeyContact = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyContact();
+            ArrayList<Triplet<Long, Integer, String>> journeyContact = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyContact();
             SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
             long total = journeyContact.size();
             float totalTime = (float)total / (float)12;
@@ -109,8 +110,8 @@ public class ActivitiesFragment extends Fragment {
                 stringBuilder.append(formater.format(i)).append("   ");
                 for (long j = i; j < i + 3600000; j += 300000) {
                     boolean set = false;
-                    for (Pair<Long, Integer> interval: journeyContact) {
-                        if (interval.first >= j && interval.first < j + 300000) {
+                    for (Triplet<Long, Integer, String> interval: journeyContact) {
+                        if (interval.first >= j && interval.first < j + 300000 && interval.third.equals(AppConfigManager.getInstance(MainApplication.getContext()).getPrefBadgeNumber())) {
                             if (interval.second > 0) {
                                 stringBuilder.append("V");
                                 stringBuilder.setSpan(new BackgroundColorSpan(Color.RED),stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -135,8 +136,8 @@ public class ActivitiesFragment extends Fragment {
                 stringBuilder.clear();
                 stringBuilder.clearSpans();
             }
-            for (Pair<Long, Integer> interval: journeyContact) {
-                if (interval.second > 0) {
+            for (Triplet<Long, Integer, String> interval: journeyContact) {
+                if (interval.second > 0 && interval.third.equals(AppConfigManager.getInstance(MainApplication.getContext()).getPrefBadgeNumber())) {
                     contacts += 1;
                 }
             }

@@ -45,6 +45,7 @@ import java.util.Map;
 
 import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Pair;
+import org.dpppt.android.sdk.internal.util.Triplet;
 
 import static java.lang.Math.floor;
 
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (!appConfigManager.getIsThread()) {
+                //TODO SEND ALL IN "TO_SEND"
                 appConfigManager.setIsThread(true);
                 threadContact();
                 DP3T.start(getContext());
@@ -179,9 +181,10 @@ public class MainActivity extends AppCompatActivity {
                     contacts += 1;
             }
             try {
-                AppConfigManager.getInstance(MainApplication.getContext()).addJourneyContact(new Pair<Long, Integer>(now, contacts));
+                String badge = AppConfigManager.getInstance(MainApplication.getContext()).getPrefBadgeNumber();
+                AppConfigManager.getInstance(MainApplication.getContext()).addJourneyContact(new Triplet<>(now, contacts, badge));
                 if (AppConfigManager.getInstance(MainApplication.getContext()).getPrefOnline()) {
-                    AppConfigManager.getInstance(MainApplication.getContext()).addContactToSend(new Pair<Long, Integer>(now, contacts));
+                    AppConfigManager.getInstance(MainApplication.getContext()).addContactToSend(new Triplet<>(now, contacts, badge));
                     //TODO SEND ALL IN "TO_SEND"
                 }
             } catch (IOException e) {
@@ -266,6 +269,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void sendAllToBack() {
+
+    }
 
     @Override
     protected void onDestroy() {

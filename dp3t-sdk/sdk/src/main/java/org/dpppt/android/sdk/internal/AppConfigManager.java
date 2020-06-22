@@ -40,6 +40,7 @@ import org.dpppt.android.sdk.internal.backend.models.ApplicationsList;
 import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Json;
 import org.dpppt.android.sdk.internal.util.Pair;
+import org.dpppt.android.sdk.internal.util.Triplet;
 import org.json.JSONObject;
 
 public class AppConfigManager {
@@ -67,11 +68,12 @@ public class AppConfigManager {
     private static final int DEFAULT_CONTACT_NUMBER = 0;
     private static final long DEFAULT_VIBRATION_TIMER = 0;
     private static final long DEFAULT_JOURNEY_START = 0;
-    private static final String DEFAULT_JOURNEY_CONTACT = new Gson().toJson(new ArrayList<Pair<Long, Integer>>());
-    private static final String DEFAULT_CONTACT_TO_SEND = new Gson().toJson(new ArrayList<Pair<Long, Integer>>());
+    private static final String DEFAULT_JOURNEY_CONTACT = new Gson().toJson(new ArrayList<Triplet<Long, Integer, String>>());
+    private static final String DEFAULT_CONTACT_TO_SEND = new Gson().toJson(new ArrayList<Triplet<Long, Integer, String>>());
     private static final float DEFAULT_CONTACT_ATTENUATION_THRESHOLD = 73.0f;
     private static final boolean DEFAULT_THREAD = false;
     private static final boolean DEFAULT_ONLINE = false;
+    private static final String DEFAULT_BADGE_NUMBER = "";
 
     private static final String PREFS_NAME = "dp3t_sdk_preferences";
     private static final String PREF_APPLICATION_LIST = "applicationList";
@@ -104,6 +106,7 @@ public class AppConfigManager {
     private static final String PREF_HANDWASH_LAST_WASHING_TIME = "last_washing_time";
     private static final String PREF_IS_FIRST_OPENING = "is_first_opening";
     private static final String PREF_IS_ONLINE = "is_online";
+    private static final String PREF_BADGE_NUMBER = "badge_number";
     private static final String PREF_FIRST_OPENING_CHOSEN_MENU = "first_opening_chosen_menu";
 
     private String appId;
@@ -318,13 +321,13 @@ public class AppConfigManager {
         return sharedPrefs.getLong(PREF_JOURNEY_START, DEFAULT_JOURNEY_START);
     }
 
-    public void addJourneyContact(Pair<Long, Integer> pair) throws IOException {
+    public void addJourneyContact(Triplet<Long, Integer, String> triplet) throws IOException {
         Gson gson = new Gson();
 
-        Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {
+        Type datasetListType = new TypeToken<ArrayList<Triplet<Long, Integer, String>>>() {
         }.getType();
-        ArrayList<Pair<Long, Integer>> list = gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
-        list.add(pair);
+        ArrayList<Triplet<Long, Integer, String>> list = gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
+        list.add(triplet);
         sharedPrefs.edit().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).apply();
     }
 
@@ -333,31 +336,31 @@ public class AppConfigManager {
         sharedPrefs.edit().putString(PREF_JOURNEY_CONTACT, gson.toJson(list)).apply();
     }
 
-    public ArrayList<Pair<Long, Integer>> getJourneyContact() throws IOException {
+    public ArrayList<Triplet<Long, Integer, String>> getJourneyContact() throws IOException {
         Gson gson = new Gson();
-        Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {
+        Type datasetListType = new TypeToken<ArrayList<Triplet<Long, Integer, String>>>() {
         }.getType();
         return gson.fromJson(sharedPrefs.getString(PREF_JOURNEY_CONTACT, DEFAULT_JOURNEY_CONTACT), datasetListType);
     }
 
-    public void addContactToSend(Pair<Long, Integer> pair) throws IOException {
+    public void addContactToSend(Triplet<Long, Integer, String> triplet) throws IOException {
         Gson gson = new Gson();
 
-        Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {
+        Type datasetListType = new TypeToken<ArrayList<Triplet<Long, Integer, String>>>() {
         }.getType();
-        ArrayList<Pair<Long, Integer>> list = gson.fromJson(sharedPrefs.getString(PREF_CONTACT_TO_SEND, DEFAULT_CONTACT_TO_SEND), datasetListType);
-        list.add(pair);
+        ArrayList<Triplet<Long, Integer, String>> list = gson.fromJson(sharedPrefs.getString(PREF_CONTACT_TO_SEND, DEFAULT_CONTACT_TO_SEND), datasetListType);
+        list.add(triplet);
         sharedPrefs.edit().putString(PREF_CONTACT_TO_SEND, gson.toJson(list)).apply();
     }
 
-    public void setContactToSend(ArrayList<Pair<Long, Integer>> list) throws IOException {
+    public void setContactToSend(ArrayList<Triplet<Long, Integer, String>> list) throws IOException {
         Gson gson = new Gson();
         sharedPrefs.edit().putString(PREF_CONTACT_TO_SEND, gson.toJson(list)).apply();
     }
 
-    public ArrayList<Pair<Long, Integer>> getContactToSend() throws IOException {
+    public ArrayList<Triplet<Long, Integer, String>> getContactToSend() throws IOException {
         Gson gson = new Gson();
-        Type datasetListType = new TypeToken<ArrayList<Pair<Long, Integer>>>() {
+        Type datasetListType = new TypeToken<ArrayList<Triplet<Long, Integer, String>>>() {
         }.getType();
         return gson.fromJson(sharedPrefs.getString(PREF_CONTACT_TO_SEND, DEFAULT_CONTACT_TO_SEND), datasetListType);
     }
@@ -404,6 +407,14 @@ public class AppConfigManager {
 
     public boolean getPrefOnline() {
         return sharedPrefs.getBoolean(PREF_IS_ONLINE, DEFAULT_ONLINE);
+    }
+
+    public void setPrefBadgeNumber(String site_id) {
+        sharedPrefs.edit().putString(PREF_BADGE_NUMBER, site_id).apply();
+    }
+
+    public String getPrefBadgeNumber() {
+        return sharedPrefs.getString(PREF_BADGE_NUMBER, DEFAULT_BADGE_NUMBER);
     }
 
     public void setPrefChosenOpeningMenu(String chosenMenu) {
