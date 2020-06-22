@@ -9,18 +9,18 @@ exports.IdExists = functions.https.onRequest((request, response) => {
     const id = request.params['0'].slice(1);
 
     if (id.length == 0) {
-        response.status(404).send({ error: `A user ID is required` });
+        response.status(404).json({ error: `A user ID is required` });
     } else if (isNaN(id)) {
-        response.status(404).send({ error: `Invalid ID` });
+        response.status(404).json({ error: `Invalid ID` });
     } else {
         db.collection('users')
             .doc(id)
             .get()
             .then((doc) => {
                 if (doc.exists) {
-                    response.send(); // 200
+                    response.json(); // 200
                 } else {
-                    response.status(404).send({ error: `User ${id} does not exist` });
+                    response.status(404).json({ error: `User ${id} does not exist` });
                 }
             })
             .catch(console.log);
