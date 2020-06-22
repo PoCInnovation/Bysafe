@@ -42,7 +42,7 @@
         android:id="@+id/activities_container_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_percentage_header"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp">
 
@@ -74,141 +74,15 @@
 
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/activities_container_progress"
-        android:layout_marginTop="10dp">
-
-        <LinearLayout
-            android:id="@+id/log_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="#000000"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/Hour8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour17"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/Hour18"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_vertical"
-                android:gravity="center"
-                android:paddingLeft="@dimen/spacing_medium"
-                android:paddingRight="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_small"
-                android:textSize="30sp" />
-        </LinearLayout>
-    </ScrollView>
+    <Button
+        android:id="@+id/go_to_report_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/textPrimary"
+        android:text="RAPPORT" />
 
 </RelativeLayout>
