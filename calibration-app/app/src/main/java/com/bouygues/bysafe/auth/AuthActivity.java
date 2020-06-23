@@ -47,9 +47,11 @@ import static com.bouygues.bysafe.MainApplication.getContext;
 
 public class AuthActivity extends AppCompatActivity {
 
+
     private static final String TAG = "AuthPanel";
     private FirebaseAuth _auth;
     private boolean pressed = false;
+    private boolean anonyme = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +63,26 @@ public class AuthActivity extends AppCompatActivity {
         EditText textInput = findViewById(R.id.site_id);
         CircularProgressBar pb = findViewById(R.id.login_progress_bar);
 
-        textInput.setOnFocusChangeListener((a, b) -> {
-            textInput.setHint("");
-        });
+        if (anonyme) {
+            final TextView anonButton = findViewById(R.id.anon_button);
+            anonButton.setVisibility(View.VISIBLE);
+            anonButton.setClickable(true);
+            anonButton.setOnClickListener(v -> {
+                pb.setProgress(100);
+                pb.setVisibility(View.VISIBLE);
+                if (!pressed) {
+                    Logger.d(TAG, "Launching app offline");
+                    pressed = true;
+                    AppConfigManager.getInstance(getContext()).setPrefOnline(false);
+                    AppConfigManager.getInstance(getContext()).setPrefBadgeNumber("");
+                    pb.setVisibility(View.GONE);
+                    closePanel();
+                    pressed = false;
+                }
+            });
+        }
+
+        textInput.setOnFocusChangeListener((a, b) -> textInput.setHint(""));
 
         final TextView authButton = findViewById(R.id.auth_button);
         authButton.setOnClickListener(v -> {
@@ -79,7 +98,6 @@ public class AuthActivity extends AppCompatActivity {
                 GradientDrawable bg = (GradientDrawable) textInput.getBackground();
                 bg.setStroke(3, Color.WHITE);
                 textInput.setTextColor(Color.WHITE);
-                int responseCode = 0;
                 new ConnectUser().execute(site_id);
             }
         });
@@ -125,14 +143,22 @@ public class AuthActivity extends AppCompatActivity {
                 textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
             } else {
                 Toast.makeText(AuthActivity.this, "Nous n'avons pas pu ouvrir la connection.\nRéessayez plus tard, ou passez en mode Hors Ligne", Toast.LENGTH_SHORT).show();
-                // TODO OFFLINE BUTTON -> on click listener
-                //        if (!pressed) {
-                //            Logger.d(TAG, "Launching app offline");
-                //            pressed = true;
-                //            AppConfigManager.getInstance(getContext()).setPrefOnline(false);
-                //            AppConfigManager.getInstance(getContext()).setPrefBadgeNumber("");
-                //            closePanel();
-                //        }
+                final TextView anonButton = findViewById(R.id.anon_button);
+                anonButton.setVisibility(View.VISIBLE);
+                anonButton.setClickable(true);
+                anonButton.setOnClickListener(v -> {
+                    pb.setProgress(100);
+                    pb.setVisibility(View.VISIBLE);
+                    if (!pressed) {
+                        Logger.d(TAG, "Launching app offline");
+                        pressed = true;
+                        AppConfigManager.getInstance(getContext()).setPrefOnline(false);
+                        AppConfigManager.getInstance(getContext()).setPrefBadgeNumber("");
+                        pb.setVisibility(View.GONE);
+                        closePanel();
+                        pressed = false;
+                    }
+                });
             }
             pb.setVisibility(View.GONE);
             pressed = false;

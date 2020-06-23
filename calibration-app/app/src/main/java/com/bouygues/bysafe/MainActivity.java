@@ -11,17 +11,23 @@
 package com.bouygues.bysafe;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -29,6 +35,7 @@ import com.bouygues.bysafe.auth.AuthActivity;
 import com.bouygues.bysafe.protection.ProtectionFragment;
 import com.bouygues.bysafe.report.ActivitiesFragment;
 import com.bouygues.bysafe.handwash.HandwashFragment;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.internal.AppConfigManager;
@@ -36,6 +43,8 @@ import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -47,6 +56,7 @@ import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Pair;
 import org.dpppt.android.sdk.internal.util.Triplet;
 
+import static com.bouygues.bysafe.MainApplication.getContext;
 import static java.lang.Math.floor;
 
 public class MainActivity extends AppCompatActivity {
@@ -269,9 +279,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void sendAllToBack() {
-
-    }
+//    class SendAllToBack extends AsyncTask<Void, Void, Void> {
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            URL url;
+//            HttpURLConnection urlConnection = null;
+//
+//            try {
+//                url = new URL("https://us-central1-bysafe-4ee9a.cloudfunctions.net/IdExists/");
+//                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//                connection.setRequestMethod("GET");
+//                connection.connect();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (urlConnection != null) {
+//                    urlConnection.disconnect();
+//                }
+//            }
+//        }
+//    }
 
     @Override
     protected void onDestroy() {

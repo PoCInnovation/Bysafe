@@ -11,6 +11,7 @@
 <resources>
 	<string name="app_name">BySafe</string>
 	<string name="bysafe_upper">BYSAFE</string>
+	<string name="anonyme">Mode Anonyme</string>
 	<string name="connect">Se connecter</string>
 	<string name="dp3t_sdk_service_notification_channel">@string/app_name</string>
 	<string name="dp3t_sdk_service_notification_title">@string/app_name</string>
