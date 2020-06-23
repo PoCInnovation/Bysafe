@@ -23,6 +23,7 @@ hs_err_pid*
 
 # Front work on detached branch front
 front/
+back/
 
 .idea
 calibration-app/app/release
