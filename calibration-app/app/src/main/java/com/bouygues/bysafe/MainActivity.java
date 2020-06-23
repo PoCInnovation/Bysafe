@@ -11,23 +11,19 @@
 package com.bouygues.bysafe;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import com.google.firebase.firestore.FirebaseFirestore;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,7 +31,7 @@ import com.bouygues.bysafe.auth.AuthActivity;
 import com.bouygues.bysafe.protection.ProtectionFragment;
 import com.bouygues.bysafe.report.ActivitiesFragment;
 import com.bouygues.bysafe.handwash.HandwashFragment;
-import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+import com.google.firebase.firestore.SetOptions;
 
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.internal.AppConfigManager;
@@ -53,10 +49,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.dpppt.android.sdk.internal.logger.Logger;
-import org.dpppt.android.sdk.internal.util.Pair;
 import org.dpppt.android.sdk.internal.util.Triplet;
 
-import static com.bouygues.bysafe.MainApplication.getContext;
 import static java.lang.Math.floor;
 
 public class MainActivity extends AppCompatActivity {
@@ -127,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (!appConfigManager.getIsThread()) {
-                //TODO SEND ALL IN "TO_SEND"
+                sendAllToBack();
                 appConfigManager.setIsThread(true);
                 threadContact();
                 DP3T.start(getContext());
@@ -195,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 AppConfigManager.getInstance(MainApplication.getContext()).addJourneyContact(new Triplet<>(now, contacts, badge));
                 if (AppConfigManager.getInstance(MainApplication.getContext()).getPrefOnline()) {
                     AppConfigManager.getInstance(MainApplication.getContext()).addContactToSend(new Triplet<>(now, contacts, badge));
-                    //TODO SEND ALL IN "TO_SEND"
+                    sendAllToBack();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -279,27 +273,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    class SendAllToBack extends AsyncTask<Void, Void, Void> {
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            URL url;
-//            HttpURLConnection urlConnection = null;
-//
+    protected Integer sendAllToBack () {
 //            try {
-//                url = new URL("https://us-central1-bysafe-4ee9a.cloudfunctions.net/IdExists/");
-//                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//                connection.setRequestMethod("GET");
-//                connection.connect();
+//                FirebaseFirestore db = FirebaseFirestore.getInstance();
+//                //ArrayList<Triplet<Long, Integer, String>> array = AppConfigManager.getInstance(getContext()).getContactToSend();
+//                //String id = "";
+////                if (array.isEmpty())
+////                    return 1;
+////                id = array.get(0).third;
+//                Map<String, Object> data = new HashMap<>();
+////                for (Triplet<Long, Integer, String> interval : array) {
+////                    if (!interval.third.equals(id)) {
+////                        db.collection("users").document(id).set(data, SetOptions.merge());
+////                        id = interval.third;
+////                        data.clear();
+////                    }
+////                    data.put(interval.first.toString(), interval.second);
+////                }
+////                if (!data.isEmpty())
+////                    db.collection("users").document(id).set(data, SetOptions.merge());
+//                //TEST
+//                data.clear();
+//                data.put("toto", "tata");
+//                db.collection("users").document("1").set(data, SetOptions.merge());
+//                Logger.d("DATABASE", "HERE FIRESTORE SEND");
+//                //TEST
 //            } catch (Exception e) {
 //                e.printStackTrace();
-//            } finally {
-//                if (urlConnection != null) {
-//                    urlConnection.disconnect();
-//                }
+//                return 1;
 //            }
-//        }
-//    }
+//            return 0;
+        return 0;
+    }
 
     @Override
     protected void onDestroy() {
@@ -310,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                 AppConfigManager.getInstance(MainApplication.getContext()).setIsThread(false);
                 DP3T.stop(getContext());
                 thread.interrupt();
-                //TODO SEND ALL IN "TO_SEND"
+                sendAllToBack();
                 if (AppConfigManager.getInstance(MainApplication.getContext()).getPrefOnline()) {
                     AppConfigManager.getInstance(MainApplication.getContext()).setPrefOnline(false);
                 }

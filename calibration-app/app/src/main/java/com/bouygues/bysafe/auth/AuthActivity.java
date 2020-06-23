@@ -19,14 +19,6 @@ import androidx.core.content.ContextCompat;
 import com.bouygues.bysafe.MainActivity;
 import com.bouygues.bysafe.MainApplication;
 import com.bouygues.bysafe.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseNetworkException;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseUser;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.dpppt.android.sdk.DP3T;
@@ -49,7 +41,6 @@ public class AuthActivity extends AppCompatActivity {
 
 
     private static final String TAG = "AuthPanel";
-    private FirebaseAuth _auth;
     private boolean pressed = false;
     private boolean anonyme = false;
 
@@ -58,8 +49,6 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_auth);
-
-        _auth = FirebaseAuth.getInstance();
         EditText textInput = findViewById(R.id.site_id);
         CircularProgressBar pb = findViewById(R.id.login_progress_bar);
 
@@ -168,10 +157,7 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        FirebaseUser currentUser = _auth.getCurrentUser();
-
-        if (currentUser != null && AppConfigManager.getInstance(getContext()).getIsLogged())
+        if (AppConfigManager.getInstance(getContext()).getIsLogged())
             closePanel();
     }
 

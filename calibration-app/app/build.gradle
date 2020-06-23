@@ -15,6 +15,11 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    configurations {
+        implementation.exclude module:'protolite-well-known-types'
+        implementation.exclude module:'protobuf-lite'
+    }
+
     defaultConfig {
         applicationId "com.bouygues.bysafe"
         minSdkVersion 23
@@ -71,7 +76,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
 
-	implementation 'com.google.firebase:firebase-auth:19.3.1'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.google.android.material:material:1.0.0'
