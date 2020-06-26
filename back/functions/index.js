@@ -22,8 +22,55 @@ exports.IdExists = functions.https.onRequest((request, response) => {
                 } else {
                     response.status(404).json({ error: `User ${id} does not exist` });
                 }
-            })
-            .catch(console.log);
+            });
+    }
+});
+
+exports.AddReport = functions.https.onRequest((request, response) => {
+    const data = request.body;
+
+    for (const id of Object.keys(data))
+        db.collection('users').doc(id).set({ reports: data[id] }, { merge: true });
+
+    response.json();
+});
+
+exports.GetReport = functions.https.onRequest((request, response) => {
+    const id = request.params['0'].slice(1);
+
+    if (id.length == 0) {
+        response.status(404).json({ error: `A user ID is required` });
+    } else if (isNaN(id)) {
+        response.status(404).json({ error: `Invalid ID` });
+    } else {
+        db.collection('users')
+            .doc(id)
+            .get()
+            .then((doc) => response.json(doc.data().reports));
+    }
+});
+
+exports.GetReportsFromManager = functions.https.onRequest((request, response) => {
+    const id = request.params['0'].slice(1);
+
+    if (id.length == 0) {
+        response.status(404).json({ error: `A user ID is required` });
+    } else if (isNaN(id)) {
+        response.status(404).json({ error: `Invalid ID` });
+    } else {
+        db.collection('users')
+            .get()
+            .then(({ docs }) => {
+                let res = {};
+
+                docs.forEach((doc) => {
+                    if (doc.data().manager == id) {
+                        res[doc.id] = doc.data().reports;
+                    }
+                });
+
+                response.json(res);
+            });
     }
 });
 
