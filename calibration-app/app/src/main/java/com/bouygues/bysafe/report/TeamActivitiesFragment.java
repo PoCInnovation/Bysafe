@@ -131,12 +131,12 @@ public class TeamActivitiesFragment extends Fragment {
             } else {
                 //make calculus and make progress bar
                 Logger.d("MANAGER", response);
-                int number_of_users = 0;
+                int number_of_users = 0; // Nombre de membre de la team qui ont envoyé des rapports dans la journée
                 try {
-                    final JSONObject obj = new JSONObject(response);
+                    final JSONObject obj = new JSONObject(response); // json de la réponse
                     JSONObject temp;
                     float percentage = 0;
-                    Iterator<String> keys = obj.keys();
+                    Iterator<String> keys = obj.keys(); // "nom_prenom"
                     boolean is_here;
 
                     while(keys.hasNext()) {
@@ -144,11 +144,14 @@ public class TeamActivitiesFragment extends Fragment {
 
                         String key = keys.next();
                         if (obj.get(key) instanceof JSONObject) {
+                            // key = nom_prenom
                             int total = 0;
                             int contacts = 0;
                             temp = (JSONObject) obj.get(key);
                             Iterator<String> temp_keys = temp.keys();
                             while (temp_keys.hasNext()) {
+                                //str_timestamp = timestamp
+                                //temp.getInt = number of contact in 5 minutes
                                 String str_timestamp = temp_keys.next();
                                 if (Long.parseLong(str_timestamp) > atStartOfDay(new java.util.Date())) {
                                     is_here = true;
@@ -163,6 +166,7 @@ public class TeamActivitiesFragment extends Fragment {
                             if (total == 0)
                                 total = 1;
                             percentage += ((((float) (contacts)) / ((float) total)) * 100);
+                            Logger.d("MANAGER", String.valueOf((((float) (contacts)) / ((float) total)) * 100));
                         }
                     }
                     percentage /= number_of_users;

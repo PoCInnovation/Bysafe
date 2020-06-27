@@ -100,17 +100,20 @@ public class ActivitiesFragment extends Fragment {
     private void getJourneyPercentage() {
         try {
             ArrayList<Triplet<Long, Integer, String>> journeyContact = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyContact();
-            long total = journeyContact.size();
-            float totalTime = (float) total / (float) 12;
-            if (total == 0)
-                total = 1;
+            long total = 0;
+
             long contacts = 0;
 
             for (Triplet<Long, Integer, String> interval : journeyContact) {
-                if (interval.second > 0 && interval.third.equals(AppConfigManager.getInstance(MainApplication.getContext()).getPrefBadgeNumber())) {
-                    contacts += 1;
+                if (interval.third.equals(AppConfigManager.getInstance(MainApplication.getContext()).getPrefBadgeNumber())) {
+                    total += 1;
+                    if (interval.second > 0)
+                        contacts += 1;
                 }
             }
+            float totalTime = (float) total / (float) 12;
+            if (total == 0)
+                total = 1;
             String toDisplay = String.format("Pourcentage d'exposition de la journée (sur %.1f heures): \n", totalTime);
             percentage_header.setText(toDisplay);
             float percent = ((((float) (contacts)) / ((float) total)) * 100);
@@ -123,6 +126,7 @@ public class ActivitiesFragment extends Fragment {
                 unhappyMasked.setVisibility(View.GONE);
                 happyMasked.setVisibility(View.VISIBLE);
             }
+            Logger.d("MANAGER", String.valueOf(percent));
             pb.setProgress(percent);
         } catch (IOException e) {
             e.printStackTrace();

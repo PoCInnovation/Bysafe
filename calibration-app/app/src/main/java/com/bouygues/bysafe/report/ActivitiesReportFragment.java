@@ -8,11 +8,14 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -35,6 +38,7 @@ public class ActivitiesReportFragment extends Fragment {
 
     private ArrayList<String> list = new ArrayList<>();
     private ArrayList<android.widget.TextView> listId = new ArrayList<>();
+    LinearLayout llMain;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,25 +70,13 @@ public class ActivitiesReportFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listId.add(view.findViewById(R.id.Hour8));
-        listId.add(view.findViewById(R.id.Hour9));
-        listId.add(view.findViewById(R.id.Hour10));
-        listId.add(view.findViewById(R.id.Hour11));
-        listId.add(view.findViewById(R.id.Hour12));
-        listId.add(view.findViewById(R.id.Hour13));
-        listId.add(view.findViewById(R.id.Hour14));
-        listId.add(view.findViewById(R.id.Hour15));
-        listId.add(view.findViewById(R.id.Hour16));
-        listId.add(view.findViewById(R.id.Hour17));
-        listId.add(view.findViewById(R.id.Hour18));
-
         final ImageButton goToActivities = view.findViewById(R.id.go_to_activities);
         goToActivities.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
                     .commit();
         });
-
+        llMain = view.findViewById(R.id.log_list);
         getJourneyPercentage();
     }
 
@@ -118,9 +110,14 @@ public class ActivitiesReportFragment extends Fragment {
                         stringBuilder.setSpan(new ForegroundColorSpan(Color.LTGRAY), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                 }
-                long x = (i - atStartOfDay(new java.util.Date())) / 3600000;
-                listId.get((int) x).setText(stringBuilder);
-                list.add(stringBuilder.toString());
+                final TextView rowTextView = new TextView(getContext());
+                LinearLayout.LayoutParams layoutParams = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+                rowTextView.setGravity(View.TEXT_ALIGNMENT_CENTER);
+                rowTextView.setPadding(10,0,10,5);
+                rowTextView.setText(stringBuilder);
+                rowTextView.setLayoutParams(layoutParams);
+                llMain.addView(rowTextView);
                 stringBuilder.clear();
                 stringBuilder.clearSpans();
             }

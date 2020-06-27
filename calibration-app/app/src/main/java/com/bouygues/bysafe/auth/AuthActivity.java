@@ -110,44 +110,57 @@ public class AuthActivity extends AppCompatActivity {
                 final String site_id = textInput.getText().toString();
 
                 Logger.d(TAG, "signin with id " + site_id);
-
+                GradientDrawable bg = (GradientDrawable) textInput.getBackground();
+                GradientDrawable bgp = (GradientDrawable) password.getBackground();
                 if (!showManager) {
-                    GradientDrawable bg = (GradientDrawable) textInput.getBackground();
                     bg.setStroke(3, Color.WHITE);
                     textInput.setTextColor(Color.WHITE);
                     new ConnectUser().execute(site_id);
                 } else {
                     final String email = site_id + "@bysafe.app";
                     final String pass = password.getText().toString();
-                    mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            GradientDrawable bg = (GradientDrawable) textInput.getBackground();
-                            bg.setStroke(3, Color.WHITE);
-                            textInput.setTextColor(Color.WHITE);
-                            if (task.isSuccessful()) {
-                                AppConfigManager.getInstance(getContext()).setPrefManager(true);
-                                AppConfigManager.getInstance(getContext()).setPrefBadgeNumber(site_id);
-                                closePanel();
-                            } else {
-                                String err;
-                                if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-                                    err = "L'id donn<C3><A9>e est invalide.";
-                                } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                    err = "Les identifiants de connection donnés sont invalides.";
-                                } else if (task.getException() instanceof FirebaseNetworkException) {
-                                    err = "Vous n'êtes pas connecté à internet.";
+                    if (pass.equals("") || site_id.equals("")) {
+                        String err;
+                        err = "Les identifiants de connection donnés sont invalides.";
+                        Toast.makeText(AuthActivity.this, err, Toast.LENGTH_SHORT).show();
+                        bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                        bgp.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                        textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                        password.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                        pb.setVisibility(View.GONE);
+                    } else {
+                        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                bg.setStroke(3, Color.WHITE);
+                                bgp.setStroke(3, Color.WHITE);
+                                textInput.setTextColor(Color.WHITE);
+                                if (task.isSuccessful()) {
+                                    AppConfigManager.getInstance(getContext()).setPrefManager(true);
+                                    AppConfigManager.getInstance(getContext()).setPrefBadgeNumber(site_id);
+                                    closePanel();
                                 } else {
-                                    err = "Une erreur interne est survenue, veuillez réessayer plus tard.";
-                                }
+                                    String err;
+                                    if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                        err = "L'id donnée est invalide.";
+                                    } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                        err = "Les identifiants de connection donnés sont invalides.";
+                                    } else if (task.getException() instanceof FirebaseNetworkException) {
+                                        err = "Vous n'êtes pas connecté à internet.";
+                                    } else {
+                                        err = "Une erreur interne est survenue, veuillez réessayer plus tard.";
+                                    }
 
-                                Toast.makeText(AuthActivity.this, err, Toast.LENGTH_SHORT).show();
-                                bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
-                                textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                                    Toast.makeText(AuthActivity.this, err, Toast.LENGTH_SHORT).show();
+                                    bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                                    bgp.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                                    textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                                    password.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                                }
+                                pb.setVisibility(View.GONE);
                             }
-                            pb.setVisibility(View.GONE);
-                        }
-                    });
+                        });
+                    }
                 }
                 pressed = false;
             }
