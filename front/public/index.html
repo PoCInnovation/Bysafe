@@ -19,20 +19,32 @@
 </head>
 
 <body>
-    <div>
 
-        <label for="site_id">ID de chantier</label>
-        <input type="number" id="site_id" placeholder="000000000000">
+    <div id="login">
 
-        <button onclick="maybeConnect()">Select</button>
+        <label for="site_id">ID de chantier:</label>
+        <input id="site_id">
+        <label for="password">Mot de passe:</label>
+        <input id="password" type="password">
+
+        <button onclick="login()">Se connecter</button>
+
     </div>
-    <br>
-    <div>
-        Current User:
-        <p id="display_id">none</p>
-        <button id="btn-create" onclick="createUser()" disabled>Create</button>
-        <button id="btn-delete" onclick="deleteUser()" disabled>Delete</button>
-    </div>
+
+
+    <form id="upload_form" method="POST" onsubmit="addIdToken()" enctype="multipart/form-data">
+
+        <button onclick="signOut()" formaction="">Se déconnecter</button>
+
+        <br>
+        <br>
+
+        Upload a manager and new users:
+        <input type="file" name="csv_file" multiple>
+        <input type="submit" value="Upload">
+    </form>
+
+
 </body>
 
 </html>

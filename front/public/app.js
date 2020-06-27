@@ -1,4 +1,6 @@
-let id;
+const addUsersEndpoint = 'http://localhost:5000/bysafe-4ee9a/us-central1/addUsers';
+
+let global_idToken;
 
 const getElem = (id) => document.getElementById(id);
 
@@ -10,51 +12,68 @@ const signOut = () => {
         .catch((_) => {});
 };
 
-const updateDisplay = (user) => {
-    const u = user != null;
+// const updateDisplay = (user) => {
+//     const u = user != null;
 
-    getElem('btn-create').disabled = u || !id;
-    getElem('btn-delete').disabled = !u;
-};
+//     getElem('btn-create').disabled = u || !id;
+//     getElem('btn-delete').disabled = !u;
+// };
 
-const buildCredentials = (id) => ({
-    email: id + '@bysafe.app',
-    password: 'no-pass',
-});
+// const buildCredentials = (id) => ({
+//     email: id + '@bysafe.app',
+//     password: 'no-pass',
+// });
 
-const maybeConnect = () => {
-    getElem('btn-create').disabled = true;
-    getElem('btn-delete').disabled = true;
+const login = () => {
+    // getElem('btn-create').disabled = true;
+    // getElem('btn-delete').disabled = true;
 
     signOut();
 
-    id = getElem('site_id').value;
-    if (id) getElem('display_id').innerHTML = id;
-    else {
-        getElem('display_id').innerHTML = 'none';
-        return;
-    }
+    email = getElem('site_id').value + '@bysafe.app';
+    password = getElem('password').value;
 
-    let { email, password } = buildCredentials(id);
+    console.log(email, password);
 
     firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .catch((_) => updateDisplay(null));
+        .then(console.log)
+        .catch(console.error);
 };
 
-const createUser = () => {
-    let { email, password } = buildCredentials(id);
+// const createUser = () => {
+//     let { email, password } = buildCredentials(id);
 
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(console.log);
+//     firebase.auth().createUserWithEmailAndPassword(email, password).catch(console.log);
+// };
+
+// const deleteUser = () => {
+//     firebase
+//         .auth()
+//         .currentUser.delete()
+//         .then(() => {})
+//         .catch(console.log);
+// };
+
+// firebase.auth().onAuthStateChanged(updateDisplay);
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        getElem('login').hidden = true;
+        getElem('upload_form').hidden = false;
+        user.getIdToken(true).then((idToken) => {
+            global_idToken = idToken;
+        });
+    } else {
+        getElem('login').hidden = false;
+        getElem('upload_form').hidden = true;
+        global_idToken = null;
+    }
+});
+
+const addIdToken = () => {
+    const queryString = '?token=' + global_idToken;
+
+    getElem('upload_form').action = addUsersEndpoint + queryString;
 };
-
-const deleteUser = () => {
-    firebase
-        .auth()
-        .currentUser.delete()
-        .then(() => {})
-        .catch(console.log);
-};
-
-firebase.auth().onAuthStateChanged(updateDisplay);
