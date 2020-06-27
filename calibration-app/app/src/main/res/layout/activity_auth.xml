@@ -7,38 +7,18 @@
     android:background="@drawable/background_auth"
     android:orientation="vertical">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/site_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ic_top_auth"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="117dp"
-        android:layout_marginRight="40dp"
-        android:background="@drawable/background_site_id_text"
-        android:elevation="2dp"
-        android:ems="10"
-        android:fontFamily="@font/roboto_medium"
-        android:hint="@string/mot_de_passe"
-        android:inputType="textPassword"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/greyLight"
-        android:visibility="gone"
-         />
-
     <ImageButton
         android:id="@+id/button_manager"
-        android:layout_width="76dp"
-        android:layout_height="80dp"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="335dp"
-        android:layout_marginBottom="651dp"
-        android:backgroundTint="@color/cardview_light_background"
-        android:src="@drawable/ic_masked" />
+        android:background="@drawable/auth_button"
+        android:tint="@color/colorPrimary"
+        android:elevation="4dp"
+        android:src="@drawable/ic_admin_toggle" />
 
     <LinearLayout
         android:id="@+id/ic_top_auth"
@@ -68,31 +48,55 @@
 
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/site_id"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/inputs_auth"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ic_top_auth"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="40dp"
-        android:background="@drawable/background_site_id_text"
-        android:elevation="2dp"
-        android:ems="10"
-        android:fontFamily="@font/roboto_medium"
-        android:hint="@string/site_id"
-        android:inputType="number"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/greyLight" />
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/site_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_site_id_text"
+            android:elevation="2dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="@string/site_id"
+            android:inputType="number"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textColorHint="@color/greyLight" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/site_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_site_id_text"
+            android:elevation="2dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="@string/mot_de_passe"
+            android:inputType="textPassword"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textColorHint="@color/greyLight"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
         android:id="@+id/login_progress_bar"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_below="@id/site_id"
+        android:layout_below="@id/inputs_auth"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:visibility="gone"
@@ -104,41 +108,48 @@
         app:cpb_progressbar_width="5dp" />
 
 
-    <TextView
-        android:id="@+id/auth_button"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/auth_button"
-        android:elevation="2dp"
-        android:fontFamily="@font/roboto_medium"
-        android:paddingLeft="40dp"
-        android:paddingTop="10dp"
-        android:paddingRight="40dp"
-        android:paddingBottom="10dp"
-        android:text="@string/connect"
+        android:orientation="vertical">
 
-        android:textColor="#D97D54" />
+        <TextView
+            android:id="@+id/auth_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/auth_button"
+            android:elevation="2dp"
+            android:fontFamily="@font/roboto_medium"
+            android:paddingLeft="40dp"
+            android:paddingTop="10dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="10dp"
+            android:text="@string/connect"
+            android:textAlignment="center"
+            android:textColor="#D97D54" />
 
-    <TextView
-        android:id="@+id/anon_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="157dp"
-        android:background="@drawable/auth_button"
-        android:elevation="2dp"
-        android:fontFamily="@font/roboto_medium"
-        android:paddingLeft="40dp"
-        android:paddingTop="10dp"
-        android:paddingRight="40dp"
-        android:paddingBottom="10dp"
-        android:text="@string/anonyme"
-        android:visibility="gone"
-        android:clickable="false"
-        android:textColor="#D97D54" />
+        <TextView
+            android:id="@+id/anon_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/auth_button"
+            android:clickable="false"
+            android:elevation="2dp"
+            android:fontFamily="@font/roboto_medium"
+            android:paddingLeft="40dp"
+            android:paddingTop="10dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="10dp"
+            android:text="@string/anonyme"
+            android:textAlignment="center"
+            android:textColor="#D97D54"
+            android:visibility="visible" />
+    </LinearLayout>
 
 </RelativeLayout>
