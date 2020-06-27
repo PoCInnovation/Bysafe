@@ -73,6 +73,7 @@ public class AppConfigManager {
     private static final float DEFAULT_CONTACT_ATTENUATION_THRESHOLD = 73.0f;
     private static final boolean DEFAULT_THREAD = false;
     private static final boolean DEFAULT_ONLINE = false;
+    private static final boolean DEFAULT_MANAGER = false;
     private static final String DEFAULT_BADGE_NUMBER = "";
 
     private static final String PREFS_NAME = "dp3t_sdk_preferences";
@@ -106,6 +107,7 @@ public class AppConfigManager {
     private static final String PREF_HANDWASH_LAST_WASHING_TIME = "last_washing_time";
     private static final String PREF_IS_FIRST_OPENING = "is_first_opening";
     private static final String PREF_IS_ONLINE = "is_online";
+    private static final String PREF_IS_MANAGER = "is_manager";
     private static final String PREF_BADGE_NUMBER = "badge_number";
     private static final String PREF_FIRST_OPENING_CHOSEN_MENU = "first_opening_chosen_menu";
 
@@ -407,6 +409,14 @@ public class AppConfigManager {
 
     public boolean getPrefOnline() {
         return sharedPrefs.getBoolean(PREF_IS_ONLINE, DEFAULT_ONLINE);
+    }
+
+    public void setPrefManager(boolean manager) {
+        sharedPrefs.edit().putBoolean(PREF_IS_MANAGER, manager).apply();
+    }
+
+    public boolean getPrefManager() {
+        return sharedPrefs.getBoolean(PREF_IS_MANAGER, DEFAULT_MANAGER);
     }
 
     public void setPrefBadgeNumber(String site_id) {

@@ -7,6 +7,39 @@
     android:background="@drawable/background_auth"
     android:orientation="vertical">
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/site_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ic_top_auth"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="117dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/background_site_id_text"
+        android:elevation="2dp"
+        android:ems="10"
+        android:fontFamily="@font/roboto_medium"
+        android:hint="@string/mot_de_passe"
+        android:inputType="textPassword"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/greyLight"
+        android:visibility="gone"
+         />
+
+    <ImageButton
+        android:id="@+id/button_manager"
+        android:layout_width="76dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="335dp"
+        android:layout_marginBottom="651dp"
+        android:backgroundTint="@color/cardview_light_background"
+        android:src="@drawable/ic_masked" />
+
     <LinearLayout
         android:id="@+id/ic_top_auth"
         android:layout_width="match_parent"

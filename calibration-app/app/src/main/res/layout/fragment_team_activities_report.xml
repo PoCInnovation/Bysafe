@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/activities_top_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/title_background">
+
+        <TextView
+            android:id="@+id/title_barrier_gesture_team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Rapport sur la journée de l'équipe"
+            android:textAlignment="center"
+            android:textColor="@color/textPrimary"
+            android:textSize="27sp" />
+
+        <ImageButton
+            android:id="@+id/go_to_team_activities"
+            style="?android:attr/borderlessButtonStyle"
+            app:iconTint="@color/colorSecondary"
+            android:layout_width="40dp"
+            android:layout_height="38dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:background="@null"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/ic_arrow_back" />
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/activities_container_progress"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/log_list_team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="#000000"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Hour8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Hour18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_small"
+                android:textSize="30sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

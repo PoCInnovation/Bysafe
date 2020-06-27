@@ -87,4 +87,6 @@
 	<string name="protect_yourself">Protégez vous !</string>
 	<string name="day_report">Bilan du jour</string>
 	<string name="detail">Détail</string>
+    <string name="mot_de_passe">Mot de passe</string>
+    <string name="team_day_report">Bilan du jour de l\'équipe</string>
 </resources>

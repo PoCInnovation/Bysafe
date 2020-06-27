@@ -16,13 +16,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.google.firebase.firestore.FirebaseFirestore;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.util.Pair;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,17 +31,27 @@ import com.bouygues.bysafe.auth.AuthActivity;
 import com.bouygues.bysafe.protection.ProtectionFragment;
 import com.bouygues.bysafe.report.ActivitiesFragment;
 import com.bouygues.bysafe.handwash.HandwashFragment;
-import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,6 +60,8 @@ import java.util.Map;
 
 import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Triplet;
+
+import io.grpc.internal.IoUtils;
 
 import static java.lang.Math.floor;
 
@@ -101,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
             final ImageButton logoutButton = findViewById(R.id.logout_button);
             logoutButton.setOnClickListener(v -> {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null)
+                    FirebaseAuth.getInstance().signOut();
+                appConfigManager.setPrefManager(false);
                 appConfigManager.setIsLogged(false);
                 Intent intent = new Intent(this, AuthActivity.class);
                 startActivity(intent);
@@ -121,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (!appConfigManager.getIsThread()) {
-                sendAllToBack();
+                new SendAllToBack().execute("");
                 appConfigManager.setIsThread(true);
                 threadContact();
                 DP3T.start(getContext());
@@ -189,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 AppConfigManager.getInstance(MainApplication.getContext()).addJourneyContact(new Triplet<>(now, contacts, badge));
                 if (AppConfigManager.getInstance(MainApplication.getContext()).getPrefOnline()) {
                     AppConfigManager.getInstance(MainApplication.getContext()).addContactToSend(new Triplet<>(now, contacts, badge));
-                    sendAllToBack();
+                    new SendAllToBack().execute("");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -273,49 +288,113 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected Integer sendAllToBack () {
-//            try {
-//                FirebaseFirestore db = FirebaseFirestore.getInstance();
-//                //ArrayList<Triplet<Long, Integer, String>> array = AppConfigManager.getInstance(getContext()).getContactToSend();
-//                //String id = "";
-////                if (array.isEmpty())
-////                    return 1;
-////                id = array.get(0).third;
-//                Map<String, Object> data = new HashMap<>();
-////                for (Triplet<Long, Integer, String> interval : array) {
-////                    if (!interval.third.equals(id)) {
-////                        db.collection("users").document(id).set(data, SetOptions.merge());
-////                        id = interval.third;
-////                        data.clear();
-////                    }
-////                    data.put(interval.first.toString(), interval.second);
-////                }
-////                if (!data.isEmpty())
-////                    db.collection("users").document(id).set(data, SetOptions.merge());
-//                //TEST
-//                data.clear();
-//                data.put("toto", "tata");
-//                db.collection("users").document("1").set(data, SetOptions.merge());
-//                Logger.d("DATABASE", "HERE FIRESTORE SEND");
-//                //TEST
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return 1;
-//            }
-//            return 0;
-        return 0;
+
+
+    static class SendAllToBack extends AsyncTask<String, Void, Integer> {
+
+
+        Integer sendAllToBack(String toSend) {
+            URL url;
+            HttpURLConnection urlConnection = null;
+
+            try {
+                Logger.d("SENDALLTOBACK", "START");
+                url = new URL(" https://us-central1-bysafe-4ee9a.cloudfunctions.net/AddReport");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setFixedLengthStreamingMode(toSend.getBytes(StandardCharsets.UTF_8).length);
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.connect();
+
+                try(OutputStream os = conn.getOutputStream()) {
+                    Logger.d("SENDALLTOBACK", toSend);
+                    os.write(toSend.getBytes(StandardCharsets.UTF_8));
+                }
+                conn.connect();
+                Logger.d("SENDALLTOBACK", "STOP");
+                return conn.getResponseCode();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return 503;
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            try {
+                ArrayList<Triplet<Long, Integer, String>> array = AppConfigManager.getInstance(getContext()).getContactToSend();
+                if (array.isEmpty())
+                    return 0;
+                String id = array.get(0).third;
+                StringBuilder result = new StringBuilder("{ ");
+                result.append("\"").append(id).append("\"").append(": {");
+                boolean first = true;
+                long to_destroy = 0;
+                long final_destroy = 0;
+                int val = 0;
+                for (Triplet<Long, Integer, String> interval : array) {
+                    if (!interval.third.equals(id)) {
+                        result.append("}}");
+                        val = sendAllToBack(result.toString());
+                        Logger.d("SENDALLTOBACK", String.valueOf(val));
+                        id = interval.third;
+                        if (val != 200) {
+                            result = new StringBuilder("{");
+                            break;
+                        }
+                        final_destroy = to_destroy;
+                        result = new StringBuilder("{");
+                        result.append("\"").append(id).append("\"").append(": {");
+                        first = true;
+                    }
+                    if (!first)
+                        result.append(",\n");
+                    first = false;
+                    result.append("\"").append(interval.first).append("\"").append(": ").append(interval.second);
+                    to_destroy += 1;
+                }
+                result.append("}}");
+                if (result.length() > 3) {
+                    val = sendAllToBack(result.toString());
+                    if (val == 200) {
+                        final_destroy = to_destroy;
+                    }
+                }
+                for (int i = 0; i < final_destroy; i++)
+                    array.remove(0);
+                AppConfigManager.getInstance(getContext()).setContactToSend(array);
+                return val;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 84;
+            }
+        }
+
+        protected void onPostExecute(Integer responseCode) {
+            Logger.d("SENDALLTOBACK", responseCode.toString());
+        }
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        new SendAllToBack().execute("");
 
         if (!AppConfigManager.getInstance(MainApplication.getContext()).getIsLogged()) {
             if (thread != null) {
                 AppConfigManager.getInstance(MainApplication.getContext()).setIsThread(false);
                 DP3T.stop(getContext());
                 thread.interrupt();
-                sendAllToBack();
                 if (AppConfigManager.getInstance(MainApplication.getContext()).getPrefOnline()) {
                     AppConfigManager.getInstance(MainApplication.getContext()).setPrefOnline(false);
                 }

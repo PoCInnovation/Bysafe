@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -81,12 +82,17 @@ public class ActivitiesFragment extends Fragment {
         happyMasked = view.findViewById(R.id.activities_happy_masked);
         unhappyMasked = view.findViewById(R.id.activities_unhappy_masked);
         reportButton = view.findViewById(R.id.go_to_report_list);
+        ImageButton manager = view.findViewById(R.id.button_manager_view);
 
-        reportButton.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment_container, ActivitiesReportFragment.newInstance())
-                    .commit();
-        });
+        if (AppConfigManager.getInstance(getContext()).getPrefManager()) {
+            manager.setVisibility(View.VISIBLE);
+            manager.setOnClickListener(v -> getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment_container, TeamActivitiesFragment.newInstance()).commit());
+        }
+
+        reportButton.setOnClickListener(v -> getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment_container, ActivitiesReportFragment.newInstance())
+                .commit());
 
         getJourneyPercentage();
     }

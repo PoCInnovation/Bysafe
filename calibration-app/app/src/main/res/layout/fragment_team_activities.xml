@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <ImageButton
-        android:id="@+id/button_manager_view"
+        android:id="@+id/button_normal_view"
         android:layout_width="76dp"
         android:layout_height="80dp"
         android:layout_alignParentRight="true"
@@ -16,7 +16,6 @@
         android:layout_marginRight="42dp"
         android:layout_marginBottom="529dp"
         android:backgroundTint="@color/cardview_light_background"
-        android:visibility="gone"
         android:src="@drawable/ic_masked" />
 
     <RelativeLayout
@@ -27,13 +26,13 @@
         android:background="@drawable/title_background">
 
         <TextView
-            android:id="@+id/title_barrier_gesture"
+            android:id="@+id/title_barrier_gesture_team"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="@string/day_report"
+            android:text="@string/team_day_report"
             android:textAlignment="center"
             android:textColor="@color/textPrimary"
             android:textSize="27sp" />
@@ -41,7 +40,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/text_percentage_header"
+        android:id="@+id/text_percentage_header_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/activities_top_container"
@@ -51,7 +50,7 @@
         android:textSize="20sp" />
 
     <RelativeLayout
-        android:id="@+id/activities_container_progress"
+        android:id="@+id/activities_container_progress_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -59,7 +58,7 @@
         android:layout_marginRight="50dp">
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
-            android:id="@+id/day_report_circular_progress_bar"
+            android:id="@+id/day_report_circular_progress_bar_team"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cpb_background_progressbar_color="#788290"
@@ -70,7 +69,7 @@
             app:cpb_round_border="true" />
 
         <ImageView
-            android:id="@+id/activities_unhappy_masked"
+            android:id="@+id/activities_unhappy_masked_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -78,16 +77,30 @@
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/activities_happy_masked"
+            android:id="@+id/activities_happy_masked_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_protected_happy" />
 
+        <TextView
+            android:id="@+id/handshake_list2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/activities_unhappy_masked_team"
+            android:layout_alignRight="@id/activities_unhappy_masked_team"
+            android:background="@drawable/background_contacts_count"
+            android:fontFamily="@font/roboto_bold"
+            android:text="4"
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:textColor="#FA990C"
+            android:textSize="24sp"/>
+
     </RelativeLayout>
 
     <Button
-        android:id="@+id/go_to_report_list"
+        android:id="@+id/go_to_report_list_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

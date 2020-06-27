@@ -8,17 +8,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 
 import com.bouygues.bysafe.MainActivity;
 import com.bouygues.bysafe.MainApplication;
 import com.bouygues.bysafe.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.dpppt.android.sdk.DP3T;
@@ -42,24 +52,41 @@ public class AuthActivity extends AppCompatActivity {
 
     private static final String TAG = "AuthPanel";
     private boolean pressed = false;
-    private boolean anonyme = false;
+    private boolean anonyme = true;
+    private boolean showManager = false;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AppConfigManager.getInstance(getContext()).setPrefManager(false);
         setContentView(R.layout.activity_auth);
         EditText textInput = findViewById(R.id.site_id);
+        EditText password = findViewById(R.id.site_password);
         CircularProgressBar pb = findViewById(R.id.login_progress_bar);
+        final ImageButton manager = findViewById(R.id.button_manager);
+
+        manager.setOnClickListener(v ->
+        {
+            if (showManager) {
+                password.setVisibility(View.GONE);
+                showManager = !showManager;
+            } else {
+                password.setVisibility(View.VISIBLE);
+                showManager = !showManager;
+            }
+        });
 
         if (anonyme) {
             final TextView anonButton = findViewById(R.id.anon_button);
             anonButton.setVisibility(View.VISIBLE);
             anonButton.setClickable(true);
             anonButton.setOnClickListener(v -> {
-                pb.setProgress(100);
-                pb.setVisibility(View.VISIBLE);
                 if (!pressed) {
+                    AppConfigManager.getInstance(getContext()).setPrefManager(false);
+                    pb.setProgress(100);
+                    pb.setVisibility(View.VISIBLE);
                     Logger.d(TAG, "Launching app offline");
                     pressed = true;
                     AppConfigManager.getInstance(getContext()).setPrefOnline(false);
@@ -75,19 +102,54 @@ public class AuthActivity extends AppCompatActivity {
 
         final TextView authButton = findViewById(R.id.auth_button);
         authButton.setOnClickListener(v -> {
-            pb.setProgress(100);
-            pb.setVisibility(View.VISIBLE);
-
-            final String site_id = textInput.getText().toString();
-
-            Logger.d(TAG, "signin with id " + site_id);
-
             if (!pressed) {
                 pressed = true;
-                GradientDrawable bg = (GradientDrawable) textInput.getBackground();
-                bg.setStroke(3, Color.WHITE);
-                textInput.setTextColor(Color.WHITE);
-                new ConnectUser().execute(site_id);
+                pb.setProgress(100);
+                pb.setVisibility(View.VISIBLE);
+
+                final String site_id = textInput.getText().toString();
+
+                Logger.d(TAG, "signin with id " + site_id);
+
+                if (!showManager) {
+                    GradientDrawable bg = (GradientDrawable) textInput.getBackground();
+                    bg.setStroke(3, Color.WHITE);
+                    textInput.setTextColor(Color.WHITE);
+                    new ConnectUser().execute(site_id);
+                } else {
+                    final String email = site_id + "@bysafe.app";
+                    final String pass = password.getText().toString();
+                    mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            GradientDrawable bg = (GradientDrawable) textInput.getBackground();
+                            bg.setStroke(3, Color.WHITE);
+                            textInput.setTextColor(Color.WHITE);
+                            if (task.isSuccessful()) {
+                                AppConfigManager.getInstance(getContext()).setPrefManager(true);
+                                AppConfigManager.getInstance(getContext()).setPrefBadgeNumber(site_id);
+                                closePanel();
+                            } else {
+                                String err;
+                                if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                    err = "L'id donn<C3><A9>e est invalide.";
+                                } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                    err = "Les identifiants de connection donnés sont invalides.";
+                                } else if (task.getException() instanceof FirebaseNetworkException) {
+                                    err = "Vous n'êtes pas connecté à internet.";
+                                } else {
+                                    err = "Une erreur interne est survenue, veuillez réessayer plus tard.";
+                                }
+
+                                Toast.makeText(AuthActivity.this, err, Toast.LENGTH_SHORT).show();
+                                bg.setStroke(3, ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                                textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
+                            }
+                            pb.setVisibility(View.GONE);
+                        }
+                    });
+                }
+                pressed = false;
             }
         });
     }
@@ -157,8 +219,13 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (AppConfigManager.getInstance(getContext()).getIsLogged())
+        if (mAuth.getCurrentUser() != null && AppConfigManager.getInstance(getContext()).getIsLogged()) {
+            AppConfigManager.getInstance(getContext()).setPrefManager(true);
             closePanel();
+        } else if (AppConfigManager.getInstance(getContext()).getIsLogged()){
+            AppConfigManager.getInstance(getContext()).setPrefManager(false);
+            closePanel();
+        }
     }
 
     private void closePanel() {
