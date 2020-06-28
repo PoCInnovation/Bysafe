@@ -99,6 +99,7 @@ public class AuthActivity extends AppCompatActivity {
         }
 
         textInput.setOnFocusChangeListener((a, b) -> textInput.setHint(""));
+        password.setOnFocusChangeListener((a, b) -> password.setHint(""));
 
         final TextView authButton = findViewById(R.id.auth_button);
         authButton.setOnClickListener(v -> {

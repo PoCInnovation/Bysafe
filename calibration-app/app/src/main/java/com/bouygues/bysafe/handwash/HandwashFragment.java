@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
+import org.w3c.dom.Text;
 
 import java.util.concurrent.TimeUnit;
 
@@ -69,8 +71,8 @@ public class HandwashFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final ImageButton infoBarrierGesture = view.findViewById(R.id.button_info_barrier_gesture);
-        final Button handWashButton = view.findViewById(R.id.washed_hands);
-        final Button pauseHandWashButton = view.findViewById(R.id.pause_resume_hand_wash);
+        final TextView handWashButton = view.findViewById(R.id.washed_hands);
+        final TextView pauseHandWashButton = view.findViewById(R.id.pause_resume_hand_wash);
 
         handWashButton.setOnClickListener(v -> {
             lastWashingTime = System.currentTimeMillis();
@@ -143,10 +145,10 @@ public class HandwashFragment extends Fragment {
         CircularProgressBar pb = getView().findViewById(R.id.circularProgressBar);
         pb.setProgress(millis != 0 ? ((float) seconds / (float) washingTime) * 100 : 0);
 
-        Button pauseHandWashButton = getView().findViewById(R.id.pause_resume_hand_wash);
+        TextView pauseHandWashButton = getView().findViewById(R.id.pause_resume_hand_wash);
         TextView text = getView().findViewById(R.id.washed_hands_timer);
 
-        text.setText(getTimerString());
+        text.setText(Html.fromHtml(getTimerString()));
         pauseHandWashButton.setText(isPaused ? R.string.button_resume_hand_wash : R.string.button_pause_hand_wash);
     }
 
@@ -186,7 +188,7 @@ public class HandwashFragment extends Fragment {
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
         if (millis > 0) {
-            return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+            return String.format("%02d<font color=#344856>:</font><font color=#0092FF><big>%02d</big>.%02d</font>", hours, minutes, seconds);
         }
         return MainActivity.getContext().getString(R.string.button_wash);
     }
@@ -200,7 +202,7 @@ public class HandwashFragment extends Fragment {
             final CircularProgressBar pb = view != null ? view.findViewById(R.id.circularProgressBar) : null;
 
             if (text != null) {
-                text.setText(getTimerString());
+                text.setText(Html.fromHtml(getTimerString()));
             }
             if (pb != null) {
                 pb.setProgress(((float) seconds / (float) washingTime) * 100);
@@ -210,7 +212,7 @@ public class HandwashFragment extends Fragment {
                 handler.postDelayed(this, 1000);
             } else {
                 if (text != null) {
-                    text.setText(getTimerString());
+                    text.setText(Html.fromHtml(getTimerString()));
                 }
                 isPaused = false;
                 isRunning = false;

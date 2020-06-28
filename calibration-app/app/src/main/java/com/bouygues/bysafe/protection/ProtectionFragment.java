@@ -42,10 +42,12 @@ public class ProtectionFragment extends Fragment {
     private ImageView centerUnhappy;
     private ImageView discHappy;
     private ImageView discUnhappy;
-    private GradientDrawable mainBackground;
+    private ImageView icTextHappy;
+    private ImageView icTextUnhappy;
+    private ImageView bgCircle;
+    private ImageView bgTop;
     private Thread thread;
     private boolean continueWork = true;
-    private static final int REQUEST_CODE_PERMISSION_LOCATION = 1;
 
     public static ProtectionFragment newInstance() {
         return new ProtectionFragment();
@@ -77,7 +79,11 @@ public class ProtectionFragment extends Fragment {
         discHappy = getView().findViewById(R.id.image_view_disc_happy);
         discUnhappy = getView().findViewById(R.id.image_view_disc_unhappy);
 
-        mainBackground = (GradientDrawable) getView().findViewById(R.id.main_relative_layout_protection).getBackground();
+        icTextHappy = getView().findViewById(R.id.protection_status_ok_ic);
+        icTextUnhappy = getView().findViewById(R.id.protection_status_alert_ic);
+
+        bgCircle = getView().findViewById(R.id.protection_circle_bg);
+        bgTop = getView().findViewById(R.id.protection_top_bg);
 
         loadContacts();
     }
@@ -102,7 +108,11 @@ public class ProtectionFragment extends Fragment {
                                 centerHappy.setVisibility(View.VISIBLE);
                                 discUnhappy.setVisibility(View.GONE);
                                 discHappy.setVisibility(View.VISIBLE);
-                                mainBackground.setColor(Color.argb(255, 135, 234, 74));
+                                icTextHappy.setVisibility(View.VISIBLE);
+                                icTextUnhappy.setVisibility(View.GONE);
+                                bgCircle.setBackgroundColor(Color.parseColor("#0DCF06"));
+                                bgCircle.setColorFilter(Color.parseColor("#85E94A"));
+                                bgTop.setColorFilter(Color.parseColor("#85E94A"));
                             } else {
                                 statusMessage.setText(getString(R.string.protect_yourself));
                                 handshakeList.setText(String.valueOf(counter));
@@ -111,7 +121,11 @@ public class ProtectionFragment extends Fragment {
                                 centerHappy.setVisibility(View.GONE);
                                 discUnhappy.setVisibility(View.VISIBLE);
                                 discHappy.setVisibility(View.GONE);
-                                mainBackground.setColor(Color.argb(255, 255, 180, 72));
+                                icTextUnhappy.setVisibility(View.VISIBLE);
+                                icTextHappy.setVisibility(View.GONE);
+                                bgCircle.setBackgroundColor(Color.parseColor("#FA990C"));
+                                bgCircle.setColorFilter(Color.parseColor("#FFB448"));
+                                bgTop.setColorFilter(Color.parseColor("#FFB448"));
                             }
                         });
                         for (int i = 0; i < 10; i++) {

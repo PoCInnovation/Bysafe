@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -171,5 +172,4 @@
         android:text="@string/redirect_gov_info"
         android:textSize="14sp"
         app:cornerRadius="0dp" />
-
 </RelativeLayout>
