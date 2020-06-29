@@ -127,7 +127,6 @@ public class ActivitiesFragment extends Fragment {
                 }
             }
             float totalTime = (float) total / (float) 12;
-            totalTime = 3.99f;
             if (total == 0)
                 total = 1;
 
