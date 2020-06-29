@@ -151,6 +151,7 @@
         android:id="@+id/button_info_barrier_gesture"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:padding="5dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="10dp"

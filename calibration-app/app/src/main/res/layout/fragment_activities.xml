@@ -135,12 +135,17 @@
         android:paddingBottom="2dp"
         tools:ignore="RtlSymmetry">
 
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/ic_clock_total_time" />
+
         <TextView
             android:id="@+id/activities_total_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:fontFamily="@font/gudea_bold"
             android:paddingStart="2dp"
             android:text="total"
@@ -183,14 +188,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginVertical="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/auth_button"
         android:clickable="false"
         android:elevation="2dp"
         android:fontFamily="@font/roboto_bold"
         android:padding="10dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginVertical="5dp"
         android:text="RAPPORT"
         android:textAlignment="center"
         android:textColor="#515C6F"
