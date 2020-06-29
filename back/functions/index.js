@@ -9,9 +9,9 @@ exports.IdExists = functions.https.onRequest((request, response) => {
     const id = request.params['0'].slice(1);
 
     if (id.length == 0) {
-        response.status(404).json({ error: `A user ID is required` });
+        response.status(404).json({ error: 'Un indentifiant est requis' });
     } else if (isNaN(id)) {
-        response.status(404).json({ error: `Invalid ID` });
+        response.status(404).json({ error: 'Indentifiant invalide' });
     } else {
         db.collection('users')
             .doc(id)
@@ -20,7 +20,7 @@ exports.IdExists = functions.https.onRequest((request, response) => {
                 if (doc.exists) {
                     response.json(); // 200
                 } else {
-                    response.status(404).json({ error: `User ${id} does not exist` });
+                    response.status(404).json({ error: `L'utilisateur ${id} n'existe pas` });
                 }
             });
     }
@@ -39,9 +39,9 @@ exports.GetReport = functions.https.onRequest((request, response) => {
     const id = request.params['0'].slice(1);
 
     if (id.length == 0) {
-        response.status(404).json({ error: `A user ID is required` });
+        response.status(404).json({ error: 'Un indentifiant est requis' });
     } else if (isNaN(id)) {
-        response.status(404).json({ error: `Invalid ID` });
+        response.status(404).json({ error: 'Indentifiant invalide' });
     } else {
         db.collection('users')
             .doc(id)
@@ -54,9 +54,9 @@ exports.GetReportsFromManager = functions.https.onRequest((request, response) =>
     const id = request.params['0'].slice(1);
 
     if (id.length == 0) {
-        response.status(404).json({ error: `A user ID is required` });
+        response.status(404).json({ error: 'Un indentifiant est requis' });
     } else if (isNaN(id)) {
-        response.status(404).json({ error: `Invalid ID` });
+        response.status(404).json({ error: 'Indentifiant invalide' });
     } else {
         db.collection('users')
             .get()
@@ -103,23 +103,13 @@ const CSVToArray = (strData, strDelimiter) => {
     return arrData;
 };
 
-const managerIntegrity = (manager) => {
-    if (manager.length === 2) return true;
-    response
-        .status(406)
-        .send(
-            `Erreur dans le fichier ${filename}: La première ligne doit contenir le numéro de chantier et le mot de passe du manager`
-        );
-    return false;
-};
-
 exports.addUsers = functions.https.onRequest((request, response) => {
     admin
         .auth()
         .verifyIdToken(request.query.token)
         .then(({ uid }) => {
             if (uid !== '8CScTXV2ITg9HeLpqGDGYwxQkD93') {
-                response.status(403).send('You must be the admin');
+                response.status(403).send("Vous n'êtes pas l'administrateur");
                 return;
             }
 
@@ -128,54 +118,51 @@ exports.addUsers = functions.https.onRequest((request, response) => {
             const boundary = multipart.getBoundary(request.headers['content-type']);
             const parts = multipart.Parse(request.body, boundary);
 
-            let managerGroups = {};
+            var allManagers = [];
+            let allUsers = {};
 
             for (let i = 0; i < parts.length; i++) {
                 const { data, filename } = parts[i];
-                const lines = CSVToArray(String(data));
+                const lines = CSVToArray(String(data)).filter((line) => line[0].length !== 0);
+                const managerLine = lines[0];
 
-                const manager = lines[0];
-                if (!managerIntegrity(manager)) return;
+                if (managerLine.length !== 2) {
+                    response
+                        .status(406)
+                        .send(
+                            `Erreur dans le fichier ${filename}: La première ligne doit contenir le numéro de chantier et le mot de passe du manager. Aucun changement n'a été effectué.`
+                        );
+                    return;
+                }
 
-                admin
-                    .auth()
-                    .createUser({
-                        email: manager[0] + '@bysafe.app',
-                    })
-                    .catch(() => {});
-
-                const users = lines.slice(1);
-
-                users.forEach((user) => {
-                    managerGroups[manager[0]];
+                allManagers.push({
+                    email: managerLine[0] + '@bysafe.app',
+                    password: managerLine[1],
                 });
 
-                //    .forEach((e) => {
-                //         if (e.length !== 3) return;
-                //         console.log(e[0], e[1], e[2]);
-                //     });
+                lines.slice(1).forEach((user) => {
+                    allUsers[user[0]] = {
+                        manager: managerLine[0],
+                        firstname: user[1],
+                        lastname: user[2],
+                    };
+                });
             }
 
-            response.send(boundary);
+            allManagers.forEach((manager) =>
+                admin
+                    .auth()
+                    .createUser(manager)
+                    .catch(() => {})
+            );
+
+            for (const id of Object.keys(allUsers))
+                db.collection('users').doc(id).set(allUsers[id]);
+
+            response.send(`Opération réalisée avec succès`);
         })
-        .catch(() => {
-            response.status(401).send('You must be logged in');
+        .catch((e) => {
+            console.error(e);
+            response.status(401).send('Vous devez être connecté');
         });
 });
-
-// const handleErr = (err) => {
-//     console.error(err);
-//     response.send(err);
-// };
-
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//     // const toto = String(request.body)
-//     //     .split('\r\n')[4]
-//     //     .split('\n')
-//     //     .filter((el) => el != '');
-
-//     // console.log(String(request.body));
-
-//     // db.collection('users').doc('12');
-//     response.send('done');
-// });
