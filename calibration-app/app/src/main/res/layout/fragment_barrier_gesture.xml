@@ -24,7 +24,7 @@
             android:text="@string/barrier_gesture_title"
             android:textAlignment="center"
             android:textColor="@color/textPrimary"
-            android:textSize="27sp" />
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/go_to_handwash"

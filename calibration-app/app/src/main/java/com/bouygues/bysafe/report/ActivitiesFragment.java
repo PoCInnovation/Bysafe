@@ -1,5 +1,6 @@
 package com.bouygues.bysafe.report;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -38,6 +39,7 @@ import org.dpppt.android.sdk.internal.database.Database;
 import org.dpppt.android.sdk.internal.database.models.Handshake;
 import org.dpppt.android.sdk.internal.logger.Logger;
 import org.dpppt.android.sdk.internal.util.Triplet;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -49,15 +51,19 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ActivitiesFragment extends Fragment {
 
     private CircularProgressBar pb;
-    private TextView percentage_header;
+    private TextView text_date_header;
     private ImageView unhappyMasked;
     private ImageView happyMasked;
-    private Button reportButton;
+    private TextView totalTimeTv;
+    private TextView exposedTimeTv;
+    private ImageView unhappyIc;
+    private ImageView happyIc;
     private long interval = 60000;
 
     //    private ArrayList<String> list = new ArrayList<>();
@@ -78,10 +84,18 @@ public class ActivitiesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         pb = view.findViewById(R.id.day_report_circular_progress_bar);
-        percentage_header = view.findViewById(R.id.text_percentage_header);
+        text_date_header = view.findViewById(R.id.text_date_header);
+
         happyMasked = view.findViewById(R.id.activities_happy_masked);
         unhappyMasked = view.findViewById(R.id.activities_unhappy_masked);
-        reportButton = view.findViewById(R.id.go_to_report_list);
+
+        totalTimeTv = view.findViewById(R.id.activities_total_time);
+        exposedTimeTv = view.findViewById(R.id.activities_time_exposed);
+
+        happyIc = view.findViewById(R.id.activities_status_ok_ic);
+        unhappyIc = view.findViewById(R.id.activities_status_alert_ic);
+
+        Button reportButton = view.findViewById(R.id.go_to_report_list);
         ImageButton manager = view.findViewById(R.id.button_manager_view);
 
         if (AppConfigManager.getInstance(getContext()).getPrefManager()) {
@@ -97,6 +111,7 @@ public class ActivitiesFragment extends Fragment {
         getJourneyPercentage();
     }
 
+    @SuppressLint("DefaultLocale")
     private void getJourneyPercentage() {
         try {
             ArrayList<Triplet<Long, Integer, String>> journeyContact = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyContact();
@@ -112,19 +127,38 @@ public class ActivitiesFragment extends Fragment {
                 }
             }
             float totalTime = (float) total / (float) 12;
+            totalTime = 3.99f;
             if (total == 0)
                 total = 1;
-            String toDisplay = String.format("Pourcentage d'exposition de la journée (sur %.1f heures): \n", totalTime);
-            percentage_header.setText(toDisplay);
+
+            int hours = (int) totalTime;
+            int minutes = (int) ((totalTime - Math.floor(totalTime)) * 60);
+            totalTimeTv.setText(String.format("%02d:%02d", hours, minutes));
+
+            float exposedTime = (float) contacts / (float) 12;
+            hours = (int) exposedTime;
+            minutes = (int) ((exposedTime - Math.floor(exposedTime)) * 60);
+            exposedTimeTv.setText(String.valueOf(String.format("%02d:%02d", hours, minutes)));
+
+            String date = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(new Date());
+            text_date_header.setText(date);
+
             float percent = ((((float) (contacts)) / ((float) total)) * 100);
+            percent = 20;
             if (percent >= 10) {
                 pb.setProgressBarColor(Color.parseColor("#FA990C"));
+                exposedTimeTv.setTextColor(Color.parseColor("#FA990C"));
                 happyMasked.setVisibility(View.GONE);
                 unhappyMasked.setVisibility(View.VISIBLE);
+                happyIc.setVisibility(View.GONE);
+                unhappyIc.setVisibility(View.VISIBLE);
             } else {
                 pb.setProgressBarColor(Color.parseColor("#87EA4A"));
+                exposedTimeTv.setTextColor(Color.parseColor("#87EA4A"));
                 unhappyMasked.setVisibility(View.GONE);
                 happyMasked.setVisibility(View.VISIBLE);
+                unhappyIc.setVisibility(View.GONE);
+                happyIc.setVisibility(View.VISIBLE);
             }
             Logger.d("MANAGER", String.valueOf(percent));
             pb.setProgress(percent);

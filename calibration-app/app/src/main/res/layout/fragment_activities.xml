@@ -1,23 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_protection"
     android:backgroundTint="#F5F6F8"
     android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.5"
+                android:src="@drawable/gray_background_rounded" />
+
+            <ImageView
+                android:layout_width="10000dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="@color/bg_clock_handwash"
+                android:paddingBottom="50dp"
+                android:src="@drawable/half_circle_clock" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
     <ImageButton
         android:id="@+id/button_manager_view"
         android:layout_width="76dp"
         android:layout_height="80dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="42dp"
+        android:layout_marginEnd="42dp"
         android:layout_marginBottom="529dp"
         android:backgroundTint="@color/cardview_light_background"
+        android:src="@drawable/ic_masked"
         android:visibility="gone"
-        android:src="@drawable/ic_masked" />
+        tools:ignore="PrivateResource" />
 
     <RelativeLayout
         android:id="@+id/activities_top_container"
@@ -36,27 +68,29 @@
             android:text="@string/day_report"
             android:textAlignment="center"
             android:textColor="@color/textPrimary"
-            android:textSize="27sp" />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/text_percentage_header"
+        android:id="@+id/text_date_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/activities_top_container"
-        android:layout_gravity="center_horizontal"
-        android:text=""
+        android:layout_alignParentEnd="true"
+        android:fontFamily="@font/roboto_bold"
+        android:layout_marginEnd="3dp"
+        android:textColor="#778190"
+        android:alpha="0.63"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:id="@+id/activities_container_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
+        android:layout_margin="40dp">
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/day_report_circular_progress_bar"
@@ -85,6 +119,63 @@
             android:src="@drawable/ic_protected_happy" />
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activities_container_progress"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/background_protection_status_message"
+        android:clipToPadding="false"
+        android:elevation="10dp"
+        android:orientation="horizontal"
+        android:paddingTop="2dp"
+        android:paddingEnd="2dp"
+        android:paddingBottom="2dp"
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:id="@+id/activities_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingStart="2dp"
+            android:text="total"
+            android:textColor="#788290"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/activities_time_exposed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_bold"
+            android:text="time exposed"
+            android:textAlignment="center"
+            android:textColor="#324755"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/activities_status_ok_ic"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_ok"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/activities_status_alert_ic"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_info_alerte"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/go_to_report_list"
