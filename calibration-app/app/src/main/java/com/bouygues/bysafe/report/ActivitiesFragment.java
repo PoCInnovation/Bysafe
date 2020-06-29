@@ -138,13 +138,12 @@ public class ActivitiesFragment extends Fragment {
             float exposedTime = (float) contacts / (float) 12;
             hours = (int) exposedTime;
             minutes = (int) ((exposedTime - Math.floor(exposedTime)) * 60);
-            exposedTimeTv.setText(String.valueOf(String.format("%02d:%02d", hours, minutes)));
+            exposedTimeTv.setText(String.format("%02d:%02d", hours, minutes));
 
             String date = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(new Date());
             text_date_header.setText(date);
 
             float percent = ((((float) (contacts)) / ((float) total)) * 100);
-            percent = 20;
             if (percent >= 10) {
                 pb.setProgressBarColor(Color.parseColor("#FA990C"));
                 exposedTimeTv.setTextColor(Color.parseColor("#FA990C"));
