@@ -29,14 +29,17 @@ import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.logger.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 
 import static com.bouygues.bysafe.MainApplication.getContext;
@@ -47,7 +50,8 @@ public class TeamActivitiesFragment extends Fragment {
     private TextView percentage_header;
     private ImageView unhappyMasked;
     private ImageView happyMasked;
-    private Button reportButton;
+    private TextView reportTv;
+    private ImageButton goToReportActivities;
     private long interval = 60000;
 
     @Nullable
@@ -67,19 +71,27 @@ public class TeamActivitiesFragment extends Fragment {
 
         pb = view.findViewById(R.id.day_report_circular_progress_bar_team);
         percentage_header = view.findViewById(R.id.text_percentage_header_team);
+        String date = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(new Date());
+        percentage_header.setText(date);
         happyMasked = view.findViewById(R.id.activities_happy_masked_team);
         unhappyMasked = view.findViewById(R.id.activities_unhappy_masked_team);
-        reportButton = view.findViewById(R.id.go_to_report_list_team);
+        reportTv = view.findViewById(R.id.go_to_report_list_team);
         ImageButton manager = view.findViewById(R.id.button_normal_view);
         handshakeList = getView().findViewById(R.id.handshake_list2);
+        goToReportActivities = getView().findViewById(R.id.go_to_report_activities);
 
         manager.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
                     .commit();
         });
+        goToReportActivities.setOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
+                    .commit();
+        });
 
-        reportButton.setOnClickListener(v -> {
+        reportTv.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment_container, TeamActivitiesReportFragment.newInstance())
                     .commit();
@@ -139,7 +151,7 @@ public class TeamActivitiesFragment extends Fragment {
                     Iterator<String> keys = obj.keys(); // "nom_prenom"
                     boolean is_here;
 
-                    while(keys.hasNext()) {
+                    while (keys.hasNext()) {
                         is_here = false;
 
                         String key = keys.next();
@@ -169,7 +181,11 @@ public class TeamActivitiesFragment extends Fragment {
                             Logger.d("MANAGER", String.valueOf((((float) (contacts)) / ((float) total)) * 100));
                         }
                     }
-                    percentage /= number_of_users;
+                    if (number_of_users > 0) {
+                        percentage /= number_of_users;
+                    } else {
+                        percentage = 0;
+                    }
                     Logger.d("MANAGER", String.valueOf(percentage));
                     handshakeList.setVisibility(View.VISIBLE);
                     handshakeList.setText(String.valueOf(number_of_users));
@@ -178,7 +194,7 @@ public class TeamActivitiesFragment extends Fragment {
                         happyMasked.setVisibility(View.GONE);
                         unhappyMasked.setVisibility(View.VISIBLE);
                     } else {
-                        pb.setProgressBarColor(Color.parseColor("#87EA4A"));
+                        pb.setProgressBarColor(Color.parseColor("#0dcf06"));
                         unhappyMasked.setVisibility(View.GONE);
                         happyMasked.setVisibility(View.VISIBLE);
                     }

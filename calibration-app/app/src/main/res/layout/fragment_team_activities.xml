@@ -7,15 +7,46 @@
     android:backgroundTint="#F5F6F8"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.5"
+                android:src="@drawable/gray_background_rounded" />
+
+            <ImageView
+                android:layout_width="10000dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="@color/bg_clock_handwash"
+                android:paddingBottom="50dp"
+                android:src="@drawable/half_circle_clock" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
     <ImageButton
         android:id="@+id/button_normal_view"
         android:layout_width="76dp"
         android:layout_height="80dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="42dp"
-        android:layout_marginBottom="529dp"
-        android:backgroundTint="@color/cardview_light_background"
+        android:layout_below="@id/text_percentage_header_team"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="2dp"
+        android:elevation="2dp"
+        android:background="@drawable/auth_button"
         android:src="@drawable/ic_masked" />
 
     <RelativeLayout
@@ -35,7 +66,19 @@
             android:text="@string/team_day_report"
             android:textAlignment="center"
             android:textColor="@color/textPrimary"
-            android:textSize="27sp" />
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/go_to_report_activities"
+            style="?android:attr/borderlessButtonStyle"
+            app:iconTint="@color/colorSecondary"
+            android:layout_centerVertical="true"
+            android:layout_width="40dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="8dp"
+            android:background="@null"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/ic_arrow_back" />
 
     </RelativeLayout>
 
@@ -44,18 +87,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/activities_top_container"
-        android:layout_gravity="center_horizontal"
-        android:text=""
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="3dp"
+        android:alpha="0.63"
+        android:fontFamily="@font/roboto_bold"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textColor="#778190"
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:id="@+id/activities_container_progress_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
+        android:layout_margin="40dp">
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/day_report_circular_progress_bar_team"
@@ -64,9 +109,8 @@
             app:cpb_background_progressbar_color="#788290"
             app:cpb_background_progressbar_width="28dp"
             app:cpb_progress="0"
-            app:cpb_progressbar_color="#FA990C"
-            app:cpb_progressbar_width="20dp"
-            app:cpb_round_border="true" />
+            app:cpb_progressbar_color="#0dcf06"
+            app:cpb_progressbar_width="20dp"/>
 
         <ImageView
             android:id="@+id/activities_unhappy_masked_team"
@@ -92,22 +136,30 @@
             android:background="@drawable/background_contacts_count"
             android:fontFamily="@font/roboto_bold"
             android:text="4"
-            android:visibility="gone"
             android:textAlignment="center"
             android:textColor="#FA990C"
-            android:textSize="24sp"/>
+            android:textSize="24sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
-    <Button
+    <TextView
         android:id="@+id/go_to_report_list_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:backgroundTint="@color/textPrimary"
-        android:text="RAPPORT" />
+        android:layout_marginVertical="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/auth_button"
+        android:clickable="false"
+        android:elevation="2dp"
+        android:fontFamily="@font/roboto_bold"
+        android:padding="10dp"
+        android:text="RAPPORT"
+        android:textAlignment="center"
+        android:textColor="#515C6F"
+        android:visibility="visible" />
 
 </RelativeLayout>
