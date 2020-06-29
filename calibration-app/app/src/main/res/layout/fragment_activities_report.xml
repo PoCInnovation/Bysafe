@@ -22,15 +22,16 @@
             android:text="Rapport sur la journée"
             android:textAlignment="center"
             android:textColor="@color/textPrimary"
-            android:textSize="27sp" />
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/go_to_activities"
             style="?android:attr/borderlessButtonStyle"
             app:iconTint="@color/colorSecondary"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
             android:layout_width="40dp"
             android:layout_height="38dp"
-            android:layout_alignParentTop="true"
             android:layout_marginTop="8dp"
             android:background="@null"
             android:backgroundTint="#FFFFFF"
