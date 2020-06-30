@@ -63,9 +63,10 @@ exports.GetReportsFromManager = functions.https.onRequest((request, response) =>
             .then(({ docs }) => {
                 let res = {};
 
-                docs.forEach((doc) => {
-                    if (doc.data().manager == id) {
-                        res[doc.id] = doc.data().reports;
+                docs.forEach(({ data }) => {
+                    let _data = data();
+                    if (_data.manager == id) {
+                        res[`${_data.firstname} ${_data.lastname}`] = _data.reports;
                     }
                 });
 
@@ -108,7 +109,7 @@ exports.addUsers = functions.https.onRequest((request, response) => {
         .auth()
         .verifyIdToken(request.query.token)
         .then(({ uid }) => {
-            if (uid !== '8CScTXV2ITg9HeLpqGDGYwxQkD93') {
+            if (uid !== 'PciCitpbScemcOEnmUsbeYJCeSj1') {
                 response.status(403).send("Vous n'êtes pas l'administrateur");
                 return;
             }
@@ -121,32 +122,40 @@ exports.addUsers = functions.https.onRequest((request, response) => {
             var allManagers = [];
             let allUsers = {};
 
-            for (let i = 0; i < parts.length; i++) {
-                const { data, filename } = parts[i];
+            for (const { data, filename } of parts) {
                 const lines = CSVToArray(String(data)).filter((line) => line[0].length !== 0);
-                const managerLine = lines[0];
 
-                if (managerLine.length !== 2) {
-                    response
-                        .status(406)
-                        .send(
-                            `Erreur dans le fichier ${filename}: La première ligne doit contenir le numéro de chantier et le mot de passe du manager. Aucun changement n'a été effectué.`
-                        );
-                    return;
-                }
+                for (const line of lines) {
+                    if (line.length !== 5) {
+                        response
+                            .status(406)
+                            .send(
+                                `Erreur dans le fichier ${filename}: Chaque ligne doit contenir 5 champs.`
+                            );
+                        return;
+                    }
 
-                allManagers.push({
-                    email: managerLine[0] + '@bysafe.app',
-                    password: managerLine[1],
-                });
+                    if (line[4].length !== 0) {
+                        if (line[4].length < 6) {
+                            response
+                                .status(406)
+                                .send(
+                                    `Erreur dans le fichier ${filename}: Le mot de passe des managers doit contenir 6 characters minimum.`
+                                );
+                            return;
+                        }
 
-                lines.slice(1).forEach((user) => {
-                    allUsers[user[0]] = {
-                        manager: managerLine[0],
-                        firstname: user[1],
-                        lastname: user[2],
+                        allManagers.push({
+                            email: line[0] + '@bysafe.app',
+                            password: line[4],
+                        });
+                    }
+                    allUsers[line[0]] = {
+                        manager: line[3],
+                        firstname: line[1],
+                        lastname: line[2],
                     };
-                });
+                }
             }
 
             allManagers.forEach((manager) =>

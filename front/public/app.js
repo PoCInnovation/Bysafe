@@ -12,22 +12,7 @@ const signOut = () => {
         .catch((_) => {});
 };
 
-// const updateDisplay = (user) => {
-//     const u = user != null;
-
-//     getElem('btn-create').disabled = u || !id;
-//     getElem('btn-delete').disabled = !u;
-// };
-
-// const buildCredentials = (id) => ({
-//     email: id + '@bysafe.app',
-//     password: 'no-pass',
-// });
-
 const login = () => {
-    // getElem('btn-create').disabled = true;
-    // getElem('btn-delete').disabled = true;
-
     signOut();
 
     email = getElem('site_id').value + '@bysafe.app';
@@ -41,22 +26,6 @@ const login = () => {
         .then(console.log)
         .catch(console.error);
 };
-
-// const createUser = () => {
-//     let { email, password } = buildCredentials(id);
-
-//     firebase.auth().createUserWithEmailAndPassword(email, password).catch(console.log);
-// };
-
-// const deleteUser = () => {
-//     firebase
-//         .auth()
-//         .currentUser.delete()
-//         .then(() => {})
-//         .catch(console.log);
-// };
-
-// firebase.auth().onAuthStateChanged(updateDisplay);
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
