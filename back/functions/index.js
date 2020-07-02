@@ -63,8 +63,8 @@ exports.GetReportsFromManager = functions.https.onRequest((request, response) =>
             .then(({ docs }) => {
                 let res = {};
 
-                docs.forEach(({ data }) => {
-                    let _data = data();
+                docs.forEach((doc) => {
+                    let _data = doc.data();
                     if (_data.manager == id) {
                         res[`${_data.firstname} ${_data.lastname}`] = _data.reports;
                     }
