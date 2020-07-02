@@ -126,16 +126,16 @@ exports.addUsers = functions.https.onRequest((request, response) => {
                 const lines = CSVToArray(String(data)).filter((line) => line[0].length !== 0);
 
                 for (const line of lines) {
-                    if (line.length !== 5) {
+                    if (line.length < 4) {
                         response
                             .status(406)
                             .send(
-                                `Erreur dans le fichier ${filename}: Chaque ligne doit contenir 5 champs.`
+                                `Erreur dans le fichier ${filename}: Chaque ligne doit contenir au moins 4 champs.`
                             );
                         return;
                     }
 
-                    if (line[4].length !== 0) {
+                    if (line[4] && line[4].length != 0) {
                         if (line[4].length < 6) {
                             response
                                 .status(406)
