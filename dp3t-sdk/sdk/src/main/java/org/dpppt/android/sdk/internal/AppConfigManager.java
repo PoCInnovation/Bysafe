@@ -58,7 +58,7 @@ public class AppConfigManager {
 
     static final long DEFAULT_SCAN_INTERVAL = 20 * 1000L;
     static final long DEFAULT_SCAN_DURATION = 19 * 1000L;
-    private static final long DEFAULT_RSSI_DETECTED_LEVEL = -88;
+    private static final long DEFAULT_RSSI_DETECTED_LEVEL = -85;
     private static final BluetoothScanMode DEFAULT_BLUETOOTH_SCAN_MODE = BluetoothScanMode.SCAN_MODE_LOW_POWER;
     private static final BluetoothTxPowerLevel DEFAULT_BLUETOOTH_POWER_LEVEL = BluetoothTxPowerLevel.ADVERTISE_TX_POWER_ULTRA_LOW;
     private static final BluetoothAdvertiseMode DEFAULT_BLUETOOTH_ADVERTISE_MODE = BluetoothAdvertiseMode.ADVERTISE_MODE_BALANCED;

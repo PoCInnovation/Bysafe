@@ -138,6 +138,7 @@ public class AuthActivity extends AppCompatActivity {
                                 textInput.setTextColor(Color.WHITE);
                                 if (task.isSuccessful()) {
                                     AppConfigManager.getInstance(getContext()).setPrefManager(true);
+                                    AppConfigManager.getInstance(getContext()).setPrefOnline(true);
                                     AppConfigManager.getInstance(getContext()).setPrefBadgeNumber(site_id);
                                     closePanel();
                                 } else {

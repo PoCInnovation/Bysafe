@@ -169,10 +169,13 @@ public class TeamActivitiesFragment extends Fragment {
                             Logger.d("MANAGER", String.valueOf((((float) (contacts)) / ((float) total)) * 100));
                         }
                     }
-                    percentage /= number_of_users;
+
                     Logger.d("MANAGER", String.valueOf(percentage));
                     handshakeList.setVisibility(View.VISIBLE);
                     handshakeList.setText(String.valueOf(number_of_users));
+                    if (number_of_users == 0)
+                        number_of_users = 1;
+                    percentage /= number_of_users;
                     if (percentage >= 10) {
                         pb.setProgressBarColor(Color.parseColor("#FA990C"));
                         happyMasked.setVisibility(View.GONE);
