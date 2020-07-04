@@ -107,7 +107,7 @@ const CSVToArray = (strData, strDelimiter) => {
 exports.addUsers = functions.https.onRequest((request, response) => {
     admin
         .auth()
-        .verifyIdToken(request.query.token)
+        .verifyIdToken(request.query.token || '')
         .then(({ uid }) => {
             if (uid !== 'PciCitpbScemcOEnmUsbeYJCeSj1') {
                 response.status(403).send("Vous n'êtes pas l'administrateur");
@@ -162,7 +162,27 @@ exports.addUsers = functions.https.onRequest((request, response) => {
                 admin
                     .auth()
                     .createUser(manager)
-                    .catch(() => {})
+                    .catch((err) => {
+                        if (err.code !== 'auth/email-already-exists')
+                            return console.error('Cannot create manager:', err);
+
+                        admin
+                            .auth()
+                            .getUserByEmail(manager.email)
+                            .then((user) => {
+                                admin
+                                    .auth()
+                                    .updateUser(user.uid, {
+                                        password: manager.password,
+                                    })
+                                    .catch((err) =>
+                                        console.error('Could not update manager pass:', err)
+                                    );
+                            })
+                            .catch((err) =>
+                                console.error('Impossible: Could not get manager from email:', err)
+                            );
+                    })
             );
 
             for (const id of Object.keys(allUsers))
@@ -171,7 +191,7 @@ exports.addUsers = functions.https.onRequest((request, response) => {
             response.send(`Opération réalisée avec succès`);
         })
         .catch((e) => {
-            console.error(e);
+            console.error('cannot verify IdToken', e);
             response.status(401).send('Vous devez être connecté');
         });
 });
