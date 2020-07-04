@@ -49,7 +49,7 @@
         android:background="@drawable/auth_button"
         android:alpha="0.9"
         android:src="@drawable/ic_group"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:ignore="PrivateResource" />
 
     <RelativeLayout

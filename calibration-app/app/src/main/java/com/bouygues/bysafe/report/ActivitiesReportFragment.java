@@ -71,11 +71,9 @@ public class ActivitiesReportFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final ImageButton goToActivities = view.findViewById(R.id.go_to_activities);
-        goToActivities.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
-                    .commit();
-        });
+        goToActivities.setOnClickListener(v -> getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
+                .commit());
         llMain = view.findViewById(R.id.log_list);
         getJourneyPercentage();
     }
@@ -114,7 +112,7 @@ public class ActivitiesReportFragment extends Fragment {
                 LinearLayout.LayoutParams layoutParams = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
                 rowTextView.setGravity(View.TEXT_ALIGNMENT_CENTER);
-                rowTextView.setPadding(10,0,10,5);
+                rowTextView.setPadding(10,0,10,10);
                 rowTextView.setText(stringBuilder);
                 rowTextView.setLayoutParams(layoutParams);
                 llMain.addView(rowTextView);
