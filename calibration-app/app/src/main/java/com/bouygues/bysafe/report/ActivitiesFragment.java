@@ -126,8 +126,8 @@ public class ActivitiesFragment extends Fragment {
                 happyIc.setVisibility(View.GONE);
                 unhappyIc.setVisibility(View.VISIBLE);
             } else {
-                pb.setProgressBarColor(Color.parseColor("#87EA4A"));
-                exposedTimeTv.setTextColor(Color.parseColor("#87EA4A"));
+                pb.setProgressBarColor(Color.parseColor("#0dcf06"));
+                exposedTimeTv.setTextColor(Color.parseColor("#0dcf06"));
                 unhappyMasked.setVisibility(View.GONE);
                 happyMasked.setVisibility(View.VISIBLE);
                 unhappyIc.setVisibility(View.GONE);
