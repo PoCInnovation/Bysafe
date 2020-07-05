@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:clipToPadding="false"
     android:orientation="vertical">
 
     <include layout="@layout/activity_app_bar" />
@@ -20,7 +22,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                tools:ignore="NestedWeights">
 
                 <LinearLayout
                     android:id="@+id/day_start_text"
@@ -38,11 +41,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:fontFamily="@font/roboto_medium"
                         android:text="Débutez\nvotre journée\nen sécurité."
                         android:textColor="@color/white"
-                        android:textSize="27sp" />
+                        android:textSize="24sp" />
                 </LinearLayout>
 
                 <TextView
@@ -50,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/day_start_text"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="13dp"
+                    android:layout_marginStart="13dp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Protégez vous !"
                     android:textColor="@color/white"
@@ -61,13 +63,21 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToPadding="false"
                 android:layout_weight="1">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_happy_white"
-                    android:layout_centerInParent="true" />
+                    android:layout_marginRight="-100dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_bubble_background" />
+
+                <ImageView
+                    android:layout_width="98dp"
+                    android:layout_height="108dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_happy_white" />
 
             </RelativeLayout>
 
@@ -79,15 +89,18 @@
             android:layout_weight="1"
             android:background="@drawable/background_first_opening_screen_white"
             android:clipToPadding="false"
+            android:clipChildren="false"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
+                android:clipChildren="false"
                 android:clipToPadding="false"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingBottom="10dp"
+                tools:ignore="NestedWeights">
 
                 <RelativeLayout
                     android:id="@+id/button_opening_barrier_gestures"
@@ -98,31 +111,32 @@
                     android:layout_marginRight="30dp"
                     android:background="@drawable/background_button_opening_screen"
                     android:clipToPadding="false"
-                    android:elevation="2dp"
+                    android:elevation="8dp"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:paddingLeft="30dp"
-                        android:paddingRight="10dp">
+                        android:paddingStart="30dp"
+                        android:paddingEnd="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:fontFamily="@font/roboto_medium"
                             android:text="Gestes\nBarrières"
                             android:textColor="#FA990C"
-                            android:textSize="24sp" />
+                            android:textSize="22sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
+                            android:padding="8dp"
                             android:src="@drawable/ic_info" />
                     </RelativeLayout>
                 </RelativeLayout>
@@ -134,6 +148,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:clipToPadding="false"
+                android:clipChildren="false"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp">
 
@@ -146,31 +161,32 @@
                     android:layout_marginRight="30dp"
                     android:background="@drawable/background_button_opening_screen"
                     android:clipToPadding="false"
-                    android:elevation="2dp"
+                    android:elevation="8dp"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:paddingLeft="30dp"
-                        android:paddingRight="10dp">
+                        android:paddingStart="30dp"
+                        android:paddingEnd="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:fontFamily="@font/roboto_medium"
                             android:text="@string/tab_protection"
                             android:textColor="#FA990C"
-                            android:textSize="24sp" />
+                            android:textSize="22sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
+                            android:padding="8dp"
                             android:src="@drawable/ic_masked" />
                     </RelativeLayout>
                 </RelativeLayout>
@@ -182,6 +198,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:clipToPadding="false"
+                android:clipChildren="false"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp">
 
@@ -194,31 +211,32 @@
                     android:layout_marginRight="30dp"
                     android:background="@drawable/background_button_opening_screen"
                     android:clipToPadding="false"
-                    android:elevation="2dp"
+                    android:elevation="8dp"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:paddingLeft="30dp"
-                        android:paddingRight="10dp">
+                        android:paddingStart="30dp"
+                        android:paddingEnd="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:fontFamily="@font/roboto_medium"
                             android:text="@string/tab_activities"
                             android:textColor="#FA990C"
-                            android:textSize="24sp" />
+                            android:textSize="22sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
+                            android:padding="8dp"
                             android:src="@drawable/ic_activities" />
                     </RelativeLayout>
                 </RelativeLayout>

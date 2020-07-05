@@ -9,6 +9,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,8 +26,10 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_navigation_view"
         style="@style/Sample.BottomNavigationView"
+        app:itemTextAppearanceActive="@style/ItemText"
+        app:itemTextAppearanceInactive="@style/ItemText"
+        app:elevation="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

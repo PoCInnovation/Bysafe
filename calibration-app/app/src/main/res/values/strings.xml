@@ -28,7 +28,7 @@
 	<string name="req_battery_deactivated">Optimisation de la batterie activée</string>
 	<string name="button_wash">Pensez à vous laver les mains</string>
 	<string name="button_wash_start">Démarrer</string>
-	<string name="button_pause_hand_wash">Pauser</string>
+	<string name="button_pause_hand_wash">Pause</string>
 	<string name="button_resume_hand_wash">Reprendre</string>
 	<string name="button_sync">force backend sync</string>
 	<string name="button_export_db">export database</string>

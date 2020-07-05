@@ -71,4 +71,9 @@
 		<item name="itemIconTint">@color/selector_bottom_navigation_item_color</item>
 		<item name="itemTextColor">@color/selector_bottom_navigation_item_color</item>
 	</style>
+
+	<style name="ItemText">
+		<item name="android:textSize">10sp</item>
+		<item name="android:fontFamily">@font/roboto_medium</item>
+	</style>
 </resources>

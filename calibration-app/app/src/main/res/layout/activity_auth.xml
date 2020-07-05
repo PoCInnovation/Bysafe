@@ -9,15 +9,12 @@
 
     <ImageButton
         android:id="@+id/button_manager"
-        android:layout_height="48dp"
-        android:layout_width="48dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/auth_button"
-        android:tint="@color/colorPrimary"
-        android:elevation="4dp"
+        android:background="@null"
+
         android:src="@drawable/ic_admin_toggle" />
 
     <LinearLayout
@@ -61,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/background_site_id_text"
-            android:elevation="2dp"
+            android:elevation="4dp"
             android:ems="10"
             android:fontFamily="@font/roboto_medium"
             android:hint="@string/site_id"
@@ -78,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/background_site_id_text"
-            android:elevation="2dp"
+            android:elevation="4dp"
             android:ems="10"
             android:fontFamily="@font/roboto_medium"
             android:hint="@string/mot_de_passe"
@@ -98,6 +95,7 @@
         android:layout_below="@id/inputs_auth"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:elevation="10dp"
         android:visibility="gone"
         app:cpb_background_progressbar_color="@color/transparent"
         app:cpb_indeterminate_mode="true"
@@ -107,48 +105,56 @@
         app:cpb_progressbar_width="5dp" />
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/inputs_auth"
+        android:layout_centerHorizontal="true">
 
-        <TextView
-            android:id="@+id/auth_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/auth_button"
-            android:elevation="2dp"
-            android:fontFamily="@font/roboto_medium"
-            android:paddingLeft="40dp"
-            android:paddingTop="10dp"
-            android:paddingRight="40dp"
-            android:paddingBottom="10dp"
-            android:text="@string/connect"
-            android:textAlignment="center"
-            android:textColor="#D97D54" />
-
-        <TextView
-            android:id="@+id/anon_button"
+        <LinearLayout
+            android:id="@+id/login_buttons_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/auth_button"
-            android:clickable="false"
-            android:elevation="2dp"
-            android:fontFamily="@font/roboto_medium"
-            android:paddingLeft="40dp"
-            android:paddingTop="10dp"
-            android:paddingRight="40dp"
-            android:paddingBottom="10dp"
-            android:text="@string/anonyme"
-            android:textAlignment="center"
-            android:textColor="#D97D54"
-            android:visibility="visible" />
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/auth_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/auth_button"
+                android:elevation="2dp"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingLeft="40dp"
+                android:paddingTop="10dp"
+                android:paddingRight="40dp"
+                android:paddingBottom="10dp"
+                android:text="@string/connect"
+                android:textAlignment="center"
+                android:textColor="#D97D54" />
+
+            <TextView
+                android:id="@+id/anon_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/auth_button"
+                android:clickable="false"
+                android:elevation="2dp"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingLeft="40dp"
+                android:paddingTop="10dp"
+                android:paddingRight="40dp"
+                android:paddingBottom="10dp"
+                android:text="@string/anonyme"
+                android:textAlignment="center"
+                android:textColor="#D97D54"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

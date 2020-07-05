@@ -21,6 +21,7 @@
         android:contentDescription="@string/app_name"
         android:paddingTop="@dimen/spacing_medium"
         android:paddingBottom="@dimen/spacing_medium"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/ic_bysafe" />
 
     <ImageButton

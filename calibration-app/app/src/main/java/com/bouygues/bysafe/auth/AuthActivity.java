@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import com.bouygues.bysafe.MainApplication;
 import com.bouygues.bysafe.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,6 +67,7 @@ public class AuthActivity extends AppCompatActivity {
         EditText textInput = findViewById(R.id.site_id);
         EditText password = findViewById(R.id.site_password);
         CircularProgressBar pb = findViewById(R.id.login_progress_bar);
+        LinearLayout ll = findViewById(R.id.login_buttons_container);
         final ImageButton manager = findViewById(R.id.button_manager);
 
         manager.setOnClickListener(v ->
@@ -87,11 +90,13 @@ public class AuthActivity extends AppCompatActivity {
                     AppConfigManager.getInstance(getContext()).setPrefManager(false);
                     pb.setProgress(100);
                     pb.setVisibility(View.VISIBLE);
+                    ll.setVisibility(View.GONE);
                     Logger.d(TAG, "Launching app offline");
                     pressed = true;
                     AppConfigManager.getInstance(getContext()).setPrefOnline(false);
                     AppConfigManager.getInstance(getContext()).setPrefBadgeNumber("");
                     pb.setVisibility(View.GONE);
+                    ll.setVisibility(View.VISIBLE);
                     closePanel();
                     pressed = false;
                 }
@@ -107,6 +112,7 @@ public class AuthActivity extends AppCompatActivity {
                 pressed = true;
                 pb.setProgress(100);
                 pb.setVisibility(View.VISIBLE);
+                ll.setVisibility(View.GONE);
 
                 final String site_id = textInput.getText().toString();
 
@@ -129,10 +135,13 @@ public class AuthActivity extends AppCompatActivity {
                         textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                         password.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                         pb.setVisibility(View.GONE);
+                        ll.setVisibility(View.VISIBLE);
                     } else {
                         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                ll.setVisibility(View.VISIBLE);
+                                pb.setVisibility(View.GONE);
                                 bg.setStroke(3, Color.WHITE);
                                 bgp.setStroke(3, Color.WHITE);
                                 textInput.setTextColor(Color.WHITE);
@@ -149,6 +158,8 @@ public class AuthActivity extends AppCompatActivity {
                                         err = "Les identifiants de connection donnés sont invalides.";
                                     } else if (task.getException() instanceof FirebaseNetworkException) {
                                         err = "Vous n'êtes pas connecté à internet.";
+                                    } else if (task.getException() instanceof FirebaseException) {
+                                        err = "Les identifiants de connection donnés sont invalides.";
                                     } else {
                                         err = "Une erreur interne est survenue, veuillez réessayer plus tard.";
                                     }
@@ -159,7 +170,6 @@ public class AuthActivity extends AppCompatActivity {
                                     textInput.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                                     password.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.strong_red));
                                 }
-                                pb.setVisibility(View.GONE);
                             }
                         });
                     }
@@ -197,6 +207,7 @@ public class AuthActivity extends AppCompatActivity {
 
         protected void onPostExecute(Integer responseCode) {
             CircularProgressBar pb = findViewById(R.id.login_progress_bar);
+            LinearLayout ll = findViewById(R.id.login_buttons_container);
             EditText textInput = findViewById(R.id.site_id);
             GradientDrawable bg = (GradientDrawable) textInput.getBackground();
             if (responseCode == 200) {
@@ -215,6 +226,7 @@ public class AuthActivity extends AppCompatActivity {
                 anonButton.setOnClickListener(v -> {
                     pb.setProgress(100);
                     pb.setVisibility(View.VISIBLE);
+                    ll.setVisibility(View.GONE);
                     if (!pressed) {
                         Logger.d(TAG, "Launching app offline");
                         pressed = true;
@@ -227,6 +239,7 @@ public class AuthActivity extends AppCompatActivity {
                 });
             }
             pb.setVisibility(View.GONE);
+            ll.setVisibility(View.VISIBLE);
             pressed = false;
         }
     }
@@ -237,7 +250,7 @@ public class AuthActivity extends AppCompatActivity {
         if (mAuth.getCurrentUser() != null && AppConfigManager.getInstance(getContext()).getIsLogged()) {
             AppConfigManager.getInstance(getContext()).setPrefManager(true);
             closePanel();
-        } else if (AppConfigManager.getInstance(getContext()).getIsLogged()){
+        } else if (AppConfigManager.getInstance(getContext()).getIsLogged()) {
             AppConfigManager.getInstance(getContext()).setPrefManager(false);
             closePanel();
         }

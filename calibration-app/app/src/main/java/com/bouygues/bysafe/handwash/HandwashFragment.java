@@ -1,5 +1,6 @@
 package com.bouygues.bysafe.handwash;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -73,6 +75,7 @@ public class HandwashFragment extends Fragment {
         final ImageButton infoBarrierGesture = view.findViewById(R.id.button_info_barrier_gesture);
         final TextView handWashButton = view.findViewById(R.id.washed_hands);
         final TextView pauseHandWashButton = view.findViewById(R.id.pause_resume_hand_wash);
+        final LinearLayout l = getView().findViewById(R.id.handwash_status_text_container);
 
         handWashButton.setOnClickListener(v -> {
             lastWashingTime = System.currentTimeMillis();
@@ -80,6 +83,7 @@ public class HandwashFragment extends Fragment {
             handler.post(timerTask);
             isRunning = true;
             isPaused = false;
+            l.setVisibility(View.GONE);
             pauseHandWashButton.setText(R.string.button_pause_hand_wash);
         });
 
@@ -133,12 +137,12 @@ public class HandwashFragment extends Fragment {
             handler.removeCallbacks(timerTask);
             handler.post(timerTask);
         }
-        long millis;
+        long millis = 0;
 
         Logger.d("isPaused", String.valueOf(isPaused));
         if (isPaused) {
             millis = TimeUnit.SECONDS.toMillis(washingTime) - pausedTime;
-        } else {
+        } else if (lastWashingTime != 0) {
             millis = TimeUnit.SECONDS.toMillis(washingTime) - (System.currentTimeMillis() - lastWashingTime);
         }
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
@@ -150,6 +154,16 @@ public class HandwashFragment extends Fragment {
 
         text.setText(Html.fromHtml(getTimerString()));
         pauseHandWashButton.setText(isPaused ? R.string.button_resume_hand_wash : R.string.button_pause_hand_wash);
+
+        TextView handwashStatusText = getView().findViewById(R.id.handwash_status_text);
+        LinearLayout l = getView().findViewById(R.id.handwash_status_text_container);
+
+        if (millis == 0) {
+            l.setVisibility(View.VISIBLE);
+            handwashStatusText.setText("Lavez vos mains");
+        } else {
+            l.setVisibility(View.GONE);
+        }
     }
 
     public static void showNotification(Context context, @StringRes int title, @StringRes int message, @DrawableRes int icon) {
@@ -172,11 +186,12 @@ public class HandwashFragment extends Fragment {
         notificationManager.notify(2, notification);
     }
 
+    @SuppressLint("DefaultLocale")
     private String getTimerString() {
-        long millis;
+        long millis = 0;
         if (isPaused) {
             millis = TimeUnit.SECONDS.toMillis(washingTime) - pausedTime;
-        } else {
+        } else if (lastWashingTime != 0) {
             millis = TimeUnit.SECONDS.toMillis(washingTime) - (System.currentTimeMillis() - lastWashingTime);
         }
         long days = TimeUnit.MILLISECONDS.toDays(millis);
@@ -187,10 +202,7 @@ public class HandwashFragment extends Fragment {
         millis -= TimeUnit.MINUTES.toMillis(minutes);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        if (millis > 0) {
-            return String.format("%02d<font color=#344856>:</font><font color=#0092FF><big>%02d</big>.%02d</font>", hours, minutes, seconds);
-        }
-        return MainActivity.getContext().getString(R.string.button_wash);
+        return String.format("%02d<font color=#344856>:</font><font color=#0092FF><big>%02d</big>.%02d</font>", hours, minutes, seconds);
     }
 
     private Runnable timerTask = new Runnable() {
