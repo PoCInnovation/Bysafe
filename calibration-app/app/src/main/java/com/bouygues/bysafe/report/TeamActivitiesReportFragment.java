@@ -51,6 +51,9 @@ public class TeamActivitiesReportFragment extends Fragment {
     private TextView date;
     private ImageView leftChevron;
     private ImageView rightChevron;
+    private int daysBefore = 0;
+    private int msDay = 86400000;
+    private Boolean pressed = false;
     private ArrayList<String> list = new ArrayList<>();
 
     @Override
@@ -83,26 +86,59 @@ public class TeamActivitiesReportFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         final ImageButton goToActivities = view.findViewById(R.id.go_to_team_activities);
         goToActivities.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment_container, TeamActivitiesFragment.newInstance())
                     .commit();
         });
+
         llMain = view.findViewById(R.id.log_list_team);
         date = view.findViewById(R.id.team_activities_date);
         leftChevron = view.findViewById(R.id.switch_date_left);
         rightChevron = view.findViewById(R.id.switch_date_right);
-        String currentDate = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(new Date());
+        String currentDate = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(System.currentTimeMillis() - msDay * daysBefore);
 
         date.setText(currentDate);
+        if (daysBefore == 0)
+            rightChevron.setVisibility(View.GONE);
+        if (daysBefore == 14)
+            leftChevron.setVisibility(View.GONE);
 
         leftChevron.setOnClickListener(v -> {
-
+            if (pressed)
+                return;
+            pressed = true;
+            llMain.removeAllViews();
+            daysBefore += 1;
+            if (daysBefore == 0)
+                rightChevron.setVisibility(View.GONE);
+            else
+                rightChevron.setVisibility(View.VISIBLE);
+            if (daysBefore == 14)
+                leftChevron.setVisibility(View.GONE);
+            else
+                leftChevron.setVisibility(View.VISIBLE);
+            date.setText(new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(System.currentTimeMillis() - msDay * daysBefore));
+            new getJourneyPercentage().execute();
         });
-        rightChevron.setOnClickListener(v -> {
 
+        rightChevron.setOnClickListener(v -> {
+            if (pressed)
+                return;
+            pressed = true;
+            llMain.removeAllViews();
+            daysBefore -= 1;
+            if (daysBefore == 0)
+                rightChevron.setVisibility(View.GONE);
+            else
+                rightChevron.setVisibility(View.VISIBLE);
+            if (daysBefore == 14)
+                leftChevron.setVisibility(View.GONE);
+            else
+                leftChevron.setVisibility(View.VISIBLE);
+            date.setText(new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(System.currentTimeMillis() - msDay * daysBefore));
+            new getJourneyPercentage().execute();
         });
         new getJourneyPercentage().execute();
     }
@@ -166,7 +202,7 @@ public class TeamActivitiesReportFragment extends Fragment {
                             Iterator<String> temp_keys = temp.keys();
                             while (temp_keys.hasNext()) {
                                 String str_timestamp = temp_keys.next();
-                                if (Long.parseLong(str_timestamp) > atStartOfDayMidNight(new java.util.Date())) {
+                                if (Long.parseLong(str_timestamp) > (atStartOfDayMidNight(new java.util.Date()) - msDay * daysBefore) && Long.parseLong(str_timestamp) < (atEndOfDayMidNight(new java.util.Date()) - msDay * daysBefore)) {
                                     total += 1;
                                     if (temp.getInt(str_timestamp) > 0) {
                                         contacts += 1;
@@ -181,7 +217,7 @@ public class TeamActivitiesReportFragment extends Fragment {
                             list.add(stringBuilder.toString());
                             stringBuilder.clear();
 
-                            for (long i = atStartOfDay(new Date()); i <= atEndOfDay(new Date()); i += 3600000) {
+                            for (long i = atStartOfDay(new Date()) - msDay * daysBefore; i <= atEndOfDay(new Date()) - msDay * daysBefore; i += 3600000) {
                                 stringBuilder.append(formater.format(i)).append("   ");
                                 for (long j = i; j < i + 3600000; j += 300000) {
                                     boolean set = false;
@@ -221,6 +257,7 @@ public class TeamActivitiesReportFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
+            pressed = false;
         }
 
         private void addNewTextView(SpannableStringBuilder stringBuilder) {
@@ -242,6 +279,16 @@ public class TeamActivitiesReportFragment extends Fragment {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    public long atEndOfDayMidNight(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 59);
         return calendar.getTimeInMillis();
     }
 
