@@ -5,6 +5,6 @@
     android:layout_height="match_parent"
     android:shape="rectangle">
 
-    <corners android:radius="5dp" />
+    <corners android:radius="3dp" />
     <solid android:color="#A1FFFFFF" />
 </shape>

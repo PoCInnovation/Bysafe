@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,10 +43,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 public class TeamActivitiesReportFragment extends Fragment {
 
     private LinearLayout llMain;
+    private TextView date;
+    private ImageView leftChevron;
+    private ImageView rightChevron;
     private ArrayList<String> list = new ArrayList<>();
 
     @Override
@@ -85,7 +90,20 @@ public class TeamActivitiesReportFragment extends Fragment {
                     .replace(R.id.main_fragment_container, TeamActivitiesFragment.newInstance())
                     .commit();
         });
-        llMain = llMain = view.findViewById(R.id.log_list_team);
+        llMain = view.findViewById(R.id.log_list_team);
+        date = view.findViewById(R.id.team_activities_date);
+        leftChevron = view.findViewById(R.id.switch_date_left);
+        rightChevron = view.findViewById(R.id.switch_date_right);
+        String currentDate = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(new Date());
+
+        date.setText(currentDate);
+
+        leftChevron.setOnClickListener(v -> {
+
+        });
+        rightChevron.setOnClickListener(v -> {
+
+        });
         new getJourneyPercentage().execute();
     }
 
