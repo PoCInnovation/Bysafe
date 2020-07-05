@@ -39,12 +39,10 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="40dp"
                     android:layout_height="38dp"
-                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginTop="8dp"
                     android:background="@null"
-                    android:backgroundTint="#FFFFFF"
-                    android:src="@drawable/ic_arrow_back"
-                    app:iconTint="@color/colorSecondary" />
+                    android:src="@drawable/ic_arrow_back"/>
             </RelativeLayout>
 
             <RelativeLayout
