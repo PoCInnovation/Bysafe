@@ -63,7 +63,7 @@ exports.AddUsers = (admin) => (request, response) => {
                             response
                                 .status(406)
                                 .send(
-                                    `Erreur dans le fichier ${filename}: Le mot de passe des managers doit contenir 6 characters minimum.`
+                                    `Erreur dans le fichier ${filename}: Le mot de passe des managers doit contenir minimum 6 lettres.`
                                 );
                             return;
                         }
