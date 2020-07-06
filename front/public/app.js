@@ -34,13 +34,7 @@ const login = () => {
     const email = 'admin@bysafe.app';
     const password = getElem('password').value;
 
-    console.log(email, password);
-
-    firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(console.log)
-        .catch(console.error);
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(console.error);
 };
 
 const queryString = () => '?token=' + global_idToken;
@@ -50,9 +44,15 @@ const validateForm = () => {
 };
 
 const deleteUser = () => {
-    const url = deleteUserEndpoint + getElem('delete_id').value + queryString();
+    getElem('delete_button').disabled = true;
+    const id = getElem('delete_id').value;
+    const url = deleteUserEndpoint + id + queryString();
 
-    fetch(url, { method: 'POST', mode: 'no-cors' }).catch(console.error);
+    fetch(url, { method: 'POST', mode: 'no-cors' })
+        .catch(console.error)
+        .finally(() => {
+            getElem('delete_button').disabled = false;
+        });
 };
 
 const refreshUsers = () => {
