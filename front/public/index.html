@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BySafe Admin Panel</title>
+    <title>BySafe - Console d'administration</title>
 
     <!-- import useful firebase modules -->
     <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
@@ -22,39 +22,45 @@
 
 <body>
 
-    <div hidden id="login">
+    <div class="header">
+        <h3>BySafe - Console d'administration</h3>
+    </div>
 
-        <input class="login_input" id="password" type="password" placeholder="Mot de passe">
+    <div hidden id="auth_section">
+
+        <input id="login_password" type="password" placeholder="Mot de passe">
         <br>
         <button class="login_button" onclick="login()">Se connecter</button>
 
     </div>
 
-    <div hidden id="logged_in">
+    <div hidden id="admin_section">
 
-        <button class="disconnect" onclick="signOut()" formaction="">Se déconnecter</button>
+        <button class="logout_button" onclick="signOut()" formaction="">Se déconnecter</button>
 
-        <form class="module" id="upload_form" method="POST" onsubmit="validateForm()" enctype="multipart/form-data">
+        <form class="module" id="file_form" method="POST" onsubmit="validateForm()" enctype="multipart/form-data">
             <h3>Télécharger des collaborateurs</h3>
-            <input type="file" name="csv_file" multiple>
-            <input type="submit" value="Télécharger">
+
+            <input type="file" id="file_input" name="file_input" multiple>
+            <label id="file_select" for="file_input">Choisissez des fichiers</label>
+
+            <button disabled id="file_submit" type="submit">Télécharger ⬆️</button>
         </form>
 
         <div class="module">
-            <h3>Supprimer un utilisateur</h3>
-            <input id="delete_id" placeholder="ID de chantier">
-            <button class="bad" id="delete_button" onclick="deleteUser()">Supprimer</button>
+            <h3>Supprimer un collaborateur</h3>
+            <input id="delete_id" placeholder="numéro de badge">
+            <button id="delete_button" onclick="deleteUser()">Supprimer</button>
         </div>
 
-
         <div class="module">
-            <h3>Voir le contenu de la base de donnée</h3>
-            <span id="info_db">
-                Rafraîchissez pour voir le contenu de la base de donnée:
-            </span>
-            <button id="refresh_db" onclick="refreshUsers()">Rafraîchir</button>
+            <h3>Voir le contenu de la base de données</h3>
+            <div id="db_info">
+                Rafraîchissez pour voir le contenu de la base de données
+            </div>
+            <button id="db_refresh" onclick="refreshUsers()">Rafraîchir</button>
 
-            <div id="all_db" class="wrapper">
+            <div id="db_content">
             </div>
         </div>
 

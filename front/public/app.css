@@ -1,13 +1,29 @@
 body {
-    margin: 1em;
+    margin-top: 60px;
     font-family: 'Roboto', sans-serif;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
 }
 
-#login {
+.header {
+    text-align: center;
+    background-color: #d97d54;
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 40px;
+    width: 100%;
+    line-height: 5px;
+}
+
+#auth_section {
     text-align: center;
 }
 
-.login_input {
+#login_password {
     border-radius: 0.25em;
     margin-bottom: 0.25em;
     width: 15em;
@@ -17,21 +33,56 @@ body {
     width: 15.6em;
 }
 
-.disconnect {
+.logout_button {
     position: absolute;
-    right: 20px;
+    top: 55px;
+    right: 11px;
 }
 
 .module {
     margin-bottom: 4em;
 }
 
-.bad {
-    background-color: rgb(231, 79, 79);
+#file_input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+label {
+    font-size: 13.3333px;
+    background-color: #d97d54;
+    color: white;
+    display: inline-block;
+    padding: 0.2em;
+    border-radius: 0.25em;
+    cursor: pointer;
+}
+
+label:hover {
+    background-color: #ad603e;
+}
+
+button {
+    border: none;
+    background-color: #d97d54;
     color: white;
     height: 1.6em;
-    border: none;
     border-radius: 0.25em;
+    cursor: pointer;
+}
+
+button:disabled,
+#delete_button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+#delete_button {
+    background-color: rgb(231, 79, 79);
 }
 
 .db_elem {
@@ -39,9 +90,10 @@ body {
     border: 1px solid black;
 }
 
-.wrapper {
+#db_content {
+    margin-right: 1em;
     margin-top: 1em;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 10px;
+    grid-gap: 0.5em;
 }
