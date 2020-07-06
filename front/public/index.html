@@ -20,30 +20,43 @@
 
 <body>
 
-    <div id="login">
+    <div hidden id="login">
 
-        <label for="site_id">ID de chantier:</label>
-        <input id="site_id">
-        <label for="password">Mot de passe:</label>
-        <input id="password" type="password">
-
-        <button onclick="login()">Se connecter</button>
+        <input class="login_input" id="password" type="password" placeholder="Mot de passe">
+        <br>
+        <button class="login_button" onclick="login()">Se connecter</button>
 
     </div>
 
+    <div hidden id="logged_in">
 
-    <form hidden id="upload_form" method="POST" onsubmit="addIdToken()" enctype="multipart/form-data">
+        <button class="disconnect" onclick="signOut()" formaction="">Se déconnecter</button>
 
-        <button onclick="signOut()" formaction="">Se déconnecter</button>
+        <form class="module" id="upload_form" method="POST" onsubmit="validateForm()" enctype="multipart/form-data">
+            <h3>Télécharger des collaborateurs</h3>
+            <input type="file" name="csv_file" multiple>
+            <input type="submit" value="Télécharger">
+        </form>
 
-        <br>
-        <br>
+        <div class="module">
+            <h3>Supprimer un utilisateur</h3>
+            <input id="delete_id" placeholder="ID de chantier">
+            <button class="bad" onclick="deleteUser()">Supprimer</button>
+        </div>
 
-        Télécharger des collaborateurs:
-        <input type="file" name="csv_file" multiple>
-        <input type="submit" value="Télécharger">
-    </form>
 
+        <div class="module">
+            <h3>Voir le contenu de la base de donnée</h3>
+            <span id="info_db">
+                Rafraîchissez pour voir le contenu de la base de donnée:
+            </span>
+            <button id="refresh_db" onclick="refreshUsers()">Rafraîchir</button>
+
+            <div id="all_db" class="wrapper">
+            </div>
+        </div>
+
+    </div>
 
 </body>
 
