@@ -1,3 +1,46 @@
 body {
     margin: 1em;
+    font-family: 'Lucida Console', Courier, monospace;
+}
+
+#login {
+    text-align: center;
+}
+
+.login_input {
+    border-radius: 0.25em;
+    margin-bottom: 0.25em;
+    width: 15em;
+}
+
+.login_button {
+    width: 15.6em;
+}
+
+.disconnect {
+    position: absolute;
+    right: 20px;
+}
+
+.module {
+    margin-bottom: 4em;
+}
+
+.bad {
+    background-color: red;
+    height: 1.6em;
+    border: none;
+    border-radius: 0.25em;
+}
+
+.db_elem {
+    padding: 0.5em 1em 0.5em 1em;
+    border: 1px solid black;
+}
+
+.wrapper {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 10px;
 }
