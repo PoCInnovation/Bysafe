@@ -64,14 +64,13 @@ const refreshUsers = () => {
         .then((r) =>
             r.json().then((ret) => {
                 ret.sort((l, r) => l.id - r.id).forEach(({ id, firstname, lastname, manager }) => {
-                    getElem(
-                        'all_db'
-                    ).innerHTML += `<div class="db_elem">👤 ${id} - ${firstname} ${lastname}<br>👥 ${manager}</div>`;
+                    let value = `<div class="db_elem">👤 ${id} - ${firstname} ${lastname}<br>👥 ${manager}</div>`;
+                    getElem('all_db').innerHTML += value;
                 });
 
                 getElem('refresh_db').textContent = 'Rafraîchir';
                 getElem('info_db').textContent =
-                    'Dernier rafraîchissement: ' +
+                    'Dernier rafraîchissement le ' +
                     new Date().toISOString().substring(0, 19).replace('T', ' à ');
             })
         )

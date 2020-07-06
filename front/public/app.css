@@ -27,7 +27,8 @@ body {
 }
 
 .bad {
-    background-color: red;
+    background-color: rgb(231, 79, 79);
+    color: white;
     height: 1.6em;
     border: none;
     border-radius: 0.25em;
