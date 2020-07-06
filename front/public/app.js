@@ -1,4 +1,4 @@
-const addUsersEndpoint = 'https://us-central1-bysafe-4ee9a.cloudfunctions.net/addUsers';
+const addUsersEndpoint = 'https://us-central1-bysafe-4ee9a.cloudfunctions.net/AddUsers';
 
 let global_idToken;
 
