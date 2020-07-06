@@ -1,19 +1,25 @@
-const cors = require('cors');
+const cors = require('cors')({
+    origin: true,
+});
 
 exports.GetAllUsers = (admin) => (request, response) => {
-    admin
-        .firestore()
-        .collection('users')
-        .get()
-        .then(({ docs }) => {
-            let users = [];
+    return cors(request, response, () => {
+        admin
+            .firestore()
+            .collection('users')
+            .get()
+            .then(({ docs }) => {
+                let users = [];
 
-            docs.forEach((doc) => {
-                let _data = doc.data();
+                docs.forEach((doc) => {
+                    let _data = doc.data();
 
-                users.push(_data);
+                    _data.reports = undefined;
+                    _data.id = doc.id;
+                    users.push(_data);
+                });
+
+                response.json(users);
             });
-
-            return cors(request, response, () => response.json(users));
-        });
+    });
 };
