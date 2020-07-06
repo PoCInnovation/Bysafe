@@ -1,21 +1,17 @@
 package com.bouygues.bysafe.report;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -33,12 +29,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class ActivitiesReportFragment extends Fragment {
 
-    private ArrayList<String> list = new ArrayList<>();
-    private ArrayList<android.widget.TextView> listId = new ArrayList<>();
-    LinearLayout llMain;
+    private ArrayList<ReportRow> list = new ArrayList<ReportRow>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +69,6 @@ public class ActivitiesReportFragment extends Fragment {
         goToActivities.setOnClickListener(v -> getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
                 .commit());
-        llMain = view.findViewById(R.id.log_list);
         getJourneyPercentage();
     }
 
@@ -82,43 +76,40 @@ public class ActivitiesReportFragment extends Fragment {
         try {
             ArrayList<Triplet<Long, Integer, String>> journeyContact = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyContact();
             SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
+            int exposedMinutes;
+            int index = 1;
 
             SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
             for (long i = atStartOfDay(new java.util.Date()); i <= atEndOfDay(new java.util.Date()); i += 3600000) {
-                stringBuilder.append(formater.format(i)).append("   ");
+                exposedMinutes = 0;
                 for (long j = i; j < i + 3600000; j += 300000) {
                     boolean set = false;
                     for (Triplet<Long, Integer, String> interval : journeyContact) {
                         if (interval.first >= j && interval.first < j + 300000 && interval.third.equals(AppConfigManager.getInstance(MainApplication.getContext()).getPrefBadgeNumber())) {
                             if (interval.second > 0) {
-                                stringBuilder.append("V");
-                                stringBuilder.setSpan(new BackgroundColorSpan(Color.RED), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                stringBuilder.setSpan(new ForegroundColorSpan(Color.RED), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                // contact on this interval
+                                exposedMinutes += 5;
+                                stringBuilder.append("X");
                             } else {
-                                stringBuilder.append("V");
-                                stringBuilder.setSpan(new BackgroundColorSpan(Color.GREEN), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                stringBuilder.setSpan(new ForegroundColorSpan(Color.GREEN), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                // no contact on this interval
+                                stringBuilder.append("O");
                             }
                             set = true;
                         }
                     }
                     if (!set) {
-                        stringBuilder.append("V");
-                        stringBuilder.setSpan(new BackgroundColorSpan(Color.LTGRAY), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        stringBuilder.setSpan(new ForegroundColorSpan(Color.LTGRAY), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        // no info on this interval
+                        stringBuilder.append("_");
                     }
                 }
-                final TextView rowTextView = new TextView(getContext());
-                LinearLayout.LayoutParams layoutParams = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-                rowTextView.setGravity(View.TEXT_ALIGNMENT_CENTER);
-                rowTextView.setPadding(10,0,10,10);
-                rowTextView.setText(stringBuilder);
-                rowTextView.setLayoutParams(layoutParams);
-                llMain.addView(rowTextView);
+                ReportRow row = new ReportRow(index++, formater.format(i), stringBuilder.toString(), exposedMinutes);
+                list.add(row);
                 stringBuilder.clear();
                 stringBuilder.clearSpans();
             }
+            ListView lv = requireView().findViewById(R.id.report_list);
+            ReportListAdapter itemsAdapter = new ReportListAdapter(requireContext(), list);
+            lv.setAdapter(itemsAdapter);
         } catch (IOException e) {
             e.printStackTrace();
         }

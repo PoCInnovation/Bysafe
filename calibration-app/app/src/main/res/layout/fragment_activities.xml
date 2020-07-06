@@ -178,7 +178,6 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:layout_marginTop="-3dp"
                     android:id="@+id/activities_time_exposed"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

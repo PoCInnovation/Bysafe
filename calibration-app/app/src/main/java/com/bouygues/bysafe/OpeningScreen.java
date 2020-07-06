@@ -2,6 +2,7 @@ package com.bouygues.bysafe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,12 +27,7 @@ public class OpeningScreen extends AppCompatActivity {
         final RelativeLayout l3 = findViewById(R.id.button_opening_activities);
         final ImageButton logoutButton = findViewById(R.id.logout_button);
 
-        logoutButton.setOnClickListener(v -> {
-            appConfigManager.setIsLogged(false);
-            Intent intent = new Intent(this, AuthActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        logoutButton.setVisibility(View.GONE);
 
         l1.setOnClickListener(v -> {
             appConfigManager.setPrefChosenOpeningMenu("barrier_gestures");
@@ -51,6 +47,9 @@ public class OpeningScreen extends AppCompatActivity {
     }
 
     private void closePanel() {
+        final ImageButton logoutButton = findViewById(R.id.logout_button);
+
+        logoutButton.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
