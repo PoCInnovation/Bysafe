@@ -1,7 +1,7 @@
 {
   "name": "bysafe",
   "version": "1.0.0",
-  "description": "PoC admin front",
+  "description": "BySafe admin panel",
   "main": "index.js",
   "repository": "git@github.com:PoCFrance/bysafe.git",
   "author": "Lorenzo Rosmarino <lorenzo.rosmarino@epitech.eu>",
