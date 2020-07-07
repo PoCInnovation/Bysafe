@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateContact() {
         long scanInterval = AppConfigManager.getInstance(MainApplication.getContext()).getScanInterval();
         long scanDuration = AppConfigManager.getInstance(MainApplication.getContext()).getScanDuration();
-        new Database(MainApplication.getContext()).getHandshakesAfter(System.currentTimeMillis() - (scanInterval + scanDuration), response -> {
+        new Database(MainApplication.getContext()).getHandshakesAfter(System.currentTimeMillis() - (scanInterval + scanDuration + 10000), response -> {
             AppConfigManager.getInstance(MainApplication.getContext()).setContactNumber(0); // modifier si besoin de debug
             HashMap<String, List<Handshake>> groupedHandshakes = new HashMap<>();
             Collections.sort(response, (h1, h2) -> Long.compare(h2.getTimestamp(), h1.getTimestamp()));
