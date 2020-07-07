@@ -45,7 +45,7 @@ const validateForm = () => {
 
 const deleteUser = () => {
     const id = getElem('delete_id').value;
-    if (id === '') return;
+    if (id === '' || id === 'admin') return;
 
     getElem('delete_button').disabled = true;
     const url = deleteUserEndpoint + id + queryString();
