@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/activities_top_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_background">
+
+        <TextView
+            android:id="@+id/title_barrier_gesture_team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Détail de l'équipe"
+            android:textAlignment="center"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/go_to_team_activities"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="38dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="8dp"
+            android:background="@null"
+            android:src="@drawable/ic_arrow_back" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/switch_date_left"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_chevron_left" />
+
+            <TextView
+                android:id="@+id/team_activities_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.63"
+                android:fontFamily="@font/roboto_bold"
+                android:text=""
+                android:textColor="#778190"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/switch_date_right"
+                android:rotation="180"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_chevron_left" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/activities_container_progress">
+
+        <LinearLayout
+            android:id="@+id/log_list_team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="#000000"
+            android:gravity="center"
+            android:orientation="vertical" />
+    </ScrollView>
+
+</LinearLayout>

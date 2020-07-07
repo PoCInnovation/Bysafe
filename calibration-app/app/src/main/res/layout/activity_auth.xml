@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_auth"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/button_manager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:background="@null"
+
+        android:src="@drawable/ic_admin_toggle" />
+
+    <LinearLayout
+        android:id="@+id/ic_top_auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ic_auth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_auth" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingTop="10dp"
+            android:text="@string/bysafe_upper"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inputs_auth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ic_top_auth"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/site_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_site_id_text"
+            android:elevation="4dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="@string/site_id"
+            android:inputType="number"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textColorHint="@color/greyLight" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/site_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_site_id_text"
+            android:elevation="4dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="@string/mot_de_passe"
+            android:inputType="textPassword"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textColorHint="@color/greyLight"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/login_progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/inputs_auth"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:elevation="10dp"
+        android:visibility="gone"
+        app:cpb_background_progressbar_color="@color/transparent"
+        app:cpb_indeterminate_mode="true"
+        app:cpb_progress="100"
+        app:cpb_progress_direction="to_right"
+        app:cpb_progressbar_color="@color/white"
+        app:cpb_progressbar_width="5dp" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/inputs_auth"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:id="@+id/login_buttons_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/auth_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/auth_button"
+                android:elevation="2dp"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingLeft="40dp"
+                android:paddingTop="10dp"
+                android:paddingRight="40dp"
+                android:paddingBottom="10dp"
+                android:text="@string/connect"
+                android:textAlignment="center"
+                android:textColor="#D97D54" />
+
+            <TextView
+                android:id="@+id/anon_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/auth_button"
+                android:clickable="false"
+                android:elevation="2dp"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingLeft="40dp"
+                android:paddingTop="10dp"
+                android:paddingRight="40dp"
+                android:paddingBottom="10dp"
+                android:text="@string/anonyme"
+                android:textAlignment="center"
+                android:textColor="#D97D54"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

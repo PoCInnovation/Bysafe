@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/auth_button"
+    android:backgroundTint="#FDFDFD"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="horizontal"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/report_list_item_index"
+        android:layout_width="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.1"
+        android:fontFamily="@font/roboto_medium"
+        android:text="1"
+        android:textAlignment="center"
+        android:textColor="#374C59"
+        android:textSize="12sp"
+        tools:ignore="RtlCompat" />
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="5dp"
+        android:background="@color/white"
+        android:elevation="2dp" />
+
+    <TextView
+        android:id="@+id/report_list_item_hour"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/exo_2_semibold"
+        android:text="18:00"
+        android:textAlignment="center"
+        android:textColor="#374C59"
+        android:textSize="16sp"
+        tools:ignore="RtlCompat" />
+
+    <LinearLayout
+        android:id="@+id/report_list_item_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="3dp"
+        android:layout_weight="0.8"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square_left"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_9"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_11"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/report_list_item_detail_sample_12"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/report_sample_square_right"
+            tools:ignore="NestedWeights" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/report_list_item_exposed_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="3dp"
+        android:fontFamily="@font/exo_2_semibold"
+        android:text="25'35&quot;"
+        android:textAlignment="center"
+        android:textColor="#F3A01D"
+        android:textSize="16sp"
+        tools:ignore="RtlCompat" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_warning" />
+
+</LinearLayout>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#F5F6F8"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.5"
+                android:src="@drawable/gray_background_rounded" />
+
+            <ImageView
+                android:layout_width="10000dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="@color/bg_clock_handwash"
+                android:paddingBottom="15dp"
+                android:src="@drawable/half_circle_clock" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/button_manager_view"
+        android:layout_width="76dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/text_date_header"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
+        android:alpha="0.9"
+        android:background="@drawable/auth_button"
+        android:elevation="2dp"
+        android:src="@drawable/ic_group"
+        android:visibility="gone"
+        tools:ignore="PrivateResource" />
+
+    <RelativeLayout
+        android:id="@+id/activities_top_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/title_background">
+
+        <TextView
+            android:id="@+id/title_barrier_gesture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/day_report"
+            android:textAlignment="center"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_date_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activities_top_container"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="3dp"
+        android:alpha="0.63"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="#778190"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/text_date_header"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/activities_container_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:gravity="center">
+
+            <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                android:id="@+id/day_report_circular_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                app:cpb_background_progressbar_color="#788290"
+                app:cpb_background_progressbar_width="28dp"
+                app:cpb_progress="0"
+                app:cpb_progressbar_color="#FA990C"
+                app:cpb_progressbar_width="20dp" />
+
+            <ImageView
+                android:id="@+id/activities_unhappy_masked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/day_report_circular_progress_bar"
+                android:layout_alignTop="@id/day_report_circular_progress_bar"
+                android:layout_alignEnd="@id/day_report_circular_progress_bar"
+                android:layout_alignBottom="@id/day_report_circular_progress_bar"
+                android:layout_centerInParent="true"
+                android:padding="50dp"
+                android:src="@drawable/ic_mild"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/activities_happy_masked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/day_report_circular_progress_bar"
+                android:layout_alignTop="@id/day_report_circular_progress_bar"
+                android:layout_alignEnd="@id/day_report_circular_progress_bar"
+                android:layout_alignBottom="@id/day_report_circular_progress_bar"
+                android:layout_centerInParent="true"
+                android:padding="50dp"
+                android:src="@drawable/ic_protected_happy" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/background_protection_status_message"
+                android:clipToPadding="false"
+                android:elevation="10dp"
+                android:orientation="horizontal"
+                android:padding="1dp"
+                tools:ignore="RtlSymmetry">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/ic_clock_total_time" />
+
+                <TextView
+                    android:id="@+id/activities_total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gudea_bold"
+                    android:paddingStart="2dp"
+                    android:text="total"
+                    android:textColor="#788290"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/activities_time_exposed"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/gudea_bold"
+                    android:text="Time Exposed"
+                    android:textAlignment="center"
+                    android:paddingEnd="10dp"
+                    android:textColor="#324755"
+                    android:textSize="35sp" />
+
+                <ImageView
+                    android:id="@+id/activities_status_ok_ic"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_ok"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/activities_status_alert_ic"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_info_alerte"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/go_to_report_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_white_stroke_bg"
+            android:clickable="true"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="8dp"
+            android:text="Détail"
+            android:textAlignment="center"
+            android:textColor="#515C6F"
+            android:visibility="visible"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</RelativeLayout>

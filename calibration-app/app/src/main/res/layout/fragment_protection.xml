@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2020 Ubique Innovation AG <https://www.ubique.ch>
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~ SPDX-License-Identifier: MPL-2.0
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_relative_layout_protection"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/protection_top_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.5"
+                android:src="@drawable/gray_background_rounded"
+                android:tint="#85E94A" />
+
+            <ImageView
+                android:id="@+id/protection_circle_bg"
+                android:layout_width="10000dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="@color/bg_clock_handwash"
+                android:paddingBottom="15dp"
+                android:src="@drawable/half_circle_clock"
+                android:tint="#85E94A" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <ImageView
+                android:id="@+id/image_view_disc_happy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+
+                android:src="@drawable/disc_protection_happy" />
+
+            <ImageView
+                android:id="@+id/image_view_disc_unhappy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/disc_protection_unhappy"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/image_view_happy_masked"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_centerInParent="true"
+                android:padding="20dp"
+                android:src="@drawable/ic_protected_happy" />
+
+            <ImageView
+                android:id="@+id/image_view_unhappy_masked"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_centerInParent="true"
+                android:padding="20dp"
+                android:src="@drawable/ic_protected_unhappy"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/handshake_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/image_view_unhappy_masked"
+                android:layout_alignEnd="@id/image_view_unhappy_masked"
+                android:background="@drawable/background_contacts_count"
+                android:fontFamily="@font/roboto_bold"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FA990C"
+                android:textSize="24sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/background_protection_status_message"
+                android:clipToPadding="false"
+                android:elevation="10dp"
+                android:orientation="horizontal"
+                android:padding="1dp">
+
+                <TextView
+                    android:id="@+id/protection_status_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/be_vigilant"
+                    android:textAlignment="center"
+                    android:textColor="#324755"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/protection_status_ok_ic"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_ok"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/protection_status_alert_ic"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_info_alerte"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

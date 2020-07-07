@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.5"
+                android:src="@drawable/gray_background_rounded" />
+
+            <ImageView
+                android:layout_width="10000dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="@color/bg_clock_handwash"
+                android:paddingBottom="15dp"
+                android:src="@drawable/half_circle_clock" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:layout_above="@id/progress_bar_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clipToPadding="false"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/washed_hands"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/auth_button"
+                android:elevation="3dp"
+                android:fontFamily="@font/roboto_medium"
+                android:padding="10dp"
+                android:text="@string/button_wash_start"
+                android:textAlignment="center"
+                android:textColor="#515C6F" />
+
+            <TextView
+                android:id="@+id/pause_resume_hand_wash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="@drawable/auth_button"
+                android:elevation="3dp"
+                android:fontFamily="@font/roboto_medium"
+                android:padding="10dp"
+                android:text="@string/button_pause_hand_wash"
+                android:textAlignment="center"
+                android:textColor="#515C6F" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/progress_bar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+            android:id="@+id/circularProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            app:cpb_background_progressbar_color="#788290"
+            app:cpb_background_progressbar_width="28dp"
+            app:cpb_progress="0"
+            app:cpb_progress_direction="to_left"
+            app:cpb_progressbar_color="#77C5FF"
+            app:cpb_progressbar_width="20dp"
+            app:cpb_round_border="false" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/circularProgressBar"
+            android:layout_alignTop="@id/circularProgressBar"
+            android:layout_alignEnd="@id/circularProgressBar"
+            android:layout_alignBottom="@id/circularProgressBar"
+            android:layout_centerInParent="true"
+            android:padding="58dp"
+            android:src="@drawable/ic_washing_hands" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/progress_bar_container"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/white_outline_1dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/container_timer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_protection_status_message"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:elevation="10dp"
+                android:orientation="horizontal"
+                android:padding="1dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:fontFamily="@font/gudea_bold"
+                    android:paddingStart="2dp"
+                    android:text="02:00"
+                    android:textColor="#788290"
+                    android:textSize="18sp"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/washed_hands_timer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/gudea_bold"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="#788290"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_clock" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/handwash_status_text_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/handwash_status_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="#324755"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/button_info_barrier_gesture"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/auth_button"
+        android:backgroundTint="@color/colorSecondary"
+        android:elevation="4dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_info_white" />
+
+</RelativeLayout>

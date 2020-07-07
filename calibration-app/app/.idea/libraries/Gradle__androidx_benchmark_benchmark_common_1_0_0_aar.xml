@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.benchmark:benchmark-common:1.0.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/54ce91217497e992bd2e8a2044d7f775/jetified-benchmark-common-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/54ce91217497e992bd2e8a2044d7f775/jetified-benchmark-common-1.0.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.benchmark/benchmark-common/1.0.0/28536e7d614171b43219cff2e661eb32d1f75888/benchmark-common-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,93 @@
+<!--
+  ~ Copyright (c) 2020 Ubique Innovation AG <https://www.ubique.ch>
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~ SPDX-License-Identifier: MPL-2.0
+  -->
+
+<resources>
+	<string name="app_name">BySafe</string>
+	<string name="bysafe_upper">BYSAFE</string>
+	<string name="anonyme">Mode Anonyme</string>
+	<string name="connect">Se connecter</string>
+	<string name="dp3t_sdk_service_notification_channel">@string/app_name</string>
+	<string name="dp3t_sdk_service_notification_title">@string/app_name</string>
+	<string name="dp3t_sdk_service_notification_text">Recherche de personnes à proximité…</string>
+	<string name="wash_alert">C\'est le moment de se laver les mains</string>
+	<string name="site_id">ID de chantier</string>
+	<string name="push_exposed_title">push_exposed_title</string>
+	<string name="push_exposed_text">push_exposed_text</string>
+	<string name="req_location_permission_ungranted">Autoriser la géolocalisation</string>
+	<string name="req_location_permission_granted">Géolocalisation autorisée</string>
+	<string name="req_bluetooth_inactive">Activer le Bluetooth</string>
+	<string name="req_bluetooth_active">Bluetooth activé</string>
+	<string name="req_battery_active">Désactiver l\'optimisation de la batterie</string>
+	<string name="req_battery_deactivated">Optimisation de la batterie activée</string>
+	<string name="button_wash">Pensez à vous laver les mains</string>
+	<string name="button_wash_start">Démarrer</string>
+	<string name="button_pause_hand_wash">Pause</string>
+	<string name="button_resume_hand_wash">Reprendre</string>
+	<string name="button_sync">force backend sync</string>
+	<string name="button_export_db">export database</string>
+	<string name="button_upload_db">upload database</string>
+	<string name="button_tracking_start">Scanner</string>
+	<string name="button_tracking_stop">Arrêter le scan</string>
+	<string name="button_advertising_start">start advertising</string>
+	<string name="button_receiving_start">Commencer la réception</string>
+	<string name="button_report_infected">Signaler une infection</string>
+	<string name="button_clear_data">Supprimer les données</string>
+	<string name="status_tracking_active">PISTAGE</string>
+	<string name="status_tracking_inactive">STOPPÉ</string>
+	<string name="status_advertising">advertising: %1$b</string>
+	<string name="status_receiving">Réception: %1$b</string>
+	<string name="status_last_synced">Dernière synchronisation: %1$s</string>
+	<string name="status_number_handshakes">handshakes: %1$d</string>
+	<string name="status_number_contacts">Contacts: %1$d</string>
+	<string name="status_been_exposed">a été exposé: %1$b</string>
+	<string name="status_self_infected">auto-infection: %1$b</string>
+	<string name="dialog_clear_data_title">Supprimer les données locales</string>
+	<string name="dialog_confirm_message">Souhaitez-vous continuer?</string>
+	<string name="dialog_confirm_positive_button">Continuer</string>
+	<string name="dialog_confirm_negative_button">Annuler</string>
+	<string name="dialog_title_success">Succès</string>
+	<string name="dialog_title_error">Erreur</string>
+	<string name="dialog_exposed_title">Signaler une exposition</string>
+	<string name="dialog_exposed_input_message">Selectionnez la date d\'infection et entrez votre code d\'authentification:</string>
+	<string name="dialog_exposed_code_hint">Code d\'authentification</string>
+	<string name="dialog_input_code_error">code invalide.</string>
+	<string name="dialog_input_date_error">date invalide.</string>
+	<string name="dialog_message_request_success">Requête envoyée avec succès</string>
+	<string name="dialog_button_ok">OK</string>
+	<string name="tab_controls">Contrôles</string>
+	<string name="tab_protection">Protection</string>
+	<string name="tab_barrier_gesture">Gestes barrières</string>
+	<string name="tab_activities">Activités</string>
+	<string name="tab_parameters">Paramètres</string>
+	<string name="barrier_gesture_title">Adoptez\nles gestes barrières</string>
+	<string name="redirect_gov_info">gouvernement.fr/info-coronavirus</string>
+	<string name="tab_logs">Registres</string>
+	<string name="raw_handshakes">raw handshakes</string>
+	<string name="merged_handshakes">merged handshakes</string>
+	<string name="deanonymization_test_mode">Deanonymization Test Mode</string>
+	<string name="parameter_scan_interval_title">Interval de scan</string>
+	<string name="parameter_scan_duration_title">Durée du scan</string>
+	<string name="parameter_info_unit_seconds">en secondes</string>
+	<string name="parameter_advertisement_power_level">Power level of advertising</string>
+	<string name="logs_filter_tags">tag filter (comma separated)</string>
+	<string name="parameter_advertisement_mode">Advertising mode</string>
+	<string name="parameter_scan_mode">Scan Mode</string>
+	<string name="parameter_use_scan_response">Use scan response (active scanning)</string>
+	<string name="version_info">SDK Version Info</string>
+	<string name="parameter_rssi_detected_level">Niveau RSSI detecté</string>
+	<string name="parameter_info_unit_dbm">en dbm</string>
+	<string name="be_vigilant">Soyez vigilant</string>
+	<string name="protect_yourself">Protégez vous !</string>
+	<string name="day_report">Bilan du jour</string>
+	<string name="report_intro">Temps d\'exposition dans la zone à risque sur la journée de travail totale</string>
+	<string name="detail">Détail</string>
+    <string name="mot_de_passe">Mot de passe</string>
+    <string name="team_day_report">Bilan du jour de l\'équipe</string>
+</resources>
