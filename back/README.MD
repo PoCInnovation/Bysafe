@@ -1,0 +1,24 @@
+# Firebase Cloud Function - Backend
+
+## Create a Firebase Project
+- https://firebase.google.com/
+
+### Auth
+- Add a user with email admin@bysafe.app
+- Disallow the creation of email&password accounts<br>
+    (they will be created from the admin SDK)
+
+### Database
+- Create a `users` collection
+
+## Initialize the local project
+- Install dependencies<br>
+    ```cd back/functions && yarn```
+- Add project private key to local project
+    `Firebase console -> your bysafe project -> settings -> Service Account -> Generate new private key`; Copy the file to `back/functions/keys/admin.json`. Keep it hidden
+- In `back/functions/src/` files, change the admin ID (currently `PciCitpbScemcOEnmUsbeYJCeSj1`) to your admin id.
+
+## Deploy
+```yarn firebase deploy```
+Follow the CLI instructions
+You may need to auth your CLI with firebase (https://firebase.google.com/docs/cli)
