@@ -47,12 +47,9 @@ import static com.bouygues.bysafe.MainApplication.getContext;
 public class TeamActivitiesFragment extends Fragment {
     private TextView handshakeList;
     private CircularProgressBar pb;
-    private TextView percentage_header;
-    private ImageView unhappyMasked;
-    private ImageView happyMasked;
-    private TextView reportTv;
-    private ImageButton goToReportActivities;
-    private long interval = 60000;
+    private TextView statusText;
+    private ImageView statusImageGood;
+    private ImageView statusImageBad;
 
     @Nullable
     @Override
@@ -70,21 +67,16 @@ public class TeamActivitiesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         pb = view.findViewById(R.id.day_report_circular_progress_bar_team);
-        percentage_header = view.findViewById(R.id.text_percentage_header_team);
+        TextView percentage_header = view.findViewById(R.id.text_percentage_header_team);
         String date = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(new Date());
         percentage_header.setText(date);
-        happyMasked = view.findViewById(R.id.activities_happy_masked_team);
-        unhappyMasked = view.findViewById(R.id.activities_unhappy_masked_team);
-        reportTv = view.findViewById(R.id.go_to_report_list_team);
-        ImageButton manager = view.findViewById(R.id.button_normal_view);
+        TextView reportTv = view.findViewById(R.id.go_to_report_list_team);
         handshakeList = getView().findViewById(R.id.handshake_list2);
-        goToReportActivities = getView().findViewById(R.id.go_to_report_activities);
+        ImageButton goToReportActivities = getView().findViewById(R.id.go_to_report_activities);
+        statusText = getView().findViewById(R.id.activities_exposed_gravity);
+        statusImageGood = getView().findViewById(R.id.activities_team_status_ok_ic);
+        statusImageBad = getView().findViewById(R.id.activities_team_status_alert_ic);
 
-        manager.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
-                    .commit();
-        });
         goToReportActivities.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
@@ -194,12 +186,19 @@ public class TeamActivitiesFragment extends Fragment {
                     percentage /= number_of_users;
                     if (percentage >= 10) {
                         pb.setProgressBarColor(Color.parseColor("#FA990C"));
-                        happyMasked.setVisibility(View.GONE);
-                        unhappyMasked.setVisibility(View.VISIBLE);
+                        statusImageBad.setVisibility(View.VISIBLE);
+                        statusImageGood.setVisibility(View.GONE);
                     } else {
                         pb.setProgressBarColor(Color.parseColor("#0dcf06"));
-                        unhappyMasked.setVisibility(View.GONE);
-                        happyMasked.setVisibility(View.VISIBLE);
+                        statusImageBad.setVisibility(View.GONE);
+                        statusImageGood.setVisibility(View.VISIBLE);
+                    }
+                    if (percentage <= 10) {
+                        statusText.setText("Faible");
+                    } else if (percentage > 10 && percentage <= 30) {
+                        statusText.setText("Moyen");
+                    } else {
+                        statusText.setText("Élevé");
                     }
                     pb.setProgress(percentage);
                 } catch (JSONException | NullPointerException e) {

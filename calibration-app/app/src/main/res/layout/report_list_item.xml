@@ -11,27 +11,6 @@
     android:padding="4dp">
 
     <TextView
-        android:id="@+id/report_list_item_index"
-        android:layout_width="10dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.1"
-        android:fontFamily="@font/roboto_medium"
-        android:text="1"
-        android:textAlignment="center"
-        android:textColor="#374C59"
-        android:textSize="12sp"
-        tools:ignore="RtlCompat" />
-
-    <View
-        android:layout_width="2dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="5dp"
-        android:background="@color/white"
-        android:elevation="2dp" />
-
-    <TextView
         android:id="@+id/report_list_item_hour"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
