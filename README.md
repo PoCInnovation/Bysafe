@@ -1,5 +1,6 @@
 # Bysafe App
-### PoC x SpotBouygues
+
+## PoC x SpotBouygues
 
 Social distancing app in Java made by PoC students for a Spot Bouygues Project.
 Based on DP3T calibration-app implementation.
@@ -14,7 +15,13 @@ Open ```bysafe/calibration-app/app/``` in Android studio, and press Build button
 Open ```bysafe/calibration-app/app/``` in Android studio, plug your device to your computer, 
 activate USB debbuging on your device, and press Run
 
+## Frontend
+
+To deploy your own Admin Console, read [these instructions](admin_panel/README.MD).
+
 ## Backend
+
+To create your own Firebase project, read [these instructions](back/README.MD).
 
 The app requires a backend hosted on firebase.
 This backend is used for user connection, contact storage and manager reports.
