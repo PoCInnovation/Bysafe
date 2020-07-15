@@ -15,7 +15,6 @@ Open ```bysafe/calibration-app/app/``` in Android studio, plug your device to yo
 activate USB debbuging on your device, and press Run
 
 ## Backend
-//TODO firebase config
 
 The app requires a backend hosted on firebase.
 This backend is used for user connection, contact storage and manager reports.
