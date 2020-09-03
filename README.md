@@ -1,6 +1,6 @@
 # Bysafe App
 
-## PoC x SpotBouygues
+## Description
 
 Social distancing app in Java made by PoC students for a Spot Bouygues Project.
 Based on DP3T calibration-app implementation.
@@ -43,3 +43,8 @@ Links to backend are used in :
 
 ## License
 This project is licensed under the terms of the MPL 2 license. See the LICENSE file.
+
+## Maintainer
+[Killian Clette](https://github.com/Skerilyo)
+[Lorenzo Rosmarino](https://github.com/Drysque)
+[Robin Christol](https://github.com/ltsrc)
