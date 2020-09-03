@@ -26,20 +26,20 @@ To create your own Firebase project, read [these instructions](back/README.MD).
 The app requires a backend hosted on firebase.
 This backend is used for user connection, contact storage and manager reports.
 Links to backend are used in : 
-- calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java -> line 193
-- calibration-app/app/src/main/java/com/bouygues/bysafe/report/TeamActivitiesReportFragment.java -> line 154
-- calibration-app/app/src/main/java/com/bouygues/bysafe/report/TeamActivitiesFragment.java -> line 111
-- calibration-app/app/src/main/java/com/bouygues/bysafe/MainActivity.java -> line 302
+- [Authentification](calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java) -> line 193
+- [Team activites report](calibration-app/app/src/main/java/com/bouygues/bysafe/report/TeamActivitiesReportFragment.java) -> line 154
+- [Team activites](calibration-app/app/src/main/java/com/bouygues/bysafe/report/TeamActivitiesFragment.java) -> line 111
+- [Report posting](calibration-app/app/src/main/java/com/bouygues/bysafe/MainActivity.java) -> line 302
 
 ## Settings and Back interactions
 
-Modification of the RSSI level detected : [here](dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java) -> line 61
+[Modification of the RSSI level detected](dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java) -> line 61
 
-Modification of scan duration and interval : [here](dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java) -> line 59-60
+[Modification of scan duration and interval](dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java) -> line 59-60
 
-Handwash timer duration : [here](calibration-app/app/src/main/java/com/bouygues/bysafe/handwash/HandwashFragment.java) -> line 41
+[Handwash timer duration](calibration-app/app/src/main/java/com/bouygues/bysafe/handwash/HandwashFragment.java) -> line 41
 
-Anonyme mode : [here](calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java) -> line 57
+[Anonyme mode](calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java) -> line 57
 
 ## License
 This project is licensed under the terms of the MPL 2 license. See the LICENSE file.
