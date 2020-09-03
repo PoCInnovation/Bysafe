@@ -46,5 +46,7 @@ This project is licensed under the terms of the MPL 2 license. See the LICENSE f
 
 ## Maintainer
 [Killian Clette](https://github.com/Skerilyo)
+
 [Lorenzo Rosmarino](https://github.com/Drysque)
+
 [Robin Christol](https://github.com/ltsrc)
