@@ -33,10 +33,13 @@ Links to backend are used in :
 
 ## Settings and Back interactions
 
-Modification of the RSSI level detected : dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java -> line 61
-Modification of scan duration and interval : dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java -> line 59-60
-Handwash timer duration : calibration-app/app/src/main/java/com/bouygues/bysafe/handwash/HandwashFragment.java -> line 41
-Anonyme mode : calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java -> line 57
+Modification of the RSSI level detected : [here](dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java) -> line 61
+
+Modification of scan duration and interval : [here](dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java) -> line 59-60
+
+Handwash timer duration : [here](calibration-app/app/src/main/java/com/bouygues/bysafe/handwash/HandwashFragment.java) -> line 41
+
+Anonyme mode : [here](calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java) -> line 57
 
 ## License
 This project is licensed under the terms of the MPL 2 license. See the LICENSE file.
