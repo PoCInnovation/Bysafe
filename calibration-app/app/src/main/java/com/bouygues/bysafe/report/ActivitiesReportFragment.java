@@ -77,7 +77,6 @@ public class ActivitiesReportFragment extends Fragment {
             ArrayList<Triplet<Long, Integer, String>> journeyContact = AppConfigManager.getInstance(MainApplication.getContext()).getJourneyContact();
             SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
             int exposedMinutes;
-            int index = 1;
 
             SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
             for (long i = atStartOfDay(new java.util.Date()); i <= atEndOfDay(new java.util.Date()); i += 3600000) {
@@ -102,7 +101,7 @@ public class ActivitiesReportFragment extends Fragment {
                         stringBuilder.append("_");
                     }
                 }
-                ReportRow row = new ReportRow(index++, formater.format(i), stringBuilder.toString(), exposedMinutes);
+                ReportRow row = new ReportRow(formater.format(i), stringBuilder.toString(), exposedMinutes);
                 list.add(row);
                 stringBuilder.clear();
                 stringBuilder.clearSpans();

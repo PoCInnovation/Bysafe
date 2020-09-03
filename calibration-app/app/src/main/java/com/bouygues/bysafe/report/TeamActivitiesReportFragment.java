@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,12 +48,13 @@ import java.util.Locale;
 
 public class TeamActivitiesReportFragment extends Fragment {
 
-    private LinearLayout llMain;
     private TextView date;
     private ImageView leftChevron;
     private ImageView rightChevron;
+    private ArrayList<TeamReportRow> reports = new ArrayList<TeamReportRow>();
     private int daysBefore = 0;
     private int msDay = 86400000;
+    private ListView lv;
     private Boolean pressed = false;
     private ArrayList<String> list = new ArrayList<>();
 
@@ -93,10 +95,10 @@ public class TeamActivitiesReportFragment extends Fragment {
                     .commit();
         });
 
-        llMain = view.findViewById(R.id.log_list_team);
         date = view.findViewById(R.id.team_activities_date);
         leftChevron = view.findViewById(R.id.switch_date_left);
         rightChevron = view.findViewById(R.id.switch_date_right);
+        lv = requireView().findViewById(R.id.team_report_list);
         String currentDate = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(System.currentTimeMillis() - msDay * daysBefore);
 
         date.setText(currentDate);
@@ -109,7 +111,9 @@ public class TeamActivitiesReportFragment extends Fragment {
             if (pressed)
                 return;
             pressed = true;
-            llMain.removeAllViews();
+            list.clear();
+            reports.clear();
+            lv.setAdapter(null);
             daysBefore += 1;
             if (daysBefore == 0)
                 rightChevron.setVisibility(View.GONE);
@@ -127,7 +131,9 @@ public class TeamActivitiesReportFragment extends Fragment {
             if (pressed)
                 return;
             pressed = true;
-            llMain.removeAllViews();
+            list.clear();
+            reports.clear();
+            lv.setAdapter(null);
             daysBefore -= 1;
             if (daysBefore == 0)
                 rightChevron.setVisibility(View.GONE);
@@ -184,9 +190,7 @@ public class TeamActivitiesReportFragment extends Fragment {
                         .replace(R.id.main_fragment_container, ActivitiesFragment.newInstance())
                         .commit();
             } else {
-                SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
                 SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
-                //make calculus and make progress bar
                 Logger.d("MANAGER", response);
                 try {
                     final JSONObject obj = new JSONObject(response); // json de la réponse
@@ -212,13 +216,12 @@ public class TeamActivitiesReportFragment extends Fragment {
                             if (total == 0)
                                 total = 1;
                             percentage = ((((float) (contacts)) / ((float) total)) * 100);
-                            stringBuilder.append(key).append("\n").append(String.format("%.1f%%", percentage));
-                            addNewTextView(stringBuilder);
-                            list.add(stringBuilder.toString());
-                            stringBuilder.clear();
 
+                            int totalExposedMinutes = 0;
+                            ArrayList<ReportRow> subrows = new ArrayList<ReportRow>();
+                            SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
                             for (long i = atStartOfDay(new Date()) - msDay * daysBefore; i <= atEndOfDay(new Date()) - msDay * daysBefore; i += 3600000) {
-                                stringBuilder.append(formater.format(i)).append("   ");
+                                int exposedMinutes = 0;
                                 for (long j = i; j < i + 3600000; j += 300000) {
                                     boolean set = false;
                                     temp = (JSONObject) obj.get(key);
@@ -227,48 +230,37 @@ public class TeamActivitiesReportFragment extends Fragment {
                                         String str_timestamp = ntemp_keys.next();
                                         if (Long.parseLong(str_timestamp) >= j && Long.parseLong(str_timestamp) < j + 300000) {
                                             if (temp.getInt(str_timestamp) > 0) {
-                                                stringBuilder.append("V");
-                                                stringBuilder.setSpan(new BackgroundColorSpan(Color.RED), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                                stringBuilder.setSpan(new ForegroundColorSpan(Color.RED), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                                stringBuilder.append("X");
+                                                exposedMinutes += 5;
                                             } else {
-                                                stringBuilder.append("V");
-                                                stringBuilder.setSpan(new BackgroundColorSpan(Color.GREEN), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                                stringBuilder.setSpan(new ForegroundColorSpan(Color.GREEN), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                                stringBuilder.append("O");
                                             }
                                             set = true;
                                         }
                                     }
                                     if (!set) {
-                                        stringBuilder.append("V");
-                                        stringBuilder.setSpan(new BackgroundColorSpan(Color.LTGRAY), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                        stringBuilder.setSpan(new ForegroundColorSpan(Color.LTGRAY), stringBuilder.length() - 1, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                        stringBuilder.append("_");
                                     }
                                 }
-                                addNewTextView(stringBuilder);
+                                totalExposedMinutes += exposedMinutes;
+                                ReportRow subrow = new ReportRow(formater.format(i), stringBuilder.toString(), exposedMinutes);
+                                subrows.add(subrow);
                                 stringBuilder.clear();
                                 stringBuilder.clearSpans();
                             }
+                            int hours = totalExposedMinutes / 60;
+                            int minutes = totalExposedMinutes % 60;
+                            TeamReportRow row = new TeamReportRow(key, (int) percentage, hours, minutes, subrows);
+                            reports.add(row);
                         }
-                        stringBuilder.append("\n");
-                        addNewTextView(stringBuilder);
-                        stringBuilder.clear();
                     }
+                    TeamReportListAdapter itemsAdapter = new TeamReportListAdapter(getContext(), reports);
+                    lv.setAdapter(itemsAdapter);
                 } catch (JSONException | NullPointerException e) {
                     e.printStackTrace();
                 }
             }
             pressed = false;
-        }
-
-        private void addNewTextView(SpannableStringBuilder stringBuilder) {
-            final TextView rowTextView = new TextView(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-            rowTextView.setGravity(View.TEXT_ALIGNMENT_CENTER);
-            rowTextView.setPadding(10, 0, 10, 5);
-            rowTextView.setText(stringBuilder);
-            rowTextView.setLayoutParams(layoutParams);
-            llMain.addView(rowTextView);
         }
     }
 
