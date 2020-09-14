@@ -1,7 +1,7 @@
 # Bysafe App
 
 <p align="center">
-  <img src=".github/preview.jpg" />
+  <img src=".github/preview.jpg" style="max-width: 45%;" />
 </p>
 
 Bysafe is a social distancing app made by PoC students in partnership with Spot Bouygues.
