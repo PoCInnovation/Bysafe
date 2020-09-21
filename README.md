@@ -36,17 +36,17 @@ The admin panel is in React and uses firebase and google cloud functions to add,
  To deploy your own Admin Console, read [these instructions](admin_panel/README.MD).
 
 ## Files and lines where the backend is called
-- [Authentification](https://github.com/PoCFrance/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java#L193)
-- [Team activites report](https://github.com/PoCFrance/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/report/TeamActivitiesReportFragment.java#L154)
-- [Team activites](https://github.com/PoCFrance/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/report/TeamActivitiesFragment.java#L111)
-- [Report posting](https://github.com/PoCFrance/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/MainActivity.java#L302)
+- [Authentification](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java#L193)
+- [Team activites report](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/report/TeamActivitiesReportFragment.java#L154)
+- [Team activites](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/report/TeamActivitiesFragment.java#L111)
+- [Report posting](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/MainActivity.java#L302)
 
 ## Settings and backend variables
 
-- [Modification of the RSSI level detected](https://github.com/PoCFrance/Bysafe/blame/master/dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java#L61)
-- [Modification of scan duration and interval](https://github.com/PoCFrance/Bysafe/blame/master/dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java#L59)
-- [Handwash timer duration](https://github.com/PoCFrance/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/handwash/HandwashFragment.java#L41)
-- [Anonyme mode](https://github.com/PoCFrance/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java#L57)
+- [Modification of the RSSI level detected](https://github.com/PoCInnovation/Bysafe/blame/master/dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java#L61)
+- [Modification of scan duration and interval](https://github.com/PoCInnovation/Bysafe/blame/master/dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java#L59)
+- [Handwash timer duration](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/handwash/HandwashFragment.java#L41)
+- [Anonyme mode](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java#L57)
 
 ## Authors
 - [Killian Clette](https://github.com/Skerilyo)

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "BySafe admin panel",
   "main": "index.js",
-  "repository": "git@github.com:PoCFrance/bysafe.git",
+  "repository": "git@github.com:PoCInnovation/bysafe.git",
   "author": "Lorenzo Rosmarino <lorenzo.rosmarino@epitech.eu>",
   "license": "MIT",
   "dependencies": {
