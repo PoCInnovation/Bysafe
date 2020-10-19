@@ -46,7 +46,7 @@ The admin panel is in React and uses firebase and google cloud functions to add,
 - [Modification of the RSSI level detected](https://github.com/PoCInnovation/Bysafe/blame/master/dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java#L61)
 - [Modification of scan duration and interval](https://github.com/PoCInnovation/Bysafe/blame/master/dp3t-sdk/sdk/src/main/java/org/dpppt/android/sdk/internal/AppConfigManager.java#L59)
 - [Handwash timer duration](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/handwash/HandwashFragment.java#L41)
-- [Anonyme mode](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java#L57)
+- [Anonymous mode](https://github.com/PoCInnovation/Bysafe/blame/master/calibration-app/app/src/main/java/com/bouygues/bysafe/auth/AuthActivity.java#L57)
 
 ## Authors
 - [Killian Clette](https://github.com/Skerilyo)
